@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:multipple/onboarding/intro.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,10 +13,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Multipple',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Multipple'),
     );
   }
 }
@@ -61,7 +62,10 @@ class _MyHomePageState extends State<MyHomePage> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    //Navigator.push(context, MaterialPageRoute(builder: (context) => const Intro()));
+                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const Intro()), (_) => false);
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black12,
                     shape: const CircleBorder(),
