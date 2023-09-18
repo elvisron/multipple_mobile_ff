@@ -1,6 +1,6 @@
 # multipple
 
-Multiple LMS
+Learning Management System
 
 ## Getting Started
 

@@ -8,7 +8,7 @@
 PRODUCT_NAME = multipple
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.myapplabs.multipple.multipple
+PRODUCT_BUNDLE_IDENTIFIER = com.myapplabs.multipple
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2023 com.myapplabs.multipple. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2023 com.myapplabs. All rights reserved.

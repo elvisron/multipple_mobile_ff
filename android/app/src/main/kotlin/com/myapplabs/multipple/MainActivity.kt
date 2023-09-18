@@ -1,4 +1,4 @@
-package com.myapplabs.multipple.multipple
+package com.myapplabs.multipple
 
 import io.flutter.embedding.android.FlutterActivity
 
