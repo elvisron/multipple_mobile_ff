@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:multipple/onboarding/intro.dart';
+import 'package:multipple/onboarding/intro_slider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -64,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ElevatedButton(
                   onPressed: () {
                     //Navigator.push(context, MaterialPageRoute(builder: (context) => const Intro()));
-                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const Intro()), (_) => false);
+                    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => IntroSlider()), (_) => false);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black12,
