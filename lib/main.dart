@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:multipple/onboarding/intro.dart';
 import 'package:multipple/onboarding/intro_slider.dart';
 
 void main() {

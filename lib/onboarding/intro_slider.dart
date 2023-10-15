@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:multipple/login.dart';
 
 import 'indicator.dart';
 
@@ -61,23 +62,42 @@ class _IntroSliderState extends State<IntroSlider> {
                   Row(
                       children: <Widget>[
                         Expanded(
-                          child: Padding(
+                          child: (currentPage==numberOfPages-1)?
+                          Padding(
                               padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
                               child:
                               ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                     foregroundColor: Colors.white,
                                     backgroundColor: Colors.black87,
+                                    padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(7),
                                     ),
                                     textStyle: const TextStyle(fontSize: 16)),
                                 child: const Text('Get Started'),
                                 onPressed: () {
-
+                                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const Login()), (_) => false);
+                                },
+                              )):
+                          Padding(
+                              padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+                              child:
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    foregroundColor: Colors.white,
+                                    backgroundColor: Colors.black87,
+                                    padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(7),
+                                    ),
+                                    textStyle: const TextStyle(fontSize: 16)),
+                                child: const Text('Next'),
+                                onPressed: () {
+                                  controller.jumpToPage(currentPage+1);
                                 },
                               )),
-                        ),
+                        )
                       ]
                   ),
                 ]
