@@ -11,10 +11,10 @@ import 'account_page_settings_security_model.dart';
 export 'account_page_settings_security_model.dart';
 
 class AccountPageSettingsSecurityWidget extends StatefulWidget {
-  const AccountPageSettingsSecurityWidget({Key? key}) : super(key: key);
+  const AccountPageSettingsSecurityWidget({super.key});
 
   @override
-  _AccountPageSettingsSecurityWidgetState createState() =>
+  State<AccountPageSettingsSecurityWidget> createState() =>
       _AccountPageSettingsSecurityWidgetState();
 }
 
@@ -28,6 +28,9 @@ class _AccountPageSettingsSecurityWidgetState
   void initState() {
     super.initState();
     _model = createModel(context, () => AccountPageSettingsSecurityModel());
+
+    _model.switchValue1 = true;
+    _model.switchValue2 = true;
   }
 
   @override
@@ -39,10 +42,10 @@ class _AccountPageSettingsSecurityWidgetState
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
+      onTap: () => _model.unfocusNode.canRequestFocus
+          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+          : FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
@@ -68,6 +71,7 @@ class _AccountPageSettingsSecurityWidgetState
             style: FlutterFlowTheme.of(context).headlineMedium.override(
                   fontFamily: 'Outfit',
                   fontSize: 21.0,
+                  letterSpacing: 0.0,
                 ),
           ),
           actions: [],
@@ -135,14 +139,15 @@ class _AccountPageSettingsSecurityWidgetState
                                         color: FlutterFlowTheme.of(context)
                                             .secondaryText,
                                         fontSize: 16.0,
+                                        letterSpacing: 0.0,
                                       ),
                                 ),
                               ),
                               Flexible(
                                 child: Align(
-                                  alignment: AlignmentDirectional(1.00, 0.00),
+                                  alignment: AlignmentDirectional(1.0, 0.0),
                                   child: Switch.adaptive(
-                                    value: _model.switchValue1 ??= true,
+                                    value: _model.switchValue1!,
                                     onChanged: (newValue) async {
                                       setState(() =>
                                           _model.switchValue1 = newValue!);
@@ -186,14 +191,15 @@ class _AccountPageSettingsSecurityWidgetState
                                         color: FlutterFlowTheme.of(context)
                                             .secondaryText,
                                         fontSize: 16.0,
+                                        letterSpacing: 0.0,
                                       ),
                                 ),
                               ),
                               Flexible(
                                 child: Align(
-                                  alignment: AlignmentDirectional(1.00, 0.00),
+                                  alignment: AlignmentDirectional(1.0, 0.0),
                                   child: Switch.adaptive(
-                                    value: _model.switchValue2 ??= true,
+                                    value: _model.switchValue2!,
                                     onChanged: (newValue) async {
                                       setState(() =>
                                           _model.switchValue2 = newValue!);
@@ -245,6 +251,7 @@ class _AccountPageSettingsSecurityWidgetState
                                           color: FlutterFlowTheme.of(context)
                                               .secondaryText,
                                           fontSize: 16.0,
+                                          letterSpacing: 0.0,
                                         ),
                                   ),
                                 ),

@@ -1,13 +1,18 @@
+import '/auth/custom_auth/auth_util.dart';
+import '/backend/api_requests/api_calls.dart';
 import '/components/explore_card_with_module_widget.dart';
 import '/components/explore_feature_widget.dart';
 import '/components/live_session_long_card_widget.dart';
+import '/components/no_data_widget.dart';
 import '/components/stacked_card_widget.dart';
 import '/flutter_flow/flutter_flow_choice_chips.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -15,10 +20,10 @@ import 'home_page_model.dart';
 export 'home_page_model.dart';
 
 class HomePageWidget extends StatefulWidget {
-  const HomePageWidget({Key? key}) : super(key: key);
+  const HomePageWidget({super.key});
 
   @override
-  _HomePageWidgetState createState() => _HomePageWidgetState();
+  State<HomePageWidget> createState() => _HomePageWidgetState();
 }
 
 class _HomePageWidgetState extends State<HomePageWidget> {
@@ -31,7 +36,21 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     super.initState();
     _model = createModel(context, () => HomePageModel());
 
-    _model.textController ??= TextEditingController();
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      _model.apiResultm8e = await LXPLearningExperiencePortalGroup
+          .retrieveTenantInformationCall
+          .call();
+
+      if ((_model.apiResultm8e?.succeeded ?? true)) {
+        FFAppState().categories = LXPLearningExperiencePortalGroup
+            .retrieveTenantInformationCall
+            .categories(
+          (_model.apiResultm8e?.jsonBody ?? ''),
+        );
+        setState(() {});
+      }
+    });
   }
 
   @override
@@ -46,7 +65,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
     context.watch<FFAppState>();
 
     return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
+      onTap: () => _model.unfocusNode.canRequestFocus
+          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+          : FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
@@ -66,13 +87,18 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     style: FlutterFlowTheme.of(context).headlineMedium.override(
                           fontFamily: 'Outfit',
                           fontSize: 21.0,
+                          letterSpacing: 0.0,
                         ),
                   ),
                   Text(
-                    'Bright',
+                    getJsonField(
+                      FFAppState().user,
+                      r'''$.first_name''',
+                    ).toString(),
                     style: FlutterFlowTheme.of(context).bodyMedium.override(
                           fontFamily: 'Readex Pro',
                           fontSize: 30.0,
+                          letterSpacing: 0.0,
                         ),
                   ),
                 ],
@@ -88,18 +114,30 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     color: FlutterFlowTheme.of(context).accent1,
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: FlutterFlowTheme.of(context).primary,
+                      color: FlutterFlowTheme.of(context).alternate,
                       width: 2.0,
                     ),
                   ),
-                  child: Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(2.0, 2.0, 2.0, 2.0),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(50.0),
+                  child: InkWell(
+                    splashColor: Colors.transparent,
+                    focusColor: Colors.transparent,
+                    hoverColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    onTap: () async {
+                      context.pushNamed('accountPage');
+                    },
+                    child: Container(
+                      width: 120.0,
+                      height: 120.0,
+                      clipBehavior: Clip.antiAlias,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                      ),
                       child: Image.network(
-                        'https://picsum.photos/seed/626/600',
-                        width: 188.0,
-                        height: 188.0,
+                        getJsonField(
+                          FFAppState().user,
+                          r'''$.photo''',
+                        ).toString(),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -121,66 +159,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding:
-                        EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 8.0),
-                    child: TextFormField(
-                      controller: _model.textController,
-                      autofocus: true,
-                      obscureText: false,
-                      decoration: InputDecoration(
-                        labelText: 'Search ',
-                        labelStyle:
-                            FlutterFlowTheme.of(context).labelMedium.override(
-                                  fontFamily: 'Readex Pro',
-                                  fontSize: 16.0,
-                                ),
-                        hintStyle:
-                            FlutterFlowTheme.of(context).labelMedium.override(
-                                  fontFamily: 'Readex Pro',
-                                  fontSize: 16.0,
-                                ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: FlutterFlowTheme.of(context).alternate,
-                            width: 2.0,
-                          ),
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: FlutterFlowTheme.of(context).primary,
-                            width: 2.0,
-                          ),
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: FlutterFlowTheme.of(context).error,
-                            width: 2.0,
-                          ),
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: FlutterFlowTheme.of(context).error,
-                            width: 2.0,
-                          ),
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        contentPadding:
-                            EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 0.0, 0.0),
-                        suffixIcon: Icon(
-                          Icons.search_rounded,
-                          color: FlutterFlowTheme.of(context).secondaryText,
-                        ),
-                      ),
-                      style: FlutterFlowTheme.of(context).bodyMedium,
-                      cursorColor: FlutterFlowTheme.of(context).primary,
-                      validator:
-                          _model.textControllerValidator.asValidator(context),
-                    ),
-                  ),
                   wrapWithModel(
                     model: _model.exploreFeatureModel,
                     updateCallback: () => setState(() {}),
@@ -197,7 +175,9 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           style:
                               FlutterFlowTheme.of(context).bodyMedium.override(
                                     fontFamily: 'Readex Pro',
+                                    color: Color(0xFF1550E7),
                                     fontSize: 18.0,
+                                    letterSpacing: 0.0,
                                     fontWeight: FontWeight.w600,
                                   ),
                         ),
@@ -213,16 +193,18 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           padding: EdgeInsetsDirectional.fromSTEB(
                               0.0, 8.0, 0.0, 8.0),
                           child: FlutterFlowChoiceChips(
-                            options: [
-                              ChipData('All'),
-                              ChipData('TypeScript'),
-                              ChipData('JavaScript'),
-                              ChipData('UX Design'),
-                              ChipData('Machine Learning'),
-                              ChipData('Startups')
-                            ],
-                            onChanged: (val) => setState(
-                                () => _model.choiceChipsValue = val?.first),
+                            options: functions
+                                .convertCategoriesToList(
+                                    FFAppState().categories)
+                                .map((e) => e.toString())
+                                .toList()
+                                .map((label) => ChipData(label))
+                                .toList(),
+                            onChanged: (val) async {
+                              setState(() =>
+                                  _model.choiceChipsValue = val?.firstOrNull);
+                              context.pushNamed('homeCategories');
+                            },
                             selectedChipStyle: ChipStyle(
                               backgroundColor:
                                   FlutterFlowTheme.of(context).primary,
@@ -231,6 +213,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                   .override(
                                     fontFamily: 'Readex Pro',
                                     color: FlutterFlowTheme.of(context).info,
+                                    letterSpacing: 0.0,
                                   ),
                               iconColor: FlutterFlowTheme.of(context).info,
                               iconSize: 18.0,
@@ -248,6 +231,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                                     fontFamily: 'Readex Pro',
                                     color: FlutterFlowTheme.of(context)
                                         .secondaryText,
+                                    letterSpacing: 0.0,
                                   ),
                               iconColor:
                                   FlutterFlowTheme.of(context).secondaryText,
@@ -261,11 +245,10 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             chipSpacing: 8.0,
                             rowSpacing: 12.0,
                             multiselect: false,
-                            initialized: _model.choiceChipsValue != null,
                             alignment: WrapAlignment.start,
                             controller: _model.choiceChipsValueController ??=
                                 FormFieldController<List<String>>(
-                              ['All'],
+                              [],
                             ),
                             wrapped: true,
                           ),
@@ -287,6 +270,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               FlutterFlowTheme.of(context).bodyMedium.override(
                                     fontFamily: 'Readex Pro',
                                     fontSize: 18.0,
+                                    letterSpacing: 0.0,
                                     fontWeight: FontWeight.w600,
                                   ),
                         ),
@@ -298,36 +282,102 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         EdgeInsetsDirectional.fromSTEB(0.0, 15.0, 0.0, 0.0),
                     child: Container(
                       width: double.infinity,
-                      height: 148.0,
+                      height: 170.0,
                       decoration: BoxDecoration(
                         color: FlutterFlowTheme.of(context).primaryBackground,
                       ),
-                      alignment: AlignmentDirectional(-1.00, 0.00),
-                      child: ListView(
-                        padding: EdgeInsets.fromLTRB(
-                          16.0,
-                          0,
-                          16.0,
-                          0,
+                      alignment: AlignmentDirectional(-1.0, 0.0),
+                      child: Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child: FutureBuilder<ApiCallResponse>(
+                          future: LXPLearningExperiencePortalGroup
+                              .getAListOfCoursesByLearnerCall
+                              .call(
+                            limit: 6,
+                            lXPAuthToken: currentAuthenticationToken,
+                            scope: 'latest',
+                            lXPAuthDevice: FFAppState().deviceId,
+                          ),
+                          builder: (context, snapshot) {
+                            // Customize what your widget looks like when it's loading.
+                            if (!snapshot.hasData) {
+                              return Center(
+                                child: SizedBox(
+                                  width: 60.0,
+                                  height: 60.0,
+                                  child: CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                      FlutterFlowTheme.of(context)
+                                          .secondaryText,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
+                            final listViewGetAListOfCoursesByLearnerResponse =
+                                snapshot.data!;
+
+                            return Builder(
+                              builder: (context) {
+                                final latestCourses =
+                                    LXPLearningExperiencePortalGroup
+                                            .getAListOfCoursesByLearnerCall
+                                            .results(
+                                              listViewGetAListOfCoursesByLearnerResponse
+                                                  .jsonBody,
+                                            )
+                                            ?.toList() ??
+                                        [];
+                                if (latestCourses.isEmpty) {
+                                  return Container(
+                                    width: double.infinity,
+                                    child: NoDataWidget(
+                                      message: 'No Courses found',
+                                    ),
+                                  );
+                                }
+
+                                return ListView.separated(
+                                  padding: EdgeInsets.fromLTRB(
+                                    16.0,
+                                    0,
+                                    16.0,
+                                    0,
+                                  ),
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: latestCourses.length,
+                                  separatorBuilder: (_, __) =>
+                                      SizedBox(width: 12.0),
+                                  itemBuilder: (context, latestCoursesIndex) {
+                                    final latestCoursesItem =
+                                        latestCourses[latestCoursesIndex];
+                                    return wrapWithModel(
+                                      model: _model.stackedCardModels.getModel(
+                                        latestCoursesIndex.toString(),
+                                        latestCoursesIndex,
+                                      ),
+                                      updateCallback: () => setState(() {}),
+                                      child: StackedCardWidget(
+                                        key: Key(
+                                          'Keyjbv_${latestCoursesIndex.toString()}',
+                                        ),
+                                        title: getJsonField(
+                                          latestCoursesItem,
+                                          r'''$.name''',
+                                        ).toString(),
+                                        courseId: getJsonField(
+                                          latestCoursesItem,
+                                          r'''$.courseId''',
+                                        ).toString(),
+                                        course: latestCoursesItem,
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            );
+                          },
                         ),
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          wrapWithModel(
-                            model: _model.stackedCardModel1,
-                            updateCallback: () => setState(() {}),
-                            child: StackedCardWidget(),
-                          ),
-                          wrapWithModel(
-                            model: _model.stackedCardModel2,
-                            updateCallback: () => setState(() {}),
-                            child: StackedCardWidget(),
-                          ),
-                          wrapWithModel(
-                            model: _model.stackedCardModel3,
-                            updateCallback: () => setState(() {}),
-                            child: StackedCardWidget(),
-                          ),
-                        ].divide(SizedBox(width: 12.0)),
                       ),
                     ),
                   ),
@@ -343,6 +393,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               FlutterFlowTheme.of(context).bodyMedium.override(
                                     fontFamily: 'Readex Pro',
                                     fontSize: 18.0,
+                                    letterSpacing: 0.0,
                                     fontWeight: FontWeight.w600,
                                   ),
                         ),
@@ -356,27 +407,108 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       width: double.infinity,
                       height: 351.0,
                       decoration: BoxDecoration(),
-                      alignment: AlignmentDirectional(-1.00, 0.00),
-                      child: ListView(
-                        padding: EdgeInsets.fromLTRB(
-                          16.0,
-                          0,
-                          16.0,
-                          0,
+                      alignment: AlignmentDirectional(-1.0, 0.0),
+                      child: FutureBuilder<ApiCallResponse>(
+                        future: LXPLearningExperiencePortalGroup
+                            .getAListOfCoursesByLearnerCall
+                            .call(
+                          scope: 'explore',
+                          lXPAuthToken: currentAuthenticationToken,
+                          lXPAuthDevice: FFAppState().deviceId,
                         ),
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          wrapWithModel(
-                            model: _model.exploreCardWithModuleModel1,
-                            updateCallback: () => setState(() {}),
-                            child: ExploreCardWithModuleWidget(),
-                          ),
-                          wrapWithModel(
-                            model: _model.exploreCardWithModuleModel2,
-                            updateCallback: () => setState(() {}),
-                            child: ExploreCardWithModuleWidget(),
-                          ),
-                        ].divide(SizedBox(width: 12.0)),
+                        builder: (context, snapshot) {
+                          // Customize what your widget looks like when it's loading.
+                          if (!snapshot.hasData) {
+                            return Center(
+                              child: SizedBox(
+                                width: 60.0,
+                                height: 60.0,
+                                child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    FlutterFlowTheme.of(context).secondaryText,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                          final listViewGetAListOfCoursesByLearnerResponse =
+                              snapshot.data!;
+
+                          return Builder(
+                            builder: (context) {
+                              final exploreCourses =
+                                  LXPLearningExperiencePortalGroup
+                                          .getAListOfCoursesByLearnerCall
+                                          .results(
+                                            listViewGetAListOfCoursesByLearnerResponse
+                                                .jsonBody,
+                                          )
+                                          ?.toList() ??
+                                      [];
+                              if (exploreCourses.isEmpty) {
+                                return Container(
+                                  width: double.infinity,
+                                  child: NoDataWidget(
+                                    message: 'No Courses found',
+                                  ),
+                                );
+                              }
+
+                              return ListView.separated(
+                                padding: EdgeInsets.fromLTRB(
+                                  16.0,
+                                  0,
+                                  16.0,
+                                  0,
+                                ),
+                                scrollDirection: Axis.horizontal,
+                                itemCount: exploreCourses.length,
+                                separatorBuilder: (_, __) =>
+                                    SizedBox(width: 12.0),
+                                itemBuilder: (context, exploreCoursesIndex) {
+                                  final exploreCoursesItem =
+                                      exploreCourses[exploreCoursesIndex];
+                                  return wrapWithModel(
+                                    model: _model.exploreCardWithModuleModels1
+                                        .getModel(
+                                      getJsonField(
+                                        exploreCoursesItem,
+                                        r'''$.courseId''',
+                                      ).toString(),
+                                      exploreCoursesIndex,
+                                    ),
+                                    updateCallback: () => setState(() {}),
+                                    child: ExploreCardWithModuleWidget(
+                                      key: Key(
+                                        'Keyhjk_${getJsonField(
+                                          exploreCoursesItem,
+                                          r'''$.courseId''',
+                                        ).toString()}',
+                                      ),
+                                      title: getJsonField(
+                                        exploreCoursesItem,
+                                        r'''$.name''',
+                                      ).toString(),
+                                      totalModules: functions
+                                          .getTotalModules((getJsonField(
+                                        exploreCoursesItem,
+                                        r'''$.outlines''',
+                                        true,
+                                      ) as List)
+                                              .map<String>((s) => s.toString())
+                                              .toList()!),
+                                      courseId: getJsonField(
+                                        exploreCoursesItem,
+                                        r'''$.courseId''',
+                                      ).toString(),
+                                      course: exploreCoursesItem,
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          );
+                        },
                       ),
                     ),
                   ),
@@ -392,6 +524,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               FlutterFlowTheme.of(context).bodyMedium.override(
                                     fontFamily: 'Readex Pro',
                                     fontSize: 18.0,
+                                    letterSpacing: 0.0,
                                     fontWeight: FontWeight.w600,
                                   ),
                         ),
@@ -405,27 +538,104 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       width: double.infinity,
                       height: 351.0,
                       decoration: BoxDecoration(),
-                      alignment: AlignmentDirectional(-1.00, 0.00),
-                      child: ListView(
-                        padding: EdgeInsets.fromLTRB(
-                          16.0,
-                          0,
-                          16.0,
-                          0,
+                      alignment: AlignmentDirectional(-1.0, 0.0),
+                      child: FutureBuilder<ApiCallResponse>(
+                        future: LXPLearningExperiencePortalGroup
+                            .getAListOfCoursesByLearnerCall
+                            .call(
+                          limit: 10,
+                          lXPAuthToken: currentAuthenticationToken,
+                          lXPAuthDevice: FFAppState().deviceId,
                         ),
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          wrapWithModel(
-                            model: _model.exploreCardWithModuleModel3,
-                            updateCallback: () => setState(() {}),
-                            child: ExploreCardWithModuleWidget(),
-                          ),
-                          wrapWithModel(
-                            model: _model.exploreCardWithModuleModel4,
-                            updateCallback: () => setState(() {}),
-                            child: ExploreCardWithModuleWidget(),
-                          ),
-                        ].divide(SizedBox(width: 12.0)),
+                        builder: (context, snapshot) {
+                          // Customize what your widget looks like when it's loading.
+                          if (!snapshot.hasData) {
+                            return Center(
+                              child: SizedBox(
+                                width: 60.0,
+                                height: 60.0,
+                                child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    FlutterFlowTheme.of(context).secondaryText,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                          final listViewGetAListOfCoursesByLearnerResponse =
+                              snapshot.data!;
+
+                          return Builder(
+                            builder: (context) {
+                              final popularCourses =
+                                  LXPLearningExperiencePortalGroup
+                                          .getAListOfCoursesByLearnerCall
+                                          .results(
+                                            listViewGetAListOfCoursesByLearnerResponse
+                                                .jsonBody,
+                                          )
+                                          ?.toList() ??
+                                      [];
+                              if (popularCourses.isEmpty) {
+                                return Center(
+                                  child: Container(
+                                    width: double.infinity,
+                                    child: NoDataWidget(
+                                      message: 'No Courses found',
+                                    ),
+                                  ),
+                                );
+                              }
+
+                              return ListView.separated(
+                                padding: EdgeInsets.fromLTRB(
+                                  16.0,
+                                  0,
+                                  16.0,
+                                  0,
+                                ),
+                                scrollDirection: Axis.horizontal,
+                                itemCount: popularCourses.length,
+                                separatorBuilder: (_, __) =>
+                                    SizedBox(width: 12.0),
+                                itemBuilder: (context, popularCoursesIndex) {
+                                  final popularCoursesItem =
+                                      popularCourses[popularCoursesIndex];
+                                  return wrapWithModel(
+                                    model: _model.exploreCardWithModuleModels2
+                                        .getModel(
+                                      popularCoursesIndex.toString(),
+                                      popularCoursesIndex,
+                                    ),
+                                    updateCallback: () => setState(() {}),
+                                    child: ExploreCardWithModuleWidget(
+                                      key: Key(
+                                        'Keyu51_${popularCoursesIndex.toString()}',
+                                      ),
+                                      title: getJsonField(
+                                        popularCoursesItem,
+                                        r'''$.name''',
+                                      ).toString(),
+                                      totalModules: functions
+                                          .getTotalModules((getJsonField(
+                                        popularCoursesItem,
+                                        r'''$.outlines''',
+                                        true,
+                                      ) as List)
+                                              .map<String>((s) => s.toString())
+                                              .toList()!),
+                                      courseId: getJsonField(
+                                        popularCoursesItem,
+                                        r'''$.courseId''',
+                                      ).toString(),
+                                      course: popularCoursesItem,
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          );
+                        },
                       ),
                     ),
                   ),
@@ -441,6 +651,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                               FlutterFlowTheme.of(context).bodyMedium.override(
                                     fontFamily: 'Readex Pro',
                                     fontSize: 18.0,
+                                    letterSpacing: 0.0,
                                     fontWeight: FontWeight.w600,
                                   ),
                         ),
@@ -454,32 +665,93 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       width: double.infinity,
                       height: 351.0,
                       decoration: BoxDecoration(),
-                      alignment: AlignmentDirectional(-1.00, 0.00),
-                      child: ListView(
-                        padding: EdgeInsets.fromLTRB(
-                          16.0,
-                          0,
-                          16.0,
-                          0,
+                      alignment: AlignmentDirectional(-1.0, 0.0),
+                      child: FutureBuilder<ApiCallResponse>(
+                        future: LXPLearningExperiencePortalGroup
+                            .getAListOfSessionsCall
+                            .call(
+                          lXPAuthToken: currentAuthenticationToken,
+                          lXPAuthDevice: FFAppState().deviceId,
                         ),
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          wrapWithModel(
-                            model: _model.liveSessionLongCardModel1,
-                            updateCallback: () => setState(() {}),
-                            child: LiveSessionLongCardWidget(),
-                          ),
-                          wrapWithModel(
-                            model: _model.liveSessionLongCardModel2,
-                            updateCallback: () => setState(() {}),
-                            child: LiveSessionLongCardWidget(),
-                          ),
-                          wrapWithModel(
-                            model: _model.liveSessionLongCardModel3,
-                            updateCallback: () => setState(() {}),
-                            child: LiveSessionLongCardWidget(),
-                          ),
-                        ].divide(SizedBox(width: 12.0)),
+                        builder: (context, snapshot) {
+                          // Customize what your widget looks like when it's loading.
+                          if (!snapshot.hasData) {
+                            return Center(
+                              child: SizedBox(
+                                width: 60.0,
+                                height: 60.0,
+                                child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    FlutterFlowTheme.of(context).secondaryText,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                          final listViewGetAListOfSessionsResponse =
+                              snapshot.data!;
+
+                          return Builder(
+                            builder: (context) {
+                              final liveSessions = functions
+                                  .getActiveMeetings(
+                                      LXPLearningExperiencePortalGroup
+                                          .getAListOfSessionsCall
+                                          .sessions(
+                                            listViewGetAListOfSessionsResponse
+                                                .jsonBody,
+                                          )!
+                                          .toList())
+                                  .toList();
+                              if (liveSessions.isEmpty) {
+                                return Container(
+                                  width: double.infinity,
+                                  child: NoDataWidget(
+                                    message: 'No Live Seesions available',
+                                  ),
+                                );
+                              }
+
+                              return ListView.separated(
+                                padding: EdgeInsets.fromLTRB(
+                                  16.0,
+                                  0,
+                                  16.0,
+                                  0,
+                                ),
+                                scrollDirection: Axis.horizontal,
+                                itemCount: liveSessions.length,
+                                separatorBuilder: (_, __) =>
+                                    SizedBox(width: 12.0),
+                                itemBuilder: (context, liveSessionsIndex) {
+                                  final liveSessionsItem =
+                                      liveSessions[liveSessionsIndex];
+                                  return wrapWithModel(
+                                    model: _model.liveSessionLongCardModels
+                                        .getModel(
+                                      liveSessionsIndex.toString(),
+                                      liveSessionsIndex,
+                                    ),
+                                    updateCallback: () => setState(() {}),
+                                    child: LiveSessionLongCardWidget(
+                                      key: Key(
+                                        'Keynmz_${liveSessionsIndex.toString()}',
+                                      ),
+                                      title: getJsonField(
+                                        liveSessionsItem,
+                                        r'''$.topic''',
+                                      ).toString(),
+                                      meetingUrl: getJsonField(
+                                        liveSessionsItem,
+                                        r'''$.provider.details.start_url''',
+                                      ).toString(),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          );
+                        },
                       ),
                     ),
                   ),
@@ -488,7 +760,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     thickness: 1.0,
                     color: FlutterFlowTheme.of(context).alternate,
                   ),
-                ],
+                ].addToEnd(SizedBox(height: 58.0)),
               ),
             ),
           ),

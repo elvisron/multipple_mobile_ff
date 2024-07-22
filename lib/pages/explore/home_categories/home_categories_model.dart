@@ -1,73 +1,54 @@
+import '/auth/custom_auth/auth_util.dart';
+import '/backend/api_requests/api_calls.dart';
 import '/components/explore_card_with_module_widget.dart';
-import '/components/live_session_long_card_widget.dart';
+import '/components/explore_feature_widget.dart';
+import '/components/no_data_widget.dart';
 import '/flutter_flow/flutter_flow_choice_chips.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
+import 'home_categories_widget.dart' show HomeCategoriesWidget;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class HomeCategoriesModel extends FlutterFlowModel {
+class HomeCategoriesModel extends FlutterFlowModel<HomeCategoriesWidget> {
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
   // State field(s) for ChoiceChips widget.
-  String? choiceChipsValue;
   FormFieldController<List<String>>? choiceChipsValueController;
+  List<String>? get choiceChipsValues => choiceChipsValueController?.value;
+  set choiceChipsValues(List<String>? val) =>
+      choiceChipsValueController?.value = val;
   // State field(s) for TextField widget.
+  FocusNode? textFieldFocusNode;
   TextEditingController? textController;
   String? Function(BuildContext, String?)? textControllerValidator;
-  // Model for exploreCardWithModule component.
-  late ExploreCardWithModuleModel exploreCardWithModuleModel1;
-  // Model for exploreCardWithModule component.
-  late ExploreCardWithModuleModel exploreCardWithModuleModel2;
-  // Model for exploreCardWithModule component.
-  late ExploreCardWithModuleModel exploreCardWithModuleModel3;
-  // Model for exploreCardWithModule component.
-  late ExploreCardWithModuleModel exploreCardWithModuleModel4;
-  // Model for live_session_long_card component.
-  late LiveSessionLongCardModel liveSessionLongCardModel1;
-  // Model for live_session_long_card component.
-  late LiveSessionLongCardModel liveSessionLongCardModel2;
-  // Model for live_session_long_card component.
-  late LiveSessionLongCardModel liveSessionLongCardModel3;
+  // Model for exploreFeature component.
+  late ExploreFeatureModel exploreFeatureModel;
+  // Models for exploreCardWithModule dynamic component.
+  late FlutterFlowDynamicModels<ExploreCardWithModuleModel>
+      exploreCardWithModuleModels;
 
-  /// Initialization and disposal methods.
-
+  @override
   void initState(BuildContext context) {
-    exploreCardWithModuleModel1 =
-        createModel(context, () => ExploreCardWithModuleModel());
-    exploreCardWithModuleModel2 =
-        createModel(context, () => ExploreCardWithModuleModel());
-    exploreCardWithModuleModel3 =
-        createModel(context, () => ExploreCardWithModuleModel());
-    exploreCardWithModuleModel4 =
-        createModel(context, () => ExploreCardWithModuleModel());
-    liveSessionLongCardModel1 =
-        createModel(context, () => LiveSessionLongCardModel());
-    liveSessionLongCardModel2 =
-        createModel(context, () => LiveSessionLongCardModel());
-    liveSessionLongCardModel3 =
-        createModel(context, () => LiveSessionLongCardModel());
+    exploreFeatureModel = createModel(context, () => ExploreFeatureModel());
+    exploreCardWithModuleModels =
+        FlutterFlowDynamicModels(() => ExploreCardWithModuleModel());
   }
 
+  @override
   void dispose() {
     unfocusNode.dispose();
+    textFieldFocusNode?.dispose();
     textController?.dispose();
-    exploreCardWithModuleModel1.dispose();
-    exploreCardWithModuleModel2.dispose();
-    exploreCardWithModuleModel3.dispose();
-    exploreCardWithModuleModel4.dispose();
-    liveSessionLongCardModel1.dispose();
-    liveSessionLongCardModel2.dispose();
-    liveSessionLongCardModel3.dispose();
+
+    exploreFeatureModel.dispose();
+    exploreCardWithModuleModels.dispose();
   }
-
-  /// Action blocks are added here.
-
-  /// Additional helper methods are added here.
 }

@@ -8,10 +8,10 @@ import 'explore_feature_model.dart';
 export 'explore_feature_model.dart';
 
 class ExploreFeatureWidget extends StatefulWidget {
-  const ExploreFeatureWidget({Key? key}) : super(key: key);
+  const ExploreFeatureWidget({super.key});
 
   @override
-  _ExploreFeatureWidgetState createState() => _ExploreFeatureWidgetState();
+  State<ExploreFeatureWidget> createState() => _ExploreFeatureWidgetState();
 }
 
 class _ExploreFeatureWidgetState extends State<ExploreFeatureWidget> {
@@ -38,8 +38,6 @@ class _ExploreFeatureWidgetState extends State<ExploreFeatureWidget> {
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return Padding(
       padding: EdgeInsetsDirectional.fromSTEB(16.0, 20.0, 16.0, 20.0),
       child: Container(
@@ -80,6 +78,7 @@ class _ExploreFeatureWidgetState extends State<ExploreFeatureWidget> {
                                   fontFamily: 'Outfit',
                                   color: Colors.white,
                                   fontSize: 24.0,
+                                  letterSpacing: 0.0,
                                   fontWeight: FontWeight.w300,
                                   lineHeight: 1.0,
                                 ),
@@ -95,8 +94,8 @@ class _ExploreFeatureWidgetState extends State<ExploreFeatureWidget> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           FFButtonWidget(
-                            onPressed: () {
-                              print('Button pressed ...');
+                            onPressed: () async {
+                              context.pushNamed('homeCategories');
                             },
                             text: 'Explore Now',
                             options: FFButtonOptions(
@@ -112,6 +111,7 @@ class _ExploreFeatureWidgetState extends State<ExploreFeatureWidget> {
                                     fontFamily: 'Readex Pro',
                                     color: Colors.white,
                                     fontSize: 14.0,
+                                    letterSpacing: 0.0,
                                   ),
                               borderSide: BorderSide(
                                 color: Colors.transparent,

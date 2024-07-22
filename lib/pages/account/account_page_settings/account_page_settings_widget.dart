@@ -11,10 +11,10 @@ import 'account_page_settings_model.dart';
 export 'account_page_settings_model.dart';
 
 class AccountPageSettingsWidget extends StatefulWidget {
-  const AccountPageSettingsWidget({Key? key}) : super(key: key);
+  const AccountPageSettingsWidget({super.key});
 
   @override
-  _AccountPageSettingsWidgetState createState() =>
+  State<AccountPageSettingsWidget> createState() =>
       _AccountPageSettingsWidgetState();
 }
 
@@ -27,6 +27,9 @@ class _AccountPageSettingsWidgetState extends State<AccountPageSettingsWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => AccountPageSettingsModel());
+
+    _model.switchValue1 = true;
+    _model.switchValue2 = true;
   }
 
   @override
@@ -38,10 +41,10 @@ class _AccountPageSettingsWidgetState extends State<AccountPageSettingsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
+      onTap: () => _model.unfocusNode.canRequestFocus
+          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+          : FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
@@ -67,6 +70,7 @@ class _AccountPageSettingsWidgetState extends State<AccountPageSettingsWidget> {
             style: FlutterFlowTheme.of(context).headlineMedium.override(
                   fontFamily: 'Outfit',
                   fontSize: 21.0,
+                  letterSpacing: 0.0,
                 ),
           ),
           actions: [],
@@ -121,6 +125,7 @@ class _AccountPageSettingsWidgetState extends State<AccountPageSettingsWidget> {
                                   .override(
                                     fontFamily: 'Readex Pro',
                                     fontSize: 18.0,
+                                    letterSpacing: 0.0,
                                     fontWeight: FontWeight.w600,
                                   ),
                             ),
@@ -150,14 +155,15 @@ class _AccountPageSettingsWidgetState extends State<AccountPageSettingsWidget> {
                                       color: FlutterFlowTheme.of(context)
                                           .secondaryText,
                                       fontSize: 16.0,
+                                      letterSpacing: 0.0,
                                     ),
                               ),
                             ),
                             Flexible(
                               child: Align(
-                                alignment: AlignmentDirectional(1.00, 0.00),
+                                alignment: AlignmentDirectional(1.0, 0.0),
                                 child: Switch.adaptive(
-                                  value: _model.switchValue1 ??= true,
+                                  value: _model.switchValue1!,
                                   onChanged: (newValue) async {
                                     setState(
                                         () => _model.switchValue1 = newValue!);
@@ -200,6 +206,7 @@ class _AccountPageSettingsWidgetState extends State<AccountPageSettingsWidget> {
                                       color: FlutterFlowTheme.of(context)
                                           .secondaryText,
                                       fontSize: 16.0,
+                                      letterSpacing: 0.0,
                                     ),
                               ),
                             ),
@@ -229,6 +236,7 @@ class _AccountPageSettingsWidgetState extends State<AccountPageSettingsWidget> {
                                       color: FlutterFlowTheme.of(context)
                                           .secondaryText,
                                       fontSize: 16.0,
+                                      letterSpacing: 0.0,
                                     ),
                               ),
                             ),
@@ -258,14 +266,15 @@ class _AccountPageSettingsWidgetState extends State<AccountPageSettingsWidget> {
                                       color: FlutterFlowTheme.of(context)
                                           .secondaryText,
                                       fontSize: 16.0,
+                                      letterSpacing: 0.0,
                                     ),
                               ),
                             ),
                             Flexible(
                               child: Align(
-                                alignment: AlignmentDirectional(1.00, 0.00),
+                                alignment: AlignmentDirectional(1.0, 0.0),
                                 child: Switch.adaptive(
-                                  value: _model.switchValue2 ??= true,
+                                  value: _model.switchValue2!,
                                   onChanged: (newValue) async {
                                     setState(
                                         () => _model.switchValue2 = newValue!);
@@ -335,6 +344,7 @@ class _AccountPageSettingsWidgetState extends State<AccountPageSettingsWidget> {
                                   .override(
                                     fontFamily: 'Readex Pro',
                                     fontSize: 18.0,
+                                    letterSpacing: 0.0,
                                     fontWeight: FontWeight.w600,
                                   ),
                             ),
@@ -364,6 +374,7 @@ class _AccountPageSettingsWidgetState extends State<AccountPageSettingsWidget> {
                                       color: FlutterFlowTheme.of(context)
                                           .secondaryText,
                                       fontSize: 16.0,
+                                      letterSpacing: 0.0,
                                     ),
                               ),
                             ),
@@ -393,6 +404,7 @@ class _AccountPageSettingsWidgetState extends State<AccountPageSettingsWidget> {
                                       color: FlutterFlowTheme.of(context)
                                           .secondaryText,
                                       fontSize: 16.0,
+                                      letterSpacing: 0.0,
                                     ),
                               ),
                             ),
@@ -422,6 +434,7 @@ class _AccountPageSettingsWidgetState extends State<AccountPageSettingsWidget> {
                                       color: FlutterFlowTheme.of(context)
                                           .secondaryText,
                                       fontSize: 16.0,
+                                      letterSpacing: 0.0,
                                     ),
                               ),
                             ),
@@ -451,6 +464,7 @@ class _AccountPageSettingsWidgetState extends State<AccountPageSettingsWidget> {
                                       color: FlutterFlowTheme.of(context)
                                           .secondaryText,
                                       fontSize: 16.0,
+                                      letterSpacing: 0.0,
                                     ),
                               ),
                             ),

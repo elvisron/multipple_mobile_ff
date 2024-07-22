@@ -1,12 +1,16 @@
+import '/auth/custom_auth/auth_util.dart';
+import '/backend/api_requests/api_calls.dart';
 import '/components/explore_feature_widget.dart';
 import '/components/happening_card_widget.dart';
 import '/components/live_session_long_card_widget.dart';
+import '/components/no_data_widget.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -15,10 +19,10 @@ import 'live_session_page_model.dart';
 export 'live_session_page_model.dart';
 
 class LiveSessionPageWidget extends StatefulWidget {
-  const LiveSessionPageWidget({Key? key}) : super(key: key);
+  const LiveSessionPageWidget({super.key});
 
   @override
-  _LiveSessionPageWidgetState createState() => _LiveSessionPageWidgetState();
+  State<LiveSessionPageWidget> createState() => _LiveSessionPageWidgetState();
 }
 
 class _LiveSessionPageWidgetState extends State<LiveSessionPageWidget> {
@@ -44,7 +48,9 @@ class _LiveSessionPageWidgetState extends State<LiveSessionPageWidget> {
     context.watch<FFAppState>();
 
     return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
+      onTap: () => _model.unfocusNode.canRequestFocus
+          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+          : FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
@@ -70,6 +76,7 @@ class _LiveSessionPageWidgetState extends State<LiveSessionPageWidget> {
             style: FlutterFlowTheme.of(context).headlineMedium.override(
                   fontFamily: 'Outfit',
                   fontSize: 21.0,
+                  letterSpacing: 0.0,
                 ),
           ),
           actions: [],
@@ -102,6 +109,7 @@ class _LiveSessionPageWidgetState extends State<LiveSessionPageWidget> {
                               FlutterFlowTheme.of(context).bodyMedium.override(
                                     fontFamily: 'Readex Pro',
                                     fontSize: 18.0,
+                                    letterSpacing: 0.0,
                                     fontWeight: FontWeight.w600,
                                   ),
                         ),
@@ -113,31 +121,95 @@ class _LiveSessionPageWidgetState extends State<LiveSessionPageWidget> {
                         EdgeInsetsDirectional.fromSTEB(0.0, 15.0, 0.0, 0.0),
                     child: Container(
                       width: double.infinity,
-                      height: 148.0,
+                      height: 168.0,
                       decoration: BoxDecoration(
                         color: FlutterFlowTheme.of(context).primaryBackground,
                       ),
-                      alignment: AlignmentDirectional(-1.00, 0.00),
-                      child: ListView(
-                        padding: EdgeInsets.fromLTRB(
-                          16.0,
-                          0,
-                          16.0,
-                          0,
+                      alignment: AlignmentDirectional(-1.0, 0.0),
+                      child: FutureBuilder<ApiCallResponse>(
+                        future: LXPLearningExperiencePortalGroup
+                            .getAListOfSessionsCall
+                            .call(
+                          lXPAuthToken: currentAuthenticationToken,
+                          lXPAuthDevice: FFAppState().deviceId,
                         ),
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          wrapWithModel(
-                            model: _model.happeningCardModel1,
-                            updateCallback: () => setState(() {}),
-                            child: HappeningCardWidget(),
-                          ),
-                          wrapWithModel(
-                            model: _model.happeningCardModel2,
-                            updateCallback: () => setState(() {}),
-                            child: HappeningCardWidget(),
-                          ),
-                        ].divide(SizedBox(width: 12.0)),
+                        builder: (context, snapshot) {
+                          // Customize what your widget looks like when it's loading.
+                          if (!snapshot.hasData) {
+                            return Center(
+                              child: SizedBox(
+                                width: 60.0,
+                                height: 60.0,
+                                child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    FlutterFlowTheme.of(context).secondaryText,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                          final listViewGetAListOfSessionsResponse =
+                              snapshot.data!;
+
+                          return Builder(
+                            builder: (context) {
+                              final liveSessions =
+                                  LXPLearningExperiencePortalGroup
+                                          .getAListOfSessionsCall
+                                          .sessions(
+                                            listViewGetAListOfSessionsResponse
+                                                .jsonBody,
+                                          )
+                                          ?.toList() ??
+                                      [];
+                              if (liveSessions.isEmpty) {
+                                return Container(
+                                  width: double.infinity,
+                                  child: NoDataWidget(
+                                    message: 'No Live Sessions Happening',
+                                  ),
+                                );
+                              }
+
+                              return ListView.separated(
+                                padding: EdgeInsets.fromLTRB(
+                                  16.0,
+                                  0,
+                                  16.0,
+                                  0,
+                                ),
+                                scrollDirection: Axis.horizontal,
+                                itemCount: liveSessions.length,
+                                separatorBuilder: (_, __) =>
+                                    SizedBox(width: 12.0),
+                                itemBuilder: (context, liveSessionsIndex) {
+                                  final liveSessionsItem =
+                                      liveSessions[liveSessionsIndex];
+                                  return wrapWithModel(
+                                    model: _model.happeningCardModels1.getModel(
+                                      liveSessionsIndex.toString(),
+                                      liveSessionsIndex,
+                                    ),
+                                    updateCallback: () => setState(() {}),
+                                    child: HappeningCardWidget(
+                                      key: Key(
+                                        'Keyfja_${liveSessionsIndex.toString()}',
+                                      ),
+                                      topic: getJsonField(
+                                        liveSessionsItem,
+                                        r'''$.topic''',
+                                      ).toString(),
+                                      meetingUrl: getJsonField(
+                                        liveSessionsItem,
+                                        r'''$.provider.details.start_url''',
+                                      ).toString(),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          );
+                        },
                       ),
                     ),
                   ),
@@ -153,6 +225,7 @@ class _LiveSessionPageWidgetState extends State<LiveSessionPageWidget> {
                               FlutterFlowTheme.of(context).bodyMedium.override(
                                     fontFamily: 'Readex Pro',
                                     fontSize: 18.0,
+                                    letterSpacing: 0.0,
                                     fontWeight: FontWeight.w600,
                                   ),
                         ),
@@ -166,77 +239,101 @@ class _LiveSessionPageWidgetState extends State<LiveSessionPageWidget> {
                       width: double.infinity,
                       height: 54.0,
                       decoration: BoxDecoration(),
-                      alignment: AlignmentDirectional(-1.00, 0.00),
-                      child: ListView(
-                        padding: EdgeInsets.fromLTRB(
-                          16.0,
-                          0,
-                          16.0,
-                          0,
+                      alignment: AlignmentDirectional(-1.0, 0.0),
+                      child: FutureBuilder<ApiCallResponse>(
+                        future: LXPLearningExperiencePortalGroup
+                            .getAListOfSessionsCall
+                            .call(
+                          lXPAuthToken: currentAuthenticationToken,
+                          lXPAuthDevice: FFAppState().deviceId,
                         ),
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          FFButtonWidget(
-                            onPressed: () {
-                              print('Button pressed ...');
-                            },
-                            text: 'Python',
-                            icon: FaIcon(
-                              FontAwesomeIcons.solidPlayCircle,
-                              size: 35.0,
-                            ),
-                            options: FFButtonOptions(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  24.0, 2.0, 24.0, 8.0),
-                              iconPadding: EdgeInsetsDirectional.fromSTEB(
-                                  7.0, 7.0, 7.0, 7.0),
-                              color: FlutterFlowTheme.of(context).tertiary,
-                              textStyle: FlutterFlowTheme.of(context)
-                                  .titleSmall
-                                  .override(
-                                    fontFamily: 'Readex Pro',
-                                    color: Colors.white,
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.normal,
+                        builder: (context, snapshot) {
+                          // Customize what your widget looks like when it's loading.
+                          if (!snapshot.hasData) {
+                            return Center(
+                              child: SizedBox(
+                                width: 60.0,
+                                height: 60.0,
+                                child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    FlutterFlowTheme.of(context).secondaryText,
                                   ),
-                              borderSide: BorderSide(
-                                color: Colors.transparent,
-                                width: 0.0,
+                                ),
                               ),
-                              borderRadius: BorderRadius.circular(50.0),
-                            ),
-                          ),
-                          FFButtonWidget(
-                            onPressed: () {
-                              print('Button pressed ...');
+                            );
+                          }
+                          final listViewGetAListOfSessionsResponse =
+                              snapshot.data!;
+
+                          return Builder(
+                            builder: (context) {
+                              final topSessions = functions
+                                  .getActiveMeetings(
+                                      LXPLearningExperiencePortalGroup
+                                          .getAListOfSessionsCall
+                                          .sessions(
+                                            listViewGetAListOfSessionsResponse
+                                                .jsonBody,
+                                          )!
+                                          .toList())
+                                  .toList();
+
+                              return ListView.separated(
+                                padding: EdgeInsets.fromLTRB(
+                                  16.0,
+                                  0,
+                                  16.0,
+                                  0,
+                                ),
+                                scrollDirection: Axis.horizontal,
+                                itemCount: topSessions.length,
+                                separatorBuilder: (_, __) =>
+                                    SizedBox(width: 12.0),
+                                itemBuilder: (context, topSessionsIndex) {
+                                  final topSessionsItem =
+                                      topSessions[topSessionsIndex];
+                                  return FFButtonWidget(
+                                    onPressed: () async {
+                                      await launchURL(getJsonField(
+                                        topSessionsItem,
+                                        r'''$.provider.details.start_url''',
+                                      ).toString());
+                                    },
+                                    text: getJsonField(
+                                      topSessionsItem,
+                                      r'''$.topic''',
+                                    ).toString(),
+                                    icon: FaIcon(
+                                      FontAwesomeIcons.solidPlayCircle,
+                                      size: 35.0,
+                                    ),
+                                    options: FFButtonOptions(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          24.0, 2.0, 24.0, 8.0),
+                                      iconPadding: EdgeInsets.all(7.0),
+                                      color:
+                                          FlutterFlowTheme.of(context).tertiary,
+                                      textStyle: FlutterFlowTheme.of(context)
+                                          .titleSmall
+                                          .override(
+                                            fontFamily: 'Readex Pro',
+                                            color: Colors.white,
+                                            fontSize: 16.0,
+                                            letterSpacing: 0.0,
+                                            fontWeight: FontWeight.normal,
+                                          ),
+                                      borderSide: BorderSide(
+                                        color: Colors.transparent,
+                                        width: 0.0,
+                                      ),
+                                      borderRadius: BorderRadius.circular(50.0),
+                                    ),
+                                  );
+                                },
+                              );
                             },
-                            text: 'UX Design',
-                            icon: FaIcon(
-                              FontAwesomeIcons.solidPlayCircle,
-                              size: 35.0,
-                            ),
-                            options: FFButtonOptions(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  24.0, 2.0, 24.0, 8.0),
-                              iconPadding: EdgeInsetsDirectional.fromSTEB(
-                                  7.0, 7.0, 7.0, 7.0),
-                              color: FlutterFlowTheme.of(context).tertiary,
-                              textStyle: FlutterFlowTheme.of(context)
-                                  .titleSmall
-                                  .override(
-                                    fontFamily: 'Readex Pro',
-                                    color: Colors.white,
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                              borderSide: BorderSide(
-                                color: Colors.transparent,
-                                width: 0.0,
-                              ),
-                              borderRadius: BorderRadius.circular(50.0),
-                            ),
-                          ),
-                        ].divide(SizedBox(width: 12.0)),
+                          );
+                        },
                       ),
                     ),
                   ),
@@ -252,12 +349,13 @@ class _LiveSessionPageWidgetState extends State<LiveSessionPageWidget> {
                               FlutterFlowTheme.of(context).bodyMedium.override(
                                     fontFamily: 'Readex Pro',
                                     fontSize: 18.0,
+                                    letterSpacing: 0.0,
                                     fontWeight: FontWeight.w600,
                                   ),
                         ),
                         Flexible(
                           child: Align(
-                            alignment: AlignmentDirectional(1.00, 0.00),
+                            alignment: AlignmentDirectional(1.0, 0.0),
                             child: FlutterFlowDropDown<String>(
                               controller: _model.dropDownValueController ??=
                                   FormFieldController<String>(
@@ -268,8 +366,12 @@ class _LiveSessionPageWidgetState extends State<LiveSessionPageWidget> {
                                   setState(() => _model.dropDownValue = val),
                               width: 100.0,
                               height: 33.0,
-                              textStyle:
-                                  FlutterFlowTheme.of(context).bodyMedium,
+                              textStyle: FlutterFlowTheme.of(context)
+                                  .bodyMedium
+                                  .override(
+                                    fontFamily: 'Readex Pro',
+                                    letterSpacing: 0.0,
+                                  ),
                               hintText: 'Sort',
                               icon: Icon(
                                 Icons.keyboard_arrow_down_rounded,
@@ -301,32 +403,92 @@ class _LiveSessionPageWidgetState extends State<LiveSessionPageWidget> {
                       width: double.infinity,
                       height: 351.0,
                       decoration: BoxDecoration(),
-                      alignment: AlignmentDirectional(-1.00, 0.00),
-                      child: ListView(
-                        padding: EdgeInsets.fromLTRB(
-                          16.0,
-                          0,
-                          16.0,
-                          0,
+                      alignment: AlignmentDirectional(-1.0, 0.0),
+                      child: FutureBuilder<ApiCallResponse>(
+                        future: LXPLearningExperiencePortalGroup
+                            .getAListOfSessionsCall
+                            .call(
+                          lXPAuthToken: currentAuthenticationToken,
+                          lXPAuthDevice: FFAppState().deviceId,
                         ),
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          wrapWithModel(
-                            model: _model.liveSessionLongCardModel1,
-                            updateCallback: () => setState(() {}),
-                            child: LiveSessionLongCardWidget(),
-                          ),
-                          wrapWithModel(
-                            model: _model.liveSessionLongCardModel2,
-                            updateCallback: () => setState(() {}),
-                            child: LiveSessionLongCardWidget(),
-                          ),
-                          wrapWithModel(
-                            model: _model.liveSessionLongCardModel3,
-                            updateCallback: () => setState(() {}),
-                            child: LiveSessionLongCardWidget(),
-                          ),
-                        ].divide(SizedBox(width: 12.0)),
+                        builder: (context, snapshot) {
+                          // Customize what your widget looks like when it's loading.
+                          if (!snapshot.hasData) {
+                            return Center(
+                              child: SizedBox(
+                                width: 60.0,
+                                height: 60.0,
+                                child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    FlutterFlowTheme.of(context).secondaryText,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                          final listViewGetAListOfSessionsResponse =
+                              snapshot.data!;
+
+                          return Builder(
+                            builder: (context) {
+                              final sessions = functions
+                                  .getActiveMeetings(
+                                      LXPLearningExperiencePortalGroup
+                                          .getAListOfSessionsCall
+                                          .sessions(
+                                            listViewGetAListOfSessionsResponse
+                                                .jsonBody,
+                                          )!
+                                          .toList())
+                                  .toList();
+                              if (sessions.isEmpty) {
+                                return Container(
+                                  width: double.infinity,
+                                  child: NoDataWidget(
+                                    message: 'No Live Sessions ',
+                                  ),
+                                );
+                              }
+
+                              return ListView.separated(
+                                padding: EdgeInsets.fromLTRB(
+                                  16.0,
+                                  0,
+                                  16.0,
+                                  0,
+                                ),
+                                scrollDirection: Axis.horizontal,
+                                itemCount: sessions.length,
+                                separatorBuilder: (_, __) =>
+                                    SizedBox(width: 12.0),
+                                itemBuilder: (context, sessionsIndex) {
+                                  final sessionsItem = sessions[sessionsIndex];
+                                  return wrapWithModel(
+                                    model: _model.liveSessionLongCardModels1
+                                        .getModel(
+                                      sessionsIndex.toString(),
+                                      sessionsIndex,
+                                    ),
+                                    updateCallback: () => setState(() {}),
+                                    child: LiveSessionLongCardWidget(
+                                      key: Key(
+                                        'Key1po_${sessionsIndex.toString()}',
+                                      ),
+                                      title: getJsonField(
+                                        sessionsItem,
+                                        r'''$.topic''',
+                                      ).toString(),
+                                      meetingUrl: getJsonField(
+                                        sessionsItem,
+                                        r'''$.provider.details.start_url''',
+                                      ).toString(),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          );
+                        },
                       ),
                     ),
                   ),
@@ -335,7 +497,7 @@ class _LiveSessionPageWidgetState extends State<LiveSessionPageWidget> {
                     thickness: 1.0,
                     color: FlutterFlowTheme.of(context).alternate,
                   ),
-                ],
+                ].addToEnd(SizedBox(height: 58.0)),
               ),
             ),
           ),

@@ -8,10 +8,10 @@ import 'learn_course_hero_model.dart';
 export 'learn_course_hero_model.dart';
 
 class LearnCourseHeroWidget extends StatefulWidget {
-  const LearnCourseHeroWidget({Key? key}) : super(key: key);
+  const LearnCourseHeroWidget({super.key});
 
   @override
-  _LearnCourseHeroWidgetState createState() => _LearnCourseHeroWidgetState();
+  State<LearnCourseHeroWidget> createState() => _LearnCourseHeroWidgetState();
 }
 
 class _LearnCourseHeroWidgetState extends State<LearnCourseHeroWidget> {
@@ -38,8 +38,6 @@ class _LearnCourseHeroWidgetState extends State<LearnCourseHeroWidget> {
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
@@ -79,6 +77,7 @@ class _LearnCourseHeroWidgetState extends State<LearnCourseHeroWidget> {
                                   fontFamily: 'Outfit',
                                   color: Colors.white,
                                   fontSize: 24.0,
+                                  letterSpacing: 0.0,
                                   fontWeight: FontWeight.normal,
                                   lineHeight: 1.0,
                                 ),
@@ -110,6 +109,7 @@ class _LearnCourseHeroWidgetState extends State<LearnCourseHeroWidget> {
                                   .override(
                                     fontFamily: 'Readex Pro',
                                     color: FlutterFlowTheme.of(context).warning,
+                                    letterSpacing: 0.0,
                                   ),
                             ),
                           ),

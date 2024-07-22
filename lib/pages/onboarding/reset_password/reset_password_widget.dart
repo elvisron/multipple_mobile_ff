@@ -1,3 +1,5 @@
+import '/auth/custom_auth/auth_util.dart';
+import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -11,10 +13,10 @@ import 'reset_password_model.dart';
 export 'reset_password_model.dart';
 
 class ResetPasswordWidget extends StatefulWidget {
-  const ResetPasswordWidget({Key? key}) : super(key: key);
+  const ResetPasswordWidget({super.key});
 
   @override
-  _ResetPasswordWidgetState createState() => _ResetPasswordWidgetState();
+  State<ResetPasswordWidget> createState() => _ResetPasswordWidgetState();
 }
 
 class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
@@ -38,9 +40,14 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
       });
     }
 
-    _model.textController1 ??= TextEditingController();
-    _model.textController2 ??= TextEditingController();
-    _model.textController3 ??= TextEditingController();
+    _model.codeTextController ??= TextEditingController();
+    _model.codeFocusNode ??= FocusNode();
+
+    _model.passwordTextController ??= TextEditingController();
+    _model.passwordFocusNode ??= FocusNode();
+
+    _model.confirmPasswordTextController ??= TextEditingController();
+    _model.confirmPasswordFocusNode ??= FocusNode();
   }
 
   @override
@@ -55,10 +62,10 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
+      onTap: () => _model.unfocusNode.canRequestFocus
+          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+          : FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: Colors.white,
@@ -86,7 +93,7 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
         body: SafeArea(
           top: true,
           child: Align(
-            alignment: AlignmentDirectional(0.00, 0.00),
+            alignment: AlignmentDirectional(0.0, 0.0),
             child: Container(
               width: double.infinity,
               constraints: BoxConstraints(
@@ -120,6 +127,7 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
                                       fontFamily: 'Urbanist',
                                       color: Color(0xFF101213),
                                       fontSize: 38.0,
+                                      letterSpacing: 0.0,
                                       fontWeight: FontWeight.bold,
                                     ),
                               ),
@@ -136,6 +144,7 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
                                       fontFamily: 'Plus Jakarta Sans',
                                       color: Color(0xFF57636C),
                                       fontSize: 16.0,
+                                      letterSpacing: 0.0,
                                       fontWeight: FontWeight.w500,
                                     ),
                               ),
@@ -144,7 +153,9 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
                               padding: EdgeInsetsDirectional.fromSTEB(
                                   16.0, 12.0, 16.0, 0.0),
                               child: TextFormField(
-                                controller: _model.textController1,
+                                controller: _model.codeTextController,
+                                focusNode: _model.codeFocusNode,
+                                autofocus: false,
                                 obscureText: false,
                                 decoration: InputDecoration(
                                   labelText: 'Enter Code',
@@ -154,6 +165,7 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
                                         fontFamily: 'Plus Jakarta Sans',
                                         color: Color(0xFF57636C),
                                         fontSize: 16.0,
+                                        letterSpacing: 0.0,
                                         fontWeight: FontWeight.w500,
                                       ),
                                   enabledBorder: UnderlineInputBorder(
@@ -208,10 +220,11 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
                                       fontFamily: 'Plus Jakarta Sans',
                                       color: Color(0xFF101213),
                                       fontSize: 16.0,
+                                      letterSpacing: 0.0,
                                       fontWeight: FontWeight.w500,
                                       lineHeight: 3.0,
                                     ),
-                                validator: _model.textController1Validator
+                                validator: _model.codeTextControllerValidator
                                     .asValidator(context),
                               ),
                             ),
@@ -219,9 +232,11 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
                               padding: EdgeInsetsDirectional.fromSTEB(
                                   16.0, 12.0, 16.0, 0.0),
                               child: TextFormField(
-                                controller: _model.textController2,
+                                controller: _model.passwordTextController,
+                                focusNode: _model.passwordFocusNode,
+                                autofocus: false,
                                 textCapitalization: TextCapitalization.none,
-                                obscureText: !_model.passwordVisibility1,
+                                obscureText: !_model.passwordVisibility,
                                 decoration: InputDecoration(
                                   labelText: 'New Password',
                                   labelStyle: FlutterFlowTheme.of(context)
@@ -230,6 +245,7 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
                                         fontFamily: 'Plus Jakarta Sans',
                                         color: Color(0xFF57636C),
                                         fontSize: 16.0,
+                                        letterSpacing: 0.0,
                                         fontWeight: FontWeight.w500,
                                       ),
                                   enabledBorder: UnderlineInputBorder(
@@ -279,12 +295,12 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
                                           0.0, 16.0, 16.0, 8.0),
                                   suffixIcon: InkWell(
                                     onTap: () => setState(
-                                      () => _model.passwordVisibility1 =
-                                          !_model.passwordVisibility1,
+                                      () => _model.passwordVisibility =
+                                          !_model.passwordVisibility,
                                     ),
                                     focusNode: FocusNode(skipTraversal: true),
                                     child: Icon(
-                                      _model.passwordVisibility1
+                                      _model.passwordVisibility
                                           ? Icons.visibility_outlined
                                           : Icons.visibility_off_outlined,
                                       color: Color(0xFF101213),
@@ -298,10 +314,12 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
                                       fontFamily: 'Plus Jakarta Sans',
                                       color: Color(0xFF101213),
                                       fontSize: 16.0,
+                                      letterSpacing: 0.0,
                                       fontWeight: FontWeight.w500,
                                       lineHeight: 3.0,
                                     ),
-                                validator: _model.textController2Validator
+                                validator: _model
+                                    .passwordTextControllerValidator
                                     .asValidator(context),
                               ),
                             ),
@@ -309,9 +327,12 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
                               padding: EdgeInsetsDirectional.fromSTEB(
                                   16.0, 12.0, 16.0, 0.0),
                               child: TextFormField(
-                                controller: _model.textController3,
+                                controller:
+                                    _model.confirmPasswordTextController,
+                                focusNode: _model.confirmPasswordFocusNode,
+                                autofocus: false,
                                 textCapitalization: TextCapitalization.none,
-                                obscureText: !_model.passwordVisibility2,
+                                obscureText: !_model.confirmPasswordVisibility,
                                 decoration: InputDecoration(
                                   labelText: 'Re-enter Password',
                                   labelStyle: FlutterFlowTheme.of(context)
@@ -320,6 +341,7 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
                                         fontFamily: 'Plus Jakarta Sans',
                                         color: Color(0xFF57636C),
                                         fontSize: 16.0,
+                                        letterSpacing: 0.0,
                                         fontWeight: FontWeight.w500,
                                       ),
                                   enabledBorder: UnderlineInputBorder(
@@ -369,12 +391,12 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
                                           0.0, 16.0, 16.0, 8.0),
                                   suffixIcon: InkWell(
                                     onTap: () => setState(
-                                      () => _model.passwordVisibility2 =
-                                          !_model.passwordVisibility2,
+                                      () => _model.confirmPasswordVisibility =
+                                          !_model.confirmPasswordVisibility,
                                     ),
                                     focusNode: FocusNode(skipTraversal: true),
                                     child: Icon(
-                                      _model.passwordVisibility2
+                                      _model.confirmPasswordVisibility
                                           ? Icons.visibility_outlined
                                           : Icons.visibility_off_outlined,
                                       color: Color(0xFF101213),
@@ -388,10 +410,12 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
                                       fontFamily: 'Plus Jakarta Sans',
                                       color: Color(0xFF101213),
                                       fontSize: 16.0,
+                                      letterSpacing: 0.0,
                                       fontWeight: FontWeight.w500,
                                       lineHeight: 3.0,
                                     ),
-                                validator: _model.textController3Validator
+                                validator: _model
+                                    .confirmPasswordTextControllerValidator
                                     .asValidator(context),
                               ),
                             ),
@@ -407,8 +431,20 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
                       padding: EdgeInsetsDirectional.fromSTEB(
                           16.0, 12.0, 16.0, 24.0),
                       child: FFButtonWidget(
-                        onPressed: () {
-                          print('Button pressed ...');
+                        onPressed: () async {
+                          _model.apiResult817 =
+                              await APSAuthenticationProcessingServiceGroup
+                                  .resetANewPasswordCall
+                                  .call(
+                            password: _model.passwordTextController.text,
+                            mPAuthToken: currentAuthenticationToken,
+                          );
+
+                          if ((_model.apiResult817?.succeeded ?? true)) {
+                            context.pushNamed('Login');
+                          }
+
+                          setState(() {});
                         },
                         text: 'Continue',
                         options: FFButtonOptions(
@@ -424,6 +460,7 @@ class _ResetPasswordWidgetState extends State<ResetPasswordWidget> {
                                     fontFamily: 'Plus Jakarta Sans',
                                     color: Colors.white,
                                     fontSize: 18.0,
+                                    letterSpacing: 0.0,
                                     fontWeight: FontWeight.w500,
                                   ),
                           elevation: 4.0,

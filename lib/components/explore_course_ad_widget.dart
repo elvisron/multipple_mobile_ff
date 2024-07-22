@@ -8,10 +8,10 @@ import 'explore_course_ad_model.dart';
 export 'explore_course_ad_model.dart';
 
 class ExploreCourseAdWidget extends StatefulWidget {
-  const ExploreCourseAdWidget({Key? key}) : super(key: key);
+  const ExploreCourseAdWidget({super.key});
 
   @override
-  _ExploreCourseAdWidgetState createState() => _ExploreCourseAdWidgetState();
+  State<ExploreCourseAdWidget> createState() => _ExploreCourseAdWidgetState();
 }
 
 class _ExploreCourseAdWidgetState extends State<ExploreCourseAdWidget> {
@@ -38,8 +38,6 @@ class _ExploreCourseAdWidgetState extends State<ExploreCourseAdWidget> {
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return Container(
       width: 100.0,
       height: 140.0,
@@ -54,7 +52,7 @@ class _ExploreCourseAdWidgetState extends State<ExploreCourseAdWidget> {
         borderRadius: BorderRadius.circular(25.0),
         shape: BoxShape.rectangle,
       ),
-      alignment: AlignmentDirectional(-1.00, 0.00),
+      alignment: AlignmentDirectional(-1.0, 0.0),
       child: Column(
         mainAxisSize: MainAxisSize.max,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -68,6 +66,7 @@ class _ExploreCourseAdWidgetState extends State<ExploreCourseAdWidget> {
                     fontFamily: 'Readex Pro',
                     color: Colors.white,
                     fontSize: 16.0,
+                    letterSpacing: 0.0,
                   ),
             ),
           ),
@@ -87,6 +86,7 @@ class _ExploreCourseAdWidgetState extends State<ExploreCourseAdWidget> {
                       fontFamily: 'Readex Pro',
                       color: Colors.white,
                       fontSize: 14.0,
+                      letterSpacing: 0.0,
                     ),
                 elevation: 3.0,
                 borderSide: BorderSide(

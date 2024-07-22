@@ -7,10 +7,10 @@ import 'audio_list_ongoing_model.dart';
 export 'audio_list_ongoing_model.dart';
 
 class AudioListOngoingWidget extends StatefulWidget {
-  const AudioListOngoingWidget({Key? key}) : super(key: key);
+  const AudioListOngoingWidget({super.key});
 
   @override
-  _AudioListOngoingWidgetState createState() => _AudioListOngoingWidgetState();
+  State<AudioListOngoingWidget> createState() => _AudioListOngoingWidgetState();
 }
 
 class _AudioListOngoingWidgetState extends State<AudioListOngoingWidget> {
@@ -37,10 +37,8 @@ class _AudioListOngoingWidgetState extends State<AudioListOngoingWidget> {
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return Align(
-      alignment: AlignmentDirectional(0.00, 0.00),
+      alignment: AlignmentDirectional(0.0, 0.0),
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
@@ -65,7 +63,7 @@ class _AudioListOngoingWidgetState extends State<AudioListOngoingWidget> {
                         decoration: BoxDecoration(
                           shape: BoxShape.rectangle,
                         ),
-                        alignment: AlignmentDirectional(0.00, 0.00),
+                        alignment: AlignmentDirectional(0.0, 0.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -98,7 +96,7 @@ class _AudioListOngoingWidgetState extends State<AudioListOngoingWidget> {
                         color: FlutterFlowTheme.of(context).warning,
                         shape: BoxShape.circle,
                       ),
-                      alignment: AlignmentDirectional(0.00, 0.00),
+                      alignment: AlignmentDirectional(0.0, 0.0),
                       child: Icon(
                         Icons.audiotrack,
                         color: Color(0xFF11151C),
@@ -116,6 +114,7 @@ class _AudioListOngoingWidgetState extends State<AudioListOngoingWidget> {
                               fontFamily: 'Readex Pro',
                               color: FlutterFlowTheme.of(context).secondaryText,
                               fontSize: 16.0,
+                              letterSpacing: 0.0,
                             ),
                       ),
                     ),
@@ -126,6 +125,7 @@ class _AudioListOngoingWidgetState extends State<AudioListOngoingWidget> {
                           fontFamily: 'Readex Pro',
                           color: FlutterFlowTheme.of(context).secondaryText,
                           fontSize: 12.0,
+                          letterSpacing: 0.0,
                         ),
                   ),
                   Text(
@@ -134,6 +134,7 @@ class _AudioListOngoingWidgetState extends State<AudioListOngoingWidget> {
                           fontFamily: 'Readex Pro',
                           color: FlutterFlowTheme.of(context).secondaryText,
                           fontSize: 12.0,
+                          letterSpacing: 0.0,
                         ),
                   ),
                 ],
@@ -154,7 +155,7 @@ class _AudioListOngoingWidgetState extends State<AudioListOngoingWidget> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                       ),
-                      alignment: AlignmentDirectional(0.00, 0.00),
+                      alignment: AlignmentDirectional(0.0, 0.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -177,6 +178,7 @@ class _AudioListOngoingWidgetState extends State<AudioListOngoingWidget> {
                               fontFamily: 'Readex Pro',
                               color: FlutterFlowTheme.of(context).secondaryText,
                               fontSize: 12.0,
+                              letterSpacing: 0.0,
                             ),
                       ),
                     ),

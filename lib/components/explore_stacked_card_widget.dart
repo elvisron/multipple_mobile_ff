@@ -2,6 +2,7 @@ import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -11,10 +12,10 @@ import 'explore_stacked_card_model.dart';
 export 'explore_stacked_card_model.dart';
 
 class ExploreStackedCardWidget extends StatefulWidget {
-  const ExploreStackedCardWidget({Key? key}) : super(key: key);
+  const ExploreStackedCardWidget({super.key});
 
   @override
-  _ExploreStackedCardWidgetState createState() =>
+  State<ExploreStackedCardWidget> createState() =>
       _ExploreStackedCardWidgetState();
 }
 
@@ -22,27 +23,7 @@ class _ExploreStackedCardWidgetState extends State<ExploreStackedCardWidget>
     with TickerProviderStateMixin {
   late ExploreStackedCardModel _model;
 
-  final animationsMap = {
-    'containerOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: 0.0,
-          end: 1.0,
-        ),
-        MoveEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: Offset(30.0, 0.0),
-          end: Offset(0.0, 0.0),
-        ),
-      ],
-    ),
-  };
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void setState(VoidCallback callback) {
@@ -55,6 +36,27 @@ class _ExploreStackedCardWidgetState extends State<ExploreStackedCardWidget>
     super.initState();
     _model = createModel(context, () => ExploreStackedCardModel());
 
+    animationsMap.addAll({
+      'containerOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: Offset(30.0, 0.0),
+            end: Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+    });
     setupAnimations(
       animationsMap.values.where((anim) =>
           anim.trigger == AnimationTrigger.onActionTrigger ||
@@ -72,8 +74,6 @@ class _ExploreStackedCardWidgetState extends State<ExploreStackedCardWidget>
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return Padding(
       padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 12.0, 12.0),
       child: Material(
@@ -96,7 +96,10 @@ class _ExploreStackedCardWidgetState extends State<ExploreStackedCardWidget>
               BoxShadow(
                 blurRadius: 4.0,
                 color: Color(0x34090F13),
-                offset: Offset(0.0, 2.0),
+                offset: Offset(
+                  0.0,
+                  2.0,
+                ),
               )
             ],
             borderRadius: BorderRadius.circular(20.0),
@@ -137,6 +140,7 @@ class _ExploreStackedCardWidgetState extends State<ExploreStackedCardWidget>
                                   fontFamily: 'Readex Pro',
                                   color: Colors.white,
                                   fontSize: 18.0,
+                                  letterSpacing: 0.0,
                                   fontWeight: FontWeight.normal,
                                 ),
                           ),
@@ -153,14 +157,14 @@ class _ExploreStackedCardWidgetState extends State<ExploreStackedCardWidget>
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Align(
-                        alignment: AlignmentDirectional(-1.00, 0.00),
+                        alignment: AlignmentDirectional(-1.0, 0.0),
                         child: Container(
                           width: 106.0,
                           child: Stack(
                             alignment: AlignmentDirectional(-1.0, 0.0),
                             children: [
                               Align(
-                                alignment: AlignmentDirectional(0.00, 0.00),
+                                alignment: AlignmentDirectional(0.0, 0.0),
                                 child: Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       0.0, 0.0, 0.0, 15.0),
@@ -184,6 +188,7 @@ class _ExploreStackedCardWidgetState extends State<ExploreStackedCardWidget>
                                             fontFamily: 'Readex Pro',
                                             color: Colors.white,
                                             fontSize: 14.0,
+                                            letterSpacing: 0.0,
                                           ),
                                       borderSide: BorderSide(
                                         color: Colors.transparent,

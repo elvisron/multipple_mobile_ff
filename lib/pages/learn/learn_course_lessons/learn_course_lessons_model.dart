@@ -10,12 +10,14 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import 'learn_course_lessons_widget.dart' show LearnCourseLessonsWidget;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class LearnCourseLessonsModel extends FlutterFlowModel {
+class LearnCourseLessonsModel
+    extends FlutterFlowModel<LearnCourseLessonsWidget> {
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
@@ -36,8 +38,7 @@ class LearnCourseLessonsModel extends FlutterFlowModel {
   // Model for textContentListOngoing component.
   late TextContentListOngoingModel textContentListOngoingModel;
 
-  /// Initialization and disposal methods.
-
+  @override
   void initState(BuildContext context) {
     learnCourseHeroModel = createModel(context, () => LearnCourseHeroModel());
     videoListUnplayedModel =
@@ -54,6 +55,7 @@ class LearnCourseLessonsModel extends FlutterFlowModel {
         createModel(context, () => TextContentListOngoingModel());
   }
 
+  @override
   void dispose() {
     unfocusNode.dispose();
     learnCourseHeroModel.dispose();
@@ -65,8 +67,4 @@ class LearnCourseLessonsModel extends FlutterFlowModel {
     textContentListUnreadModel.dispose();
     textContentListOngoingModel.dispose();
   }
-
-  /// Action blocks are added here.
-
-  /// Additional helper methods are added here.
 }

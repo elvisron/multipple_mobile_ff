@@ -3,42 +3,29 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
+import 'learn_course_info_widget.dart' show LearnCourseInfoWidget;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class LearnCourseInfoModel extends FlutterFlowModel {
+class LearnCourseInfoModel extends FlutterFlowModel<LearnCourseInfoWidget> {
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
-  // Model for moduleListCard component.
-  late ModuleListCardModel moduleListCardModel1;
-  // Model for moduleListCard component.
-  late ModuleListCardModel moduleListCardModel2;
-  // Model for moduleListCard component.
-  late ModuleListCardModel moduleListCardModel3;
-  // Model for moduleListCard component.
-  late ModuleListCardModel moduleListCardModel4;
+  // Models for moduleListCard dynamic component.
+  late FlutterFlowDynamicModels<ModuleListCardModel> moduleListCardModels;
 
-  /// Initialization and disposal methods.
-
+  @override
   void initState(BuildContext context) {
-    moduleListCardModel1 = createModel(context, () => ModuleListCardModel());
-    moduleListCardModel2 = createModel(context, () => ModuleListCardModel());
-    moduleListCardModel3 = createModel(context, () => ModuleListCardModel());
-    moduleListCardModel4 = createModel(context, () => ModuleListCardModel());
+    moduleListCardModels =
+        FlutterFlowDynamicModels(() => ModuleListCardModel());
   }
 
+  @override
   void dispose() {
     unfocusNode.dispose();
-    moduleListCardModel1.dispose();
-    moduleListCardModel2.dispose();
-    moduleListCardModel3.dispose();
-    moduleListCardModel4.dispose();
+    moduleListCardModels.dispose();
   }
-
-  /// Action blocks are added here.
-
-  /// Additional helper methods are added here.
 }

@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
 
-import '../../flutter_flow/flutter_flow_util.dart';
-
+import '/flutter_flow/flutter_flow_util.dart';
 import 'api_manager.dart';
 
 export 'api_manager.dart' show ApiCallResponse;
@@ -12,8 +12,21 @@ const _kPrivateApiFunctionName = 'ffPrivateApiCall';
 /// Start APS - Authentication Processing Service Group Code
 
 class APSAuthenticationProcessingServiceGroup {
-  static String baseUrl = 'https://auth.multipple.com/v1';
-  static Map<String, String> headers = {};
+  static String getBaseUrl({
+    String? aPSBaseURL = 'https://auth.multipple.com/v1',
+    String? lXPBaseURL = 'https://lxp.multipple.com/v1',
+    String? homeOrigin = 'https://app.multipple.com',
+    String? mPTenantOrigin = 'https://sdt.multipple.com',
+    String? mPAuthToken =
+        'zj7ksuiqk5pks1tgouhqz4acouaed47pum61sajprmhgz5bpgmheuitgtd3e8ubqu3ceuipqwj6qsuipjupq83jpodqhs5rggmpezajqwbhnu3fgkd6gusiqxu6kuzpctmc6safp3u3sswjps37w8ubqdmhkz4ppi5hqdi3pim3q81tqbdhcs4ogs33edijqdd7kgw7q1m4wg3ppxuhhs5wc1u3egwfgabpwg3pcwm36s3iqut31g1pgm53wzzfq1mposhjqzu3gghwpb54qg4icat5rs4rgu551ga3cim3g8h\$3oJLWa2RgoDZVtB2mMBTuLnqqyqVboYR2pZH',
+    String? mPAuthRole = 'LEARNER',
+    String? mPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
+    String? mPUserAgents = 'MP.mobile/1.0',
+  }) =>
+      'https://auth.multipple.com/v1';
+  static Map<String, String> headers = {
+    'MP-Auth-Role': '[MP_AuthRole]',
+  };
   static SignUpCall signUpCall = SignUpCall();
   static SignInCall signInCall = SignInCall();
   static EmailAddressVerificationCall emailAddressVerificationCall =
@@ -27,8 +40,8 @@ class APSAuthenticationProcessingServiceGroup {
   static ResetANewPasswordCall resetANewPasswordCall = ResetANewPasswordCall();
   static EnableOrDisable2FACall enableOrDisable2FACall =
       EnableOrDisable2FACall();
-  static field2StepVerificationCall field2StepVerificationCall =
-      field2StepVerificationCall();
+  static TwoStepVerificationCall twoStepVerificationCall =
+      TwoStepVerificationCall();
   static SignOutCall signOutCall = SignOutCall();
 }
 
@@ -36,134 +49,49 @@ class SignUpCall {
   Future<ApiCallResponse> call({
     String? origin = '',
     String? mPUserAgent = '',
+    String? firstName = '',
+    String? lastName = '',
+    String? agreeTerms = '',
+    String? email = '',
+    String? password = '',
     String? aPSBaseURL = 'https://auth.multipple.com/v1',
     String? lXPBaseURL = 'https://lxp.multipple.com/v1',
     String? homeOrigin = 'https://app.multipple.com',
     String? mPTenantOrigin = 'https://sdt.multipple.com',
-    String? email = 'eagah@sdt.edu.gh',
-    String? password = '@Time2fly',
     String? mPAuthToken =
         'zj7ksuiqk5pks1tgouhqz4acouaed47pum61sajprmhgz5bpgmheuitgtd3e8ubqu3ceuipqwj6qsuipjupq83jpodqhs5rggmpezajqwbhnu3fgkd6gusiqxu6kuzpctmc6safp3u3sswjps37w8ubqdmhkz4ppi5hqdi3pim3q81tqbdhcs4ogs33edijqdd7kgw7q1m4wg3ppxuhhs5wc1u3egwfgabpwg3pcwm36s3iqut31g1pgm53wzzfq1mposhjqzu3gghwpb54qg4icat5rs4rgu551ga3cim3g8h\$3oJLWa2RgoDZVtB2mMBTuLnqqyqVboYR2pZH',
-    String? mPAuthRole = 'SUPER',
+    String? mPAuthRole = 'LEARNER',
     String? mPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
     String? mPUserAgents = 'MP.mobile/1.0',
-  }) {
+  }) async {
+    final baseUrl = APSAuthenticationProcessingServiceGroup.getBaseUrl(
+      aPSBaseURL: aPSBaseURL,
+      lXPBaseURL: lXPBaseURL,
+      homeOrigin: homeOrigin,
+      mPTenantOrigin: mPTenantOrigin,
+      mPAuthToken: mPAuthToken,
+      mPAuthRole: mPAuthRole,
+      mPAuthDevice: mPAuthDevice,
+      mPUserAgents: mPUserAgents,
+    );
+
     final ffApiRequestBody = '''
 {
-    "email": "elvisron@gmail.com",
-    "password": "@Time2fly",
-    "first_name": "Danuel",
-    "last_name": "Dimbo",
-    "country": {},
-    "referer": "",
-    "agree_terms": "true"
+  "email": "${email}",
+  "password": "${password}",
+  "first_name": "${firstName}",
+  "last_name": "${lastName}",
+  "country": {},
+  "referer": "",
+  "agree_terms": "${agreeTerms}"
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'Sign Up',
-      apiUrl: '${APSAuthenticationProcessingServiceGroup.baseUrl}/signup',
+      apiUrl: '${baseUrl}/signup',
       callType: ApiCallType.POST,
       headers: {
-        ...APSAuthenticationProcessingServiceGroup.headers,
-        'Origin': '${mPTenantOrigin}',
-        'MP-User-Agent': '${mPUserAgents}',
-      },
-      params: {},
-      body: ffApiRequestBody,
-      bodyType: BodyType.JSON,
-      returnBody: false,
-      encodeBodyUtf8: false,
-      decodeUtf8: false,
-      cache: false,
-    );
-  }
-}
-
-class SignInCall {
-  Future<ApiCallResponse> call({
-    String? aPSBaseURL = 'https://auth.multipple.com/v1',
-    String? lXPBaseURL = 'https://lxp.multipple.com/v1',
-    String? homeOrigin = 'https://app.multipple.com',
-    String? mPTenantOrigin = 'https://sdt.multipple.com',
-    String? email = 'eagah@sdt.edu.gh',
-    String? password = '@Time2fly',
-    String? mPAuthToken =
-        'zj7ksuiqk5pks1tgouhqz4acouaed47pum61sajprmhgz5bpgmheuitgtd3e8ubqu3ceuipqwj6qsuipjupq83jpodqhs5rggmpezajqwbhnu3fgkd6gusiqxu6kuzpctmc6safp3u3sswjps37w8ubqdmhkz4ppi5hqdi3pim3q81tqbdhcs4ogs33edijqdd7kgw7q1m4wg3ppxuhhs5wc1u3egwfgabpwg3pcwm36s3iqut31g1pgm53wzzfq1mposhjqzu3gghwpb54qg4icat5rs4rgu551ga3cim3g8h\$3oJLWa2RgoDZVtB2mMBTuLnqqyqVboYR2pZH',
-    String? mPAuthRole = 'SUPER',
-    String? mPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-    String? mPUserAgents = 'MP.mobile/1.0',
-  }) {
-    return ApiManager.instance.makeApiCall(
-      callName: 'Sign In',
-      apiUrl: '${APSAuthenticationProcessingServiceGroup.baseUrl}/signin',
-      callType: ApiCallType.POST,
-      headers: {
-        ...APSAuthenticationProcessingServiceGroup.headers,
-        'Origin': '${mPTenantOrigin}',
-        'MP-User-Agent': '${mPUserAgents}',
-      },
-      params: {
-        'email': email,
-        'password': password,
-        'device': "{\"platform\":\"Android 9.0\", \"model\":\"Samsung S8\"}",
-      },
-      bodyType: BodyType.X_WWW_FORM_URL_ENCODED,
-      returnBody: false,
-      encodeBodyUtf8: false,
-      decodeUtf8: false,
-      cache: false,
-    );
-  }
-
-  dynamic logintoken(dynamic response) => getJsonField(
-        response,
-        r'''$.credentials.ctoken''',
-      );
-  dynamic userdevice(dynamic response) => getJsonField(
-        response,
-        r'''$.credentials''',
-      );
-  dynamic usertype(dynamic response) => getJsonField(
-        response,
-        r'''$.credentials.type''',
-      );
-  dynamic userrole(dynamic response) => getJsonField(
-        response,
-        r'''$.credentials.role''',
-      );
-}
-
-class EmailAddressVerificationCall {
-  Future<ApiCallResponse> call({
-    String? origin = '',
-    String? xUserAgent = '',
-    String? aPSBaseURL = 'https://auth.multipple.com/v1',
-    String? lXPBaseURL = 'https://lxp.multipple.com/v1',
-    String? homeOrigin = 'https://app.multipple.com',
-    String? mPTenantOrigin = 'https://sdt.multipple.com',
-    String? email = 'eagah@sdt.edu.gh',
-    String? password = '@Time2fly',
-    String? mPAuthToken =
-        'zj7ksuiqk5pks1tgouhqz4acouaed47pum61sajprmhgz5bpgmheuitgtd3e8ubqu3ceuipqwj6qsuipjupq83jpodqhs5rggmpezajqwbhnu3fgkd6gusiqxu6kuzpctmc6safp3u3sswjps37w8ubqdmhkz4ppi5hqdi3pim3q81tqbdhcs4ogs33edijqdd7kgw7q1m4wg3ppxuhhs5wc1u3egwfgabpwg3pcwm36s3iqut31g1pgm53wzzfq1mposhjqzu3gghwpb54qg4icat5rs4rgu551ga3cim3g8h\$3oJLWa2RgoDZVtB2mMBTuLnqqyqVboYR2pZH',
-    String? mPAuthRole = 'SUPER',
-    String? mPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-    String? mPUserAgents = 'MP.mobile/1.0',
-  }) {
-    final ffApiRequestBody = '''
-{
-    "email": "elvisron@gmail.com",
-    "evc": "4111",
-    "device": {
-        "platform":"Android 9.0",
-        "model":"Samsung S8"
-    }
-}''';
-    return ApiManager.instance.makeApiCall(
-      callName: 'Email Address Verification',
-      apiUrl: '${APSAuthenticationProcessingServiceGroup.baseUrl}/verify/email',
-      callType: ApiCallType.POST,
-      headers: {
-        ...APSAuthenticationProcessingServiceGroup.headers,
-        'Origin': '${mPTenantOrigin}',
+        'MP-Auth-Role': '${mPAuthRole}',
+        'MP-RO': '${mPTenantOrigin}',
         'MP-User-Agent': '${mPUserAgents}',
       },
       params: {},
@@ -173,6 +101,143 @@ class EmailAddressVerificationCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+}
+
+class SignInCall {
+  Future<ApiCallResponse> call({
+    String? email = '',
+    String? password = '',
+    String? type = 'LEARNER',
+    String? aPSBaseURL = 'https://auth.multipple.com/v1',
+    String? lXPBaseURL = 'https://lxp.multipple.com/v1',
+    String? homeOrigin = 'https://app.multipple.com',
+    String? mPTenantOrigin = 'https://sdt.multipple.com',
+    String? mPAuthToken =
+        'zj7ksuiqk5pks1tgouhqz4acouaed47pum61sajprmhgz5bpgmheuitgtd3e8ubqu3ceuipqwj6qsuipjupq83jpodqhs5rggmpezajqwbhnu3fgkd6gusiqxu6kuzpctmc6safp3u3sswjps37w8ubqdmhkz4ppi5hqdi3pim3q81tqbdhcs4ogs33edijqdd7kgw7q1m4wg3ppxuhhs5wc1u3egwfgabpwg3pcwm36s3iqut31g1pgm53wzzfq1mposhjqzu3gghwpb54qg4icat5rs4rgu551ga3cim3g8h\$3oJLWa2RgoDZVtB2mMBTuLnqqyqVboYR2pZH',
+    String? mPAuthRole = 'LEARNER',
+    String? mPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
+    String? mPUserAgents = 'MP.mobile/1.0',
+  }) async {
+    final baseUrl = APSAuthenticationProcessingServiceGroup.getBaseUrl(
+      aPSBaseURL: aPSBaseURL,
+      lXPBaseURL: lXPBaseURL,
+      homeOrigin: homeOrigin,
+      mPTenantOrigin: mPTenantOrigin,
+      mPAuthToken: mPAuthToken,
+      mPAuthRole: mPAuthRole,
+      mPAuthDevice: mPAuthDevice,
+      mPUserAgents: mPUserAgents,
+    );
+
+    return ApiManager.instance.makeApiCall(
+      callName: 'Sign In',
+      apiUrl: '${baseUrl}/signin',
+      callType: ApiCallType.POST,
+      headers: {
+        'MP-Auth-Role': '${mPAuthRole}',
+        'MP-RO': '${mPTenantOrigin}',
+        'MP-User-Agent': '${mPUserAgents}',
+      },
+      params: {
+        'email': email,
+        'password': password,
+        'device': "{\"platform\":\"Android 9.0\", \"model\":\"Samsung S8\"}",
+        'type': type,
+      },
+      bodyType: BodyType.X_WWW_FORM_URL_ENCODED,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+
+  String? logintoken(dynamic response) => castToType<String>(getJsonField(
+        response,
+        r'''$.credentials.ctoken''',
+      ));
+  dynamic? userdevice(dynamic response) => getJsonField(
+        response,
+        r'''$.credentials''',
+      );
+  String? usertype(dynamic response) => castToType<String>(getJsonField(
+        response,
+        r'''$.credentials.type''',
+      ));
+  String? userrole(dynamic response) => castToType<String>(getJsonField(
+        response,
+        r'''$.credentials.role''',
+      ));
+  String? next(dynamic response) => castToType<String>(getJsonField(
+        response,
+        r'''$.next''',
+      ));
+  String? deviceId(dynamic response) => castToType<String>(getJsonField(
+        response,
+        r'''$.credentials.deviceId''',
+      ));
+}
+
+class EmailAddressVerificationCall {
+  Future<ApiCallResponse> call({
+    String? origin = '',
+    String? xUserAgent = '',
+    int? code,
+    String? email = '',
+    String? aPSBaseURL = 'https://auth.multipple.com/v1',
+    String? lXPBaseURL = 'https://lxp.multipple.com/v1',
+    String? homeOrigin = 'https://app.multipple.com',
+    String? mPTenantOrigin = 'https://sdt.multipple.com',
+    String? mPAuthToken =
+        'zj7ksuiqk5pks1tgouhqz4acouaed47pum61sajprmhgz5bpgmheuitgtd3e8ubqu3ceuipqwj6qsuipjupq83jpodqhs5rggmpezajqwbhnu3fgkd6gusiqxu6kuzpctmc6safp3u3sswjps37w8ubqdmhkz4ppi5hqdi3pim3q81tqbdhcs4ogs33edijqdd7kgw7q1m4wg3ppxuhhs5wc1u3egwfgabpwg3pcwm36s3iqut31g1pgm53wzzfq1mposhjqzu3gghwpb54qg4icat5rs4rgu551ga3cim3g8h\$3oJLWa2RgoDZVtB2mMBTuLnqqyqVboYR2pZH',
+    String? mPAuthRole = 'LEARNER',
+    String? mPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
+    String? mPUserAgents = 'MP.mobile/1.0',
+  }) async {
+    final baseUrl = APSAuthenticationProcessingServiceGroup.getBaseUrl(
+      aPSBaseURL: aPSBaseURL,
+      lXPBaseURL: lXPBaseURL,
+      homeOrigin: homeOrigin,
+      mPTenantOrigin: mPTenantOrigin,
+      mPAuthToken: mPAuthToken,
+      mPAuthRole: mPAuthRole,
+      mPAuthDevice: mPAuthDevice,
+      mPUserAgents: mPUserAgents,
+    );
+
+    final ffApiRequestBody = '''
+{
+  "email": "${email}",
+  "evc": ${code},
+  "device": {
+    "platform": "Android 9.0",
+    "model": "Samsung S8"
+  }
+}''';
+    return ApiManager.instance.makeApiCall(
+      callName: 'Email Address Verification',
+      apiUrl: '${baseUrl}/verify/email',
+      callType: ApiCallType.POST,
+      headers: {
+        'MP-Auth-Role': '${mPAuthRole}',
+        'MP-RO': '${mPTenantOrigin}',
+        'MP-User-Agent': '${mPUserAgents}',
+      },
+      params: {},
+      body: ffApiRequestBody,
+      bodyType: BodyType.JSON,
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -181,33 +246,47 @@ class ResendVerificationEmailCall {
   Future<ApiCallResponse> call({
     String? origin = '',
     String? xUserAgent = '',
+    String? email = '',
     String? aPSBaseURL = 'https://auth.multipple.com/v1',
     String? lXPBaseURL = 'https://lxp.multipple.com/v1',
     String? homeOrigin = 'https://app.multipple.com',
     String? mPTenantOrigin = 'https://sdt.multipple.com',
-    String? email = 'eagah@sdt.edu.gh',
-    String? password = '@Time2fly',
     String? mPAuthToken =
         'zj7ksuiqk5pks1tgouhqz4acouaed47pum61sajprmhgz5bpgmheuitgtd3e8ubqu3ceuipqwj6qsuipjupq83jpodqhs5rggmpezajqwbhnu3fgkd6gusiqxu6kuzpctmc6safp3u3sswjps37w8ubqdmhkz4ppi5hqdi3pim3q81tqbdhcs4ogs33edijqdd7kgw7q1m4wg3ppxuhhs5wc1u3egwfgabpwg3pcwm36s3iqut31g1pgm53wzzfq1mposhjqzu3gghwpb54qg4icat5rs4rgu551ga3cim3g8h\$3oJLWa2RgoDZVtB2mMBTuLnqqyqVboYR2pZH',
-    String? mPAuthRole = 'SUPER',
+    String? mPAuthRole = 'LEARNER',
     String? mPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
     String? mPUserAgents = 'MP.mobile/1.0',
-  }) {
+  }) async {
+    final baseUrl = APSAuthenticationProcessingServiceGroup.getBaseUrl(
+      aPSBaseURL: aPSBaseURL,
+      lXPBaseURL: lXPBaseURL,
+      homeOrigin: homeOrigin,
+      mPTenantOrigin: mPTenantOrigin,
+      mPAuthToken: mPAuthToken,
+      mPAuthRole: mPAuthRole,
+      mPAuthDevice: mPAuthDevice,
+      mPUserAgents: mPUserAgents,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Resend Verification Email',
-      apiUrl: '${APSAuthenticationProcessingServiceGroup.baseUrl}/resend/email',
+      apiUrl: '${baseUrl}/resend/email',
       callType: ApiCallType.POST,
       headers: {
-        ...APSAuthenticationProcessingServiceGroup.headers,
-        'Origin': '${mPTenantOrigin}',
+        'MP-Auth-Role': '${mPAuthRole}',
+        'MP-RO': '${mPTenantOrigin}',
         'MP-User-Agent': '${mPUserAgents}',
       },
-      params: {},
+      params: {
+        'email': email,
+      },
       bodyType: BodyType.X_WWW_FORM_URL_ENCODED,
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -220,29 +299,40 @@ class ChangeEmailAddressCall {
     String? lXPBaseURL = 'https://lxp.multipple.com/v1',
     String? homeOrigin = 'https://app.multipple.com',
     String? mPTenantOrigin = 'https://sdt.multipple.com',
-    String? email = 'eagah@sdt.edu.gh',
-    String? password = '@Time2fly',
     String? mPAuthToken =
         'zj7ksuiqk5pks1tgouhqz4acouaed47pum61sajprmhgz5bpgmheuitgtd3e8ubqu3ceuipqwj6qsuipjupq83jpodqhs5rggmpezajqwbhnu3fgkd6gusiqxu6kuzpctmc6safp3u3sswjps37w8ubqdmhkz4ppi5hqdi3pim3q81tqbdhcs4ogs33edijqdd7kgw7q1m4wg3ppxuhhs5wc1u3egwfgabpwg3pcwm36s3iqut31g1pgm53wzzfq1mposhjqzu3gghwpb54qg4icat5rs4rgu551ga3cim3g8h\$3oJLWa2RgoDZVtB2mMBTuLnqqyqVboYR2pZH',
-    String? mPAuthRole = 'SUPER',
+    String? mPAuthRole = 'LEARNER',
     String? mPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
     String? mPUserAgents = 'MP.mobile/1.0',
-  }) {
+  }) async {
+    final baseUrl = APSAuthenticationProcessingServiceGroup.getBaseUrl(
+      aPSBaseURL: aPSBaseURL,
+      lXPBaseURL: lXPBaseURL,
+      homeOrigin: homeOrigin,
+      mPTenantOrigin: mPTenantOrigin,
+      mPAuthToken: mPAuthToken,
+      mPAuthRole: mPAuthRole,
+      mPAuthDevice: mPAuthDevice,
+      mPUserAgents: mPUserAgents,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Change Email Address',
-      apiUrl: '${APSAuthenticationProcessingServiceGroup.baseUrl}/change-email',
+      apiUrl: '${baseUrl}/change-email',
       callType: ApiCallType.PATCH,
       headers: {
-        ...APSAuthenticationProcessingServiceGroup.headers,
-        'Origin': '${mPTenantOrigin}',
+        'MP-Auth-Role': '${mPAuthRole}',
+        'MP-RO': '${mPTenantOrigin}',
         'MP-User-Agent': '${mPUserAgents}',
       },
       params: {},
       bodyType: BodyType.X_WWW_FORM_URL_ENCODED,
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -251,21 +341,31 @@ class RequestAResetPasswordLinkCall {
   Future<ApiCallResponse> call({
     String? origin = '',
     String? xUserAgent = '',
+    String? email = '',
     String? aPSBaseURL = 'https://auth.multipple.com/v1',
     String? lXPBaseURL = 'https://lxp.multipple.com/v1',
     String? homeOrigin = 'https://app.multipple.com',
     String? mPTenantOrigin = 'https://sdt.multipple.com',
-    String? email = 'eagah@sdt.edu.gh',
-    String? password = '@Time2fly',
     String? mPAuthToken =
         'zj7ksuiqk5pks1tgouhqz4acouaed47pum61sajprmhgz5bpgmheuitgtd3e8ubqu3ceuipqwj6qsuipjupq83jpodqhs5rggmpezajqwbhnu3fgkd6gusiqxu6kuzpctmc6safp3u3sswjps37w8ubqdmhkz4ppi5hqdi3pim3q81tqbdhcs4ogs33edijqdd7kgw7q1m4wg3ppxuhhs5wc1u3egwfgabpwg3pcwm36s3iqut31g1pgm53wzzfq1mposhjqzu3gghwpb54qg4icat5rs4rgu551ga3cim3g8h\$3oJLWa2RgoDZVtB2mMBTuLnqqyqVboYR2pZH',
-    String? mPAuthRole = 'SUPER',
+    String? mPAuthRole = 'LEARNER',
     String? mPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
     String? mPUserAgents = 'MP.mobile/1.0',
-  }) {
+  }) async {
+    final baseUrl = APSAuthenticationProcessingServiceGroup.getBaseUrl(
+      aPSBaseURL: aPSBaseURL,
+      lXPBaseURL: lXPBaseURL,
+      homeOrigin: homeOrigin,
+      mPTenantOrigin: mPTenantOrigin,
+      mPAuthToken: mPAuthToken,
+      mPAuthRole: mPAuthRole,
+      mPAuthDevice: mPAuthDevice,
+      mPUserAgents: mPUserAgents,
+    );
+
     final ffApiRequestBody = '''
 {
-    "email": "elvisron@gmail.com",
+    "email": "${email}",
     "country": {},
     "device": {
         "platform": "Android 9.0",
@@ -274,21 +374,22 @@ class RequestAResetPasswordLinkCall {
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'Request a Reset Password Link',
-      apiUrl:
-          '${APSAuthenticationProcessingServiceGroup.baseUrl}/reset-pwd/link',
+      apiUrl: '${baseUrl}/reset-pwd/link',
       callType: ApiCallType.POST,
       headers: {
-        ...APSAuthenticationProcessingServiceGroup.headers,
-        'Origin': '${mPTenantOrigin}',
+        'MP-Auth-Role': '${mPAuthRole}',
+        'MP-RO': '${mPTenantOrigin}',
         'MP-User-Agent': '${mPUserAgents}',
       },
       params: {},
       body: ffApiRequestBody,
       bodyType: BodyType.JSON,
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -297,37 +398,48 @@ class ResetANewPasswordCall {
   Future<ApiCallResponse> call({
     String? origin = '',
     String? xUserAgent = '',
+    String? password = '',
     String? aPSBaseURL = 'https://auth.multipple.com/v1',
     String? lXPBaseURL = 'https://lxp.multipple.com/v1',
     String? homeOrigin = 'https://app.multipple.com',
     String? mPTenantOrigin = 'https://sdt.multipple.com',
-    String? email = 'eagah@sdt.edu.gh',
-    String? password = '@Time2fly',
     String? mPAuthToken =
         'zj7ksuiqk5pks1tgouhqz4acouaed47pum61sajprmhgz5bpgmheuitgtd3e8ubqu3ceuipqwj6qsuipjupq83jpodqhs5rggmpezajqwbhnu3fgkd6gusiqxu6kuzpctmc6safp3u3sswjps37w8ubqdmhkz4ppi5hqdi3pim3q81tqbdhcs4ogs33edijqdd7kgw7q1m4wg3ppxuhhs5wc1u3egwfgabpwg3pcwm36s3iqut31g1pgm53wzzfq1mposhjqzu3gghwpb54qg4icat5rs4rgu551ga3cim3g8h\$3oJLWa2RgoDZVtB2mMBTuLnqqyqVboYR2pZH',
-    String? mPAuthRole = 'SUPER',
+    String? mPAuthRole = 'LEARNER',
     String? mPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
     String? mPUserAgents = 'MP.mobile/1.0',
-  }) {
+  }) async {
+    final baseUrl = APSAuthenticationProcessingServiceGroup.getBaseUrl(
+      aPSBaseURL: aPSBaseURL,
+      lXPBaseURL: lXPBaseURL,
+      homeOrigin: homeOrigin,
+      mPTenantOrigin: mPTenantOrigin,
+      mPAuthToken: mPAuthToken,
+      mPAuthRole: mPAuthRole,
+      mPAuthDevice: mPAuthDevice,
+      mPUserAgents: mPUserAgents,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Reset a New Password',
-      apiUrl: '${APSAuthenticationProcessingServiceGroup.baseUrl}/reset-pwd',
+      apiUrl: '${baseUrl}/reset-pwd',
       callType: ApiCallType.PATCH,
       headers: {
-        ...APSAuthenticationProcessingServiceGroup.headers,
-        'Origin': '${mPTenantOrigin}',
+        'MP-Auth-Role': '${mPAuthRole}',
+        'MP-RO': '${mPTenantOrigin}',
         'MP-User-Agent': '${mPUserAgents}',
       },
       params: {
         'new_password': password,
-        'token':
-            "pdkj8amL4amASotO8nE78bGTf4vyjeckmEHAa5FcKXCk9OzUpvdA52rrOu4UfD5COnknNOozJUNuLqbCtNX34ouOJBFk4sz8iPR8jfWgEcehm2buIxVxiCA1tzGz5OtKvxB1w7QNr4BmSvLN12JG19h3Zftxn6EAd1\$3oJLnS414kU6CykfY5P33Ghjaz9NEucybAP5",
+        'token': mPAuthToken,
       },
       bodyType: BodyType.X_WWW_FORM_URL_ENCODED,
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -339,14 +451,23 @@ class EnableOrDisable2FACall {
     String? lXPBaseURL = 'https://lxp.multipple.com/v1',
     String? homeOrigin = 'https://app.multipple.com',
     String? mPTenantOrigin = 'https://sdt.multipple.com',
-    String? email = 'eagah@sdt.edu.gh',
-    String? password = '@Time2fly',
     String? mPAuthToken =
         'zj7ksuiqk5pks1tgouhqz4acouaed47pum61sajprmhgz5bpgmheuitgtd3e8ubqu3ceuipqwj6qsuipjupq83jpodqhs5rggmpezajqwbhnu3fgkd6gusiqxu6kuzpctmc6safp3u3sswjps37w8ubqdmhkz4ppi5hqdi3pim3q81tqbdhcs4ogs33edijqdd7kgw7q1m4wg3ppxuhhs5wc1u3egwfgabpwg3pcwm36s3iqut31g1pgm53wzzfq1mposhjqzu3gghwpb54qg4icat5rs4rgu551ga3cim3g8h\$3oJLWa2RgoDZVtB2mMBTuLnqqyqVboYR2pZH',
-    String? mPAuthRole = 'SUPER',
+    String? mPAuthRole = 'LEARNER',
     String? mPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
     String? mPUserAgents = 'MP.mobile/1.0',
-  }) {
+  }) async {
+    final baseUrl = APSAuthenticationProcessingServiceGroup.getBaseUrl(
+      aPSBaseURL: aPSBaseURL,
+      lXPBaseURL: lXPBaseURL,
+      homeOrigin: homeOrigin,
+      mPTenantOrigin: mPTenantOrigin,
+      mPAuthToken: mPAuthToken,
+      mPAuthRole: mPAuthRole,
+      mPAuthDevice: mPAuthDevice,
+      mPUserAgents: mPUserAgents,
+    );
+
     final ffApiRequestBody = '''
 {
     "email": "elvisron@gmail.com",
@@ -357,63 +478,75 @@ class EnableOrDisable2FACall {
 }''';
     return ApiManager.instance.makeApiCall(
       callName: 'Enable or Disable 2FA',
-      apiUrl:
-          '${APSAuthenticationProcessingServiceGroup.baseUrl}/two-step/${action}',
+      apiUrl: '${baseUrl}/two-step/${action}',
       callType: ApiCallType.PATCH,
       headers: {
-        ...APSAuthenticationProcessingServiceGroup.headers,
-        'Origin': '${mPTenantOrigin}',
+        'MP-Auth-Role': '${mPAuthRole}',
+        'MP-RO': '${mPTenantOrigin}',
         'MP-User-Agent': '${mPUserAgents}',
       },
       params: {},
       body: ffApiRequestBody,
       bodyType: BodyType.JSON,
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
 
-class field2StepVerificationCall {
+class TwoStepVerificationCall {
   Future<ApiCallResponse> call({
     String? origin = '',
     String? xUserAgent = '',
     String? type = 'code',
+    String? email = '',
     String? aPSBaseURL = 'https://auth.multipple.com/v1',
     String? lXPBaseURL = 'https://lxp.multipple.com/v1',
     String? homeOrigin = 'https://app.multipple.com',
     String? mPTenantOrigin = 'https://sdt.multipple.com',
-    String? email = 'eagah@sdt.edu.gh',
-    String? password = '@Time2fly',
     String? mPAuthToken =
         'zj7ksuiqk5pks1tgouhqz4acouaed47pum61sajprmhgz5bpgmheuitgtd3e8ubqu3ceuipqwj6qsuipjupq83jpodqhs5rggmpezajqwbhnu3fgkd6gusiqxu6kuzpctmc6safp3u3sswjps37w8ubqdmhkz4ppi5hqdi3pim3q81tqbdhcs4ogs33edijqdd7kgw7q1m4wg3ppxuhhs5wc1u3egwfgabpwg3pcwm36s3iqut31g1pgm53wzzfq1mposhjqzu3gghwpb54qg4icat5rs4rgu551ga3cim3g8h\$3oJLWa2RgoDZVtB2mMBTuLnqqyqVboYR2pZH',
-    String? mPAuthRole = 'SUPER',
+    String? mPAuthRole = 'LEARNER',
     String? mPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
     String? mPUserAgents = 'MP.mobile/1.0',
-  }) {
+  }) async {
+    final baseUrl = APSAuthenticationProcessingServiceGroup.getBaseUrl(
+      aPSBaseURL: aPSBaseURL,
+      lXPBaseURL: lXPBaseURL,
+      homeOrigin: homeOrigin,
+      mPTenantOrigin: mPTenantOrigin,
+      mPAuthToken: mPAuthToken,
+      mPAuthRole: mPAuthRole,
+      mPAuthDevice: mPAuthDevice,
+      mPUserAgents: mPUserAgents,
+    );
+
     return ApiManager.instance.makeApiCall(
-      callName: '2-Step Verification',
-      apiUrl:
-          '${APSAuthenticationProcessingServiceGroup.baseUrl}/two-step/verify/${type}',
+      callName: 'Two Step Verification',
+      apiUrl: '${baseUrl}/two-step/verify/${type}',
       callType: ApiCallType.POST,
       headers: {
-        ...APSAuthenticationProcessingServiceGroup.headers,
-        'Origin': '${mPTenantOrigin}',
+        'MP-Auth-Role': '${mPAuthRole}',
+        'MP-RO': '${mPTenantOrigin}',
         'MP-User-Agent': '${mPUserAgents}',
       },
       params: {
         'token':
-            "sGF7DBAKLsQNXj98ysG8rzrDaPPZuIflOvJ7qKexET00PNquF6n3VOqxDIF6wPtmYqmJMQl7sgeLC8CYSnftOm4d",
-        'index': "9069",
+            "397lYNChvczGDI25WuQu2OUUxNc3vRW2ktUtfGZp7uT65mRiw1AygqVZJuTleKC5Eaw5KeJpsiRVL3xQr3e1NeSK",
+        'index': "2373",
         'email': email,
       },
       bodyType: BodyType.X_WWW_FORM_URL_ENCODED,
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -428,30 +561,41 @@ class SignOutCall {
     String? lXPBaseURL = 'https://lxp.multipple.com/v1',
     String? homeOrigin = 'https://app.multipple.com',
     String? mPTenantOrigin = 'https://sdt.multipple.com',
-    String? email = 'eagah@sdt.edu.gh',
-    String? password = '@Time2fly',
     String? mPAuthToken =
         'zj7ksuiqk5pks1tgouhqz4acouaed47pum61sajprmhgz5bpgmheuitgtd3e8ubqu3ceuipqwj6qsuipjupq83jpodqhs5rggmpezajqwbhnu3fgkd6gusiqxu6kuzpctmc6safp3u3sswjps37w8ubqdmhkz4ppi5hqdi3pim3q81tqbdhcs4ogs33edijqdd7kgw7q1m4wg3ppxuhhs5wc1u3egwfgabpwg3pcwm36s3iqut31g1pgm53wzzfq1mposhjqzu3gghwpb54qg4icat5rs4rgu551ga3cim3g8h\$3oJLWa2RgoDZVtB2mMBTuLnqqyqVboYR2pZH',
-    String? mPAuthRole = 'SUPER',
+    String? mPAuthRole = 'LEARNER',
     String? mPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
     String? mPUserAgents = 'MP.mobile/1.0',
-  }) {
+  }) async {
+    final baseUrl = APSAuthenticationProcessingServiceGroup.getBaseUrl(
+      aPSBaseURL: aPSBaseURL,
+      lXPBaseURL: lXPBaseURL,
+      homeOrigin: homeOrigin,
+      mPTenantOrigin: mPTenantOrigin,
+      mPAuthToken: mPAuthToken,
+      mPAuthRole: mPAuthRole,
+      mPAuthDevice: mPAuthDevice,
+      mPUserAgents: mPUserAgents,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Sign Out',
-      apiUrl: '${APSAuthenticationProcessingServiceGroup.baseUrl}/signout',
+      apiUrl: '${baseUrl}/signout',
       callType: ApiCallType.GET,
       headers: {
-        ...APSAuthenticationProcessingServiceGroup.headers,
+        'MP-Auth-Role': '${mPAuthRole}',
         'MP-User-Agent': '${mPUserAgents}',
         'MP-Auth-Token': '${mPAuthToken}',
         'MP-Auth-Device': '${mPAuthDevice}',
-        'Origin': '${mPTenantOrigin}',
+        'MP-RO': '${mPTenantOrigin}',
       },
       params: {},
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -461,13 +605,23 @@ class SignOutCall {
 /// Start LXP - Learning Experience Portal Group Code
 
 class LXPLearningExperiencePortalGroup {
-  static String baseUrl = 'https://lxp.multipple.com/v1';
+  static String getBaseUrl({
+    String? lXPTenantOrigin = 'https://sdt.multipple.com',
+    String? homeOrigin = 'https://app.multipple.com',
+    String? lXPUserAgent = 'MP.mobile/1.0',
+    String? lXPAuthToken =
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) =>
+      'https://lxp.multipple.com/v1';
   static Map<String, String> headers = {
     'Origin': '[LXP_TenantOrigin]',
     'MP-User-Agent': '[LXP_UserAgent]',
     'MP-Auth-Token': '[LXP_AuthToken]',
     'MP-Auth-Device': '[LXP_AuthDevice]',
     'MP-Auth-Role': '[LXP_AuthRole]',
+    'MP-RO': '[LXP_TenantOrigin]',
   };
   static CreateInstitutionCall createInstitutionCall = CreateInstitutionCall();
   static RetrieveInstitutionAccountCall retrieveInstitutionAccountCall =
@@ -526,6 +680,11 @@ class LXPLearningExperiencePortalGroup {
       AddNewItemToTheLibraryCall();
   static GetAListOfItemsInTheLibraryCall getAListOfItemsInTheLibraryCall =
       GetAListOfItemsInTheLibraryCall();
+  static RetrieveAnItemFromLibraryByLearnerCall
+      retrieveAnItemFromLibraryByLearnerCall =
+      RetrieveAnItemFromLibraryByLearnerCall();
+  static GetDTFCourseDetailsCall getDTFCourseDetailsCall =
+      GetDTFCourseDetailsCall();
   static SearchInItemsTheLibraryCall searchInItemsTheLibraryCall =
       SearchInItemsTheLibraryCall();
   static ShareWithOthersCall shareWithOthersCall = ShareWithOthersCall();
@@ -659,18 +818,32 @@ class CreateInstitutionCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     final ffApiRequestBody = '''
 {}''';
     return ApiManager.instance.makeApiCall(
       callName: 'Create Institution',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/institution/create',
+      apiUrl: '${baseUrl}/institution/create',
       callType: ApiCallType.POST,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -680,10 +853,12 @@ class CreateInstitutionCall {
       params: {},
       body: ffApiRequestBody,
       bodyType: BodyType.JSON,
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -694,22 +869,38 @@ class RetrieveInstitutionAccountCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Retrieve Institution Account',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/institution/account',
+      apiUrl: '${baseUrl}/institution/account',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
       },
       params: {},
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -722,24 +913,45 @@ class RetrieveTenantInformationCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Retrieve Tenant Information',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/tenant',
+      apiUrl: '${baseUrl}/tenant',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
       },
       params: {},
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
+
+  dynamic? categories(dynamic response) => getJsonField(
+        response,
+        r'''$.tenant.categories''',
+      );
 }
 
 class CheckAvailableTenantDomainCall {
@@ -749,25 +961,40 @@ class CheckAvailableTenantDomainCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Check Available Tenant Domain',
-      apiUrl:
-          '${LXPLearningExperiencePortalGroup.baseUrl}/institution/domain/check',
+      apiUrl: '${baseUrl}/institution/domain/check',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
       },
       params: {
         'checkfor': checkfor,
       },
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -783,25 +1010,41 @@ class UpdateInstitutionInfosCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Update Institution Infos',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/institution/update',
+      apiUrl: '${baseUrl}/institution/update',
       callType: ApiCallType.PUT,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
       },
       params: {
         'description': "Testing with new description",
       },
       bodyType: BodyType.X_WWW_FORM_URL_ENCODED,
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -818,17 +1061,30 @@ class UpdateInstitutionSettingsCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Update Institution Settings',
-      apiUrl:
-          '${LXPLearningExperiencePortalGroup.baseUrl}/institution/${subset}/update',
+      apiUrl: '${baseUrl}/institution/${subset}/update',
       callType: ApiCallType.PUT,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -837,10 +1093,12 @@ class UpdateInstitutionSettingsCall {
       },
       params: {},
       bodyType: BodyType.X_WWW_FORM_URL_ENCODED,
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -856,17 +1114,30 @@ class UpdateInstitutionDomainsCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Update Institution Domains',
-      apiUrl:
-          '${LXPLearningExperiencePortalGroup.baseUrl}/institution/domains/change',
+      apiUrl: '${baseUrl}/institution/domains/change',
       callType: ApiCallType.PATCH,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -875,10 +1146,12 @@ class UpdateInstitutionDomainsCall {
       },
       params: {},
       bodyType: BodyType.X_WWW_FORM_URL_ENCODED,
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -894,16 +1167,30 @@ class DeleteCloseAnInstitutionCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Delete/Close an Institution',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/institution/close',
+      apiUrl: '${baseUrl}/institution/close',
       callType: ApiCallType.DELETE,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -911,48 +1198,66 @@ class DeleteCloseAnInstitutionCall {
         'MP-Auth-Device': '${mPAuthDevice}',
       },
       params: {},
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
 
 class GetUserAccountCall {
   Future<ApiCallResponse> call({
-    String? origin = '',
-    String? mPUserAgent = '',
-    String? mPAuthToken = '',
-    String? mPAuthRole = '',
-    String? mPAuthDevice = '',
     String? lXPTenantOrigin = 'https://sdt.multipple.com',
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Get User Account',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/user/account',
+      apiUrl: '${baseUrl}/user/account',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
-        'Origin': '${origin}',
-        'MP-User-Agent': '${mPUserAgent}',
-        'MP-Auth-Token': '${mPAuthToken}',
-        'MP-Auth-Role': '${mPAuthRole}',
-        'MP-Auth-Device': '${mPAuthDevice}',
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
       },
       params: {},
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
+
+  dynamic? user(dynamic response) => getJsonField(
+        response,
+        r'''$.user''',
+      );
+  List? certificates(dynamic response) => getJsonField(
+        response,
+        r'''$.user.learner.certificates''',
+        true,
+      ) as List?;
 }
 
 class SearchUserCall {
@@ -967,16 +1272,30 @@ class SearchUserCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Search User',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/user/search',
+      apiUrl: '${baseUrl}/user/search',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -986,10 +1305,12 @@ class SearchUserCall {
       params: {
         'query': query,
       },
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1005,16 +1326,30 @@ class UpdateUserProfileCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Update User Profile',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/user/profile/update',
+      apiUrl: '${baseUrl}/user/profile/update',
       callType: ApiCallType.PUT,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -1023,10 +1358,12 @@ class UpdateUserProfileCall {
       },
       params: {},
       bodyType: BodyType.X_WWW_FORM_URL_ENCODED,
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1042,17 +1379,30 @@ class UpdateUserSettingsCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Update User Settings',
-      apiUrl:
-          '${LXPLearningExperiencePortalGroup.baseUrl}/user/settings/update',
+      apiUrl: '${baseUrl}/user/settings/update',
       callType: ApiCallType.PUT,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -1061,10 +1411,12 @@ class UpdateUserSettingsCall {
       },
       params: {},
       bodyType: BodyType.X_WWW_FORM_URL_ENCODED,
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1081,16 +1433,30 @@ class DeleteUserAccountCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Delete User Account',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/user/delete',
+      apiUrl: '${baseUrl}/user/delete',
       callType: ApiCallType.DELETE,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -1100,10 +1466,12 @@ class DeleteUserAccountCall {
       params: {
         'reasons': reasons,
       },
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1119,16 +1487,30 @@ class SentInvitationToUserViaEmailCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Sent invitation to User via email',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/invitation/send',
+      apiUrl: '${baseUrl}/invitation/send',
       callType: ApiCallType.POST,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -1137,10 +1519,12 @@ class SentInvitationToUserViaEmailCall {
       },
       params: {},
       bodyType: BodyType.X_WWW_FORM_URL_ENCODED,
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1154,26 +1538,41 @@ class AcceptInvitationCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Accept Invitation',
-      apiUrl:
-          '${LXPLearningExperiencePortalGroup.baseUrl}/invitation/accept/${token}',
+      apiUrl: '${baseUrl}/invitation/accept/${token}',
       callType: ApiCallType.POST,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
       },
       params: {},
       bodyType: BodyType.JSON,
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1189,18 +1588,32 @@ class CreateANewDepartmentCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     final ffApiRequestBody = '''
 {}''';
     return ApiManager.instance.makeApiCall(
       callName: 'Create a New Department',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/department/create',
+      apiUrl: '${baseUrl}/department/create',
       callType: ApiCallType.POST,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -1210,10 +1623,12 @@ class CreateANewDepartmentCall {
       params: {},
       body: ffApiRequestBody,
       bodyType: BodyType.JSON,
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1230,16 +1645,30 @@ class RetreiveDepartmentDetailsCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Retreive Department Details',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/department/${id}',
+      apiUrl: '${baseUrl}/department/${id}',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -1247,10 +1676,12 @@ class RetreiveDepartmentDetailsCall {
         'MP-Auth-Device': '${mPAuthDevice}',
       },
       params: {},
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1266,16 +1697,30 @@ class GetAllDepartmentsCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Get All Departments',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/department/list',
+      apiUrl: '${baseUrl}/department/list',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -1283,10 +1728,12 @@ class GetAllDepartmentsCall {
         'MP-Auth-Device': '${mPAuthDevice}',
       },
       params: {},
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1303,19 +1750,32 @@ class UpdateAnExsistingDepartmentCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     final ffApiRequestBody = '''
 {}''';
     return ApiManager.instance.makeApiCall(
       callName: 'Update an exsisting Department',
-      apiUrl:
-          '${LXPLearningExperiencePortalGroup.baseUrl}/department/update/${id}',
+      apiUrl: '${baseUrl}/department/update/${id}',
       callType: ApiCallType.PUT,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -1325,10 +1785,12 @@ class UpdateAnExsistingDepartmentCall {
       params: {},
       body: ffApiRequestBody,
       bodyType: BodyType.JSON,
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1345,17 +1807,30 @@ class DeleteADepartmentCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Delete a Department',
-      apiUrl:
-          '${LXPLearningExperiencePortalGroup.baseUrl}/department/delete/${id}',
+      apiUrl: '${baseUrl}/department/delete/${id}',
       callType: ApiCallType.DELETE,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -1363,10 +1838,12 @@ class DeleteADepartmentCall {
         'MP-Auth-Device': '${mPAuthDevice}',
       },
       params: {},
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1382,18 +1859,32 @@ class CreateANewGroupCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     final ffApiRequestBody = '''
 {}''';
     return ApiManager.instance.makeApiCall(
       callName: 'Create a new Group',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/group/create',
+      apiUrl: '${baseUrl}/group/create',
       callType: ApiCallType.POST,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -1407,6 +1898,8 @@ class CreateANewGroupCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1423,16 +1916,30 @@ class RetreiveAGroupCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Retreive a Group',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/group/${id}',
+      apiUrl: '${baseUrl}/group/${id}',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -1444,6 +1951,8 @@ class RetreiveAGroupCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1461,16 +1970,30 @@ class GetAListOfGroupsCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Get a list of Groups',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/group/list',
+      apiUrl: '${baseUrl}/group/list',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -1485,6 +2008,8 @@ class GetAListOfGroupsCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1502,16 +2027,30 @@ class SearchAGroupCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Search a Group',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/group/search',
+      apiUrl: '${baseUrl}/group/search',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -1526,6 +2065,8 @@ class SearchAGroupCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1542,18 +2083,32 @@ class UpdateASessionCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     final ffApiRequestBody = '''
 {}''';
     return ApiManager.instance.makeApiCall(
       callName: 'Update a Session',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/group/update/${id}',
+      apiUrl: '${baseUrl}/group/update/${id}',
       callType: ApiCallType.PUT,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -1567,6 +2122,8 @@ class UpdateASessionCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1583,16 +2140,30 @@ class DeleteAGroupCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Delete a Group',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/group/delete/${id}',
+      apiUrl: '${baseUrl}/group/delete/${id}',
       callType: ApiCallType.DELETE,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -1604,6 +2175,8 @@ class DeleteAGroupCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1619,16 +2192,30 @@ class CreateANewCategoryCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Create a New Category',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/category/create',
+      apiUrl: '${baseUrl}/category/create',
       callType: ApiCallType.POST,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -1637,10 +2224,12 @@ class CreateANewCategoryCall {
       },
       params: {},
       bodyType: BodyType.X_WWW_FORM_URL_ENCODED,
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1657,16 +2246,30 @@ class RetreiveCategoryDetailsCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Retreive Category Details',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/category/${id}',
+      apiUrl: '${baseUrl}/category/${id}',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -1674,10 +2277,12 @@ class RetreiveCategoryDetailsCall {
         'MP-Auth-Device': '${mPAuthDevice}',
       },
       params: {},
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1694,17 +2299,30 @@ class UpdateAnExsistingCategoryCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Update an exsisting Category',
-      apiUrl:
-          '${LXPLearningExperiencePortalGroup.baseUrl}/category/update/${id}',
+      apiUrl: '${baseUrl}/category/update/${id}',
       callType: ApiCallType.PUT,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -1713,46 +2331,54 @@ class UpdateAnExsistingCategoryCall {
       },
       params: {},
       bodyType: BodyType.X_WWW_FORM_URL_ENCODED,
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
 
 class GetAllCategoriesCall {
   Future<ApiCallResponse> call({
-    String? origin = '',
-    String? mPUserAgent = '',
-    String? mPAuthToken = '',
-    String? mPAuthRole = '',
-    String? mPAuthDevice = '',
     String? lXPTenantOrigin = 'https://sdt.multipple.com',
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Get All Categories',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/category/list',
+      apiUrl: '${baseUrl}/category/list',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
-        'Origin': '${origin}',
-        'MP-User-Agent': '${mPUserAgent}',
-        'MP-Auth-Token': '${mPAuthToken}',
-        'MP-Auth-Role': '${mPAuthRole}',
-        'MP-Auth-Device': '${mPAuthDevice}',
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
       },
       params: {},
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1769,17 +2395,30 @@ class DeleteACategoryCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Delete a Category',
-      apiUrl:
-          '${LXPLearningExperiencePortalGroup.baseUrl}/category/delete/${id}',
+      apiUrl: '${baseUrl}/category/delete/${id}',
       callType: ApiCallType.DELETE,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -1787,10 +2426,12 @@ class DeleteACategoryCall {
         'MP-Auth-Device': '${mPAuthDevice}',
       },
       params: {},
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1808,17 +2449,30 @@ class AssignOrUnassignAGivenCategoryToEntitiesCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Assign or Unassign a given category to entities',
-      apiUrl:
-          '${LXPLearningExperiencePortalGroup.baseUrl}/category/${action}/${id}',
+      apiUrl: '${baseUrl}/category/${action}/${id}',
       callType: ApiCallType.POST,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -1831,6 +2485,8 @@ class AssignOrUnassignAGivenCategoryToEntitiesCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1846,18 +2502,32 @@ class AddNewTagCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     final ffApiRequestBody = '''
 {}''';
     return ApiManager.instance.makeApiCall(
       callName: 'Add New Tag',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/tag/add',
+      apiUrl: '${baseUrl}/tag/add',
       callType: ApiCallType.POST,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -1867,10 +2537,12 @@ class AddNewTagCall {
       params: {},
       body: ffApiRequestBody,
       bodyType: BodyType.JSON,
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1886,16 +2558,30 @@ class GetAvailableTagsListCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Get Available Tags List',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/tag/list',
+      apiUrl: '${baseUrl}/tag/list',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -1903,10 +2589,12 @@ class GetAvailableTagsListCall {
         'MP-Auth-Device': '${mPAuthDevice}',
       },
       params: {},
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1923,16 +2611,30 @@ class DeleteATagCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Delete a Tag',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/tag/delete',
+      apiUrl: '${baseUrl}/tag/delete',
       callType: ApiCallType.DELETE,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -1942,10 +2644,12 @@ class DeleteATagCall {
       params: {
         'name': name,
       },
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -1961,18 +2665,32 @@ class AddNewItemToTheLibraryCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     final ffApiRequestBody = '''
 {}''';
     return ApiManager.instance.makeApiCall(
       callName: 'Add new item to the Library',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/library/add',
+      apiUrl: '${baseUrl}/library/add',
       callType: ApiCallType.POST,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -1982,10 +2700,12 @@ class AddNewItemToTheLibraryCall {
       params: {},
       body: ffApiRequestBody,
       bodyType: BodyType.JSON,
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -2003,17 +2723,30 @@ class GetAListOfItemsInTheLibraryCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Get a list of items in the library',
-      apiUrl:
-          '${LXPLearningExperiencePortalGroup.baseUrl}/library/list/${type}',
+      apiUrl: '${baseUrl}/library/list/${type}',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -2023,12 +2756,147 @@ class GetAListOfItemsInTheLibraryCall {
       params: {
         'limit': limit,
       },
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
+}
+
+class RetrieveAnItemFromLibraryByLearnerCall {
+  Future<ApiCallResponse> call({
+    String? ref = '',
+    String? lXPTenantOrigin = 'https://sdt.multipple.com',
+    String? homeOrigin = 'https://app.multipple.com',
+    String? lXPUserAgent = 'MP.mobile/1.0',
+    String? lXPAuthToken =
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
+    return ApiManager.instance.makeApiCall(
+      callName: 'Retrieve an item from Library by learner',
+      apiUrl: '${baseUrl}/learner/library/${ref}',
+      callType: ApiCallType.GET,
+      headers: {
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
+      },
+      params: {},
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+
+  dynamic? item(dynamic response) => getJsonField(
+        response,
+        r'''$.item''',
+      );
+  String? title(dynamic response) => castToType<String>(getJsonField(
+        response,
+        r'''$.item.title''',
+      ));
+  dynamic? assets(dynamic response) => getJsonField(
+        response,
+        r'''$.item.assets''',
+      );
+  int? version(dynamic response) => castToType<int>(getJsonField(
+        response,
+        r'''$.item.version''',
+      ));
+  String? refe(dynamic response) => castToType<String>(getJsonField(
+        response,
+        r'''$.item.reference''',
+      ));
+  String? type(dynamic response) => castToType<String>(getJsonField(
+        response,
+        r'''$.item.type''',
+      ));
+}
+
+class GetDTFCourseDetailsCall {
+  Future<ApiCallResponse> call({
+    String? file = '',
+    bool? decode = true,
+    String? lXPTenantOrigin = 'https://sdt.multipple.com',
+    String? homeOrigin = 'https://app.multipple.com',
+    String? lXPUserAgent = 'MP.mobile/1.0',
+    String? lXPAuthToken =
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
+    return ApiManager.instance.makeApiCall(
+      callName: 'Get DTF course details',
+      apiUrl: '${baseUrl}/dtf?file=${file}&decode=${decode}',
+      callType: ApiCallType.GET,
+      headers: {
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
+      },
+      params: {},
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+
+  dynamic? items(dynamic response) => getJsonField(
+        response,
+        r'''$.item''',
+      );
+  String? title(dynamic response) => castToType<String>(getJsonField(
+        response,
+        r'''$.item.title''',
+      ));
+  dynamic? assets(dynamic response) => getJsonField(
+        response,
+        r'''$.item.assets''',
+      );
+  String? dataSource(dynamic response) => castToType<String>(getJsonField(
+        response,
+        r'''$.result.Delta.source''',
+      ));
+  String? sourceType(dynamic response) => castToType<String>(getJsonField(
+        response,
+        r'''$.result.Delta.sourceType''',
+      ));
 }
 
 class SearchInItemsTheLibraryCall {
@@ -2044,16 +2912,30 @@ class SearchInItemsTheLibraryCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Search in items the library',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/library/search',
+      apiUrl: '${baseUrl}/library/search',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -2064,10 +2946,12 @@ class SearchInItemsTheLibraryCall {
         'query': query,
         'filters': filters,
       },
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -2085,18 +2969,32 @@ class ShareWithOthersCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     final ffApiRequestBody = '''
 {}''';
     return ApiManager.instance.makeApiCall(
       callName: 'Share with others',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/share/${type}/${id}',
+      apiUrl: '${baseUrl}/share/${type}/${id}',
       callType: ApiCallType.POST,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -2106,10 +3004,12 @@ class ShareWithOthersCall {
       params: {},
       body: ffApiRequestBody,
       bodyType: BodyType.JSON,
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -2127,19 +3027,32 @@ class RevertAPreviousSharedCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     final ffApiRequestBody = '''
 {}''';
     return ApiManager.instance.makeApiCall(
       callName: 'Revert a Previous Shared',
-      apiUrl:
-          '${LXPLearningExperiencePortalGroup.baseUrl}/unshare/${type}/${id}',
+      apiUrl: '${baseUrl}/unshare/${type}/${id}',
       callType: ApiCallType.PUT,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -2153,49 +3066,67 @@ class RevertAPreviousSharedCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
 
 class GetAListOfCoursesByLearnerCall {
   Future<ApiCallResponse> call({
-    String? origin = '',
-    String? mPUserAgent = '',
-    String? mPAuthToken = '',
-    String? mPAuthRole = '',
-    String? mPAuthDevice = '',
     int? limit,
-    String? scope = '',
+    String? scope = 'explore',
     String? lXPTenantOrigin = 'https://sdt.multipple.com',
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Get a list of Courses by learner',
-      apiUrl:
-          '${LXPLearningExperiencePortalGroup.baseUrl}/learner/course/${scope}/list',
+      apiUrl: '${baseUrl}/learner/course/${scope}/list',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
-        'Origin': '${origin}',
-        'MP-User-Agent': '${mPUserAgent}',
-        'MP-Auth-Token': '${mPAuthToken}',
-        'MP-Auth-Role': '${mPAuthRole}',
-        'MP-Auth-Device': '${mPAuthDevice}',
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
       },
       params: {
         'limit': limit,
+        'scope': scope,
       },
       returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
+
+  List? results(dynamic response) => getJsonField(
+        response,
+        r'''$.results''',
+        true,
+      ) as List?;
+  bool? error(dynamic response) => castToType<bool>(getJsonField(
+        response,
+        r'''$.error''',
+      ));
 }
 
 class SearchACourseByLearnerCall {
@@ -2211,17 +3142,30 @@ class SearchACourseByLearnerCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Search a Course by learner',
-      apiUrl:
-          '${LXPLearningExperiencePortalGroup.baseUrl}/learner/course/search',
+      apiUrl: '${baseUrl}/learner/course/search',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -2236,46 +3180,91 @@ class SearchACourseByLearnerCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
 
 class RetreiveACourseInformationByLearnerCall {
   Future<ApiCallResponse> call({
-    String? origin = '',
-    String? mPUserAgent = '',
-    String? mPAuthToken = '',
-    String? mPAuthRole = '',
-    String? mPAuthDevice = '',
     String? id = '',
     String? lXPTenantOrigin = 'https://sdt.multipple.com',
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Retreive a Course Information by learner',
-      apiUrl:
-          '${LXPLearningExperiencePortalGroup.baseUrl}/learner/course/${id}',
+      apiUrl: '${baseUrl}/learner/course/${id}',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
-        'Origin': '${origin}',
-        'MP-User-Agent': '${mPUserAgent}',
-        'MP-Auth-Token': '${mPAuthToken}',
-        'MP-Auth-Role': '${mPAuthRole}',
-        'MP-Auth-Device': '${mPAuthDevice}',
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
       },
-      params: {},
+      params: {
+        'id': id,
+      },
       returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
+
+  dynamic? course(dynamic response) => getJsonField(
+        response,
+        r'''$.course''',
+      );
+  String? name(dynamic response) => castToType<String>(getJsonField(
+        response,
+        r'''$.course.name''',
+      ));
+  String? description(dynamic response) => castToType<String>(getJsonField(
+        response,
+        r'''$.course.description''',
+      ));
+  String? difficultyLevel(dynamic response) => castToType<String>(getJsonField(
+        response,
+        r'''$.course.difficultyLevel''',
+      ));
+  int? rating(dynamic response) => castToType<int>(getJsonField(
+        response,
+        r'''$.course.rating''',
+      ));
+  List? outlines(dynamic response) => getJsonField(
+        response,
+        r'''$.course.outlines''',
+        true,
+      ) as List?;
+  List? tags(dynamic response) => getJsonField(
+        response,
+        r'''$.course.tags''',
+        true,
+      ) as List?;
+  List? instructors(dynamic response) => getJsonField(
+        response,
+        r'''$.course.instructors''',
+        true,
+      ) as List?;
 }
 
 class CreateANewCourseCall {
@@ -2289,18 +3278,32 @@ class CreateANewCourseCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     final ffApiRequestBody = '''
 {}''';
     return ApiManager.instance.makeApiCall(
       callName: 'Create a New Course',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/course/create',
+      apiUrl: '${baseUrl}/course/create',
       callType: ApiCallType.POST,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -2310,10 +3313,12 @@ class CreateANewCourseCall {
       params: {},
       body: ffApiRequestBody,
       bodyType: BodyType.JSON,
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -2330,16 +3335,30 @@ class RetreiveACourseInformationCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Retreive a Course Information',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/course/${id}',
+      apiUrl: '${baseUrl}/course/${id}',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -2347,10 +3366,12 @@ class RetreiveACourseInformationCall {
         'MP-Auth-Device': '${mPAuthDevice}',
       },
       params: {},
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -2367,16 +3388,30 @@ class GetAListOfCoursesCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Get a list of Courses',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/course/list',
+      apiUrl: '${baseUrl}/course/list',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -2386,10 +3421,12 @@ class GetAListOfCoursesCall {
       params: {
         'limit': limit,
       },
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -2407,16 +3444,30 @@ class SearchACourseCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Search a Course',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/course/search',
+      apiUrl: '${baseUrl}/course/search',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -2427,10 +3478,12 @@ class SearchACourseCall {
         'query': query,
         'filters': filters,
       },
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -2447,18 +3500,32 @@ class UpdateACourseCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     final ffApiRequestBody = '''
 {}''';
     return ApiManager.instance.makeApiCall(
       callName: 'Update a Course',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/course/update/${id}',
+      apiUrl: '${baseUrl}/course/update/${id}',
       callType: ApiCallType.PUT,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -2468,10 +3535,12 @@ class UpdateACourseCall {
       params: {},
       body: ffApiRequestBody,
       bodyType: BodyType.JSON,
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -2488,16 +3557,30 @@ class DeleteACourseCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Delete a Course',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/course/delete/${id}',
+      apiUrl: '${baseUrl}/course/delete/${id}',
       callType: ApiCallType.DELETE,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -2505,10 +3588,12 @@ class DeleteACourseCall {
         'MP-Auth-Device': '${mPAuthDevice}',
       },
       params: {},
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -2526,17 +3611,30 @@ class GetAListOfProgramsByLearnerCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Get a list of programs by learner',
-      apiUrl:
-          '${LXPLearningExperiencePortalGroup.baseUrl}/learner/program/${scope}/list',
+      apiUrl: '${baseUrl}/learner/program/${scope}/list',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -2550,6 +3648,8 @@ class GetAListOfProgramsByLearnerCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -2567,17 +3667,30 @@ class SearchAProgramByLearnerCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Search a program by learner',
-      apiUrl:
-          '${LXPLearningExperiencePortalGroup.baseUrl}/learner/program/search',
+      apiUrl: '${baseUrl}/learner/program/search',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -2592,6 +3705,8 @@ class SearchAProgramByLearnerCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -2608,17 +3723,30 @@ class RetreiveAProgramInformationByLearnerCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Retreive a program information by learner',
-      apiUrl:
-          '${LXPLearningExperiencePortalGroup.baseUrl}/learner/program/${id}',
+      apiUrl: '${baseUrl}/learner/program/${id}',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -2630,6 +3758,8 @@ class RetreiveAProgramInformationByLearnerCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -2645,18 +3775,32 @@ class CreateANewProgramCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     final ffApiRequestBody = '''
 {}''';
     return ApiManager.instance.makeApiCall(
       callName: 'Create a New Program',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/program/create',
+      apiUrl: '${baseUrl}/program/create',
       callType: ApiCallType.POST,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -2666,10 +3810,12 @@ class CreateANewProgramCall {
       params: {},
       body: ffApiRequestBody,
       bodyType: BodyType.JSON,
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -2686,16 +3832,30 @@ class RetreiveAProgramInformationCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Retreive a Program Information',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/program/${id}',
+      apiUrl: '${baseUrl}/program/${id}',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -2703,10 +3863,12 @@ class RetreiveAProgramInformationCall {
         'MP-Auth-Device': '${mPAuthDevice}',
       },
       params: {},
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -2722,16 +3884,30 @@ class GetAListOfProgramsCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Get a list of Programs',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/program/list',
+      apiUrl: '${baseUrl}/program/list',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -2739,10 +3915,12 @@ class GetAListOfProgramsCall {
         'MP-Auth-Device': '${mPAuthDevice}',
       },
       params: {},
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -2760,16 +3938,30 @@ class SearchAProgramCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Search a Program',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/program/search',
+      apiUrl: '${baseUrl}/program/search',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -2780,10 +3972,12 @@ class SearchAProgramCall {
         'query': query,
         'filters': filters,
       },
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -2800,19 +3994,32 @@ class UpdateAProgramCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     final ffApiRequestBody = '''
 {}''';
     return ApiManager.instance.makeApiCall(
       callName: 'Update a Program',
-      apiUrl:
-          '${LXPLearningExperiencePortalGroup.baseUrl}/program/update/${id}',
+      apiUrl: '${baseUrl}/program/update/${id}',
       callType: ApiCallType.PUT,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -2822,10 +4029,12 @@ class UpdateAProgramCall {
       params: {},
       body: ffApiRequestBody,
       bodyType: BodyType.JSON,
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -2842,17 +4051,30 @@ class DeleteAProgramCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Delete a Program',
-      apiUrl:
-          '${LXPLearningExperiencePortalGroup.baseUrl}/program/delete/${id}',
+      apiUrl: '${baseUrl}/program/delete/${id}',
       callType: ApiCallType.DELETE,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -2860,10 +4082,12 @@ class DeleteAProgramCall {
         'MP-Auth-Device': '${mPAuthDevice}',
       },
       params: {},
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -2879,18 +4103,32 @@ class CreateANewSessionCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     final ffApiRequestBody = '''
 {}''';
     return ApiManager.instance.makeApiCall(
       callName: 'Create a New Session',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/livesession/create',
+      apiUrl: '${baseUrl}/livesession/create',
       callType: ApiCallType.POST,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -2900,10 +4138,12 @@ class CreateANewSessionCall {
       params: {},
       body: ffApiRequestBody,
       bodyType: BodyType.JSON,
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -2920,16 +4160,30 @@ class RetreiveASessionCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Retreive a Session',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/livesession/${id}',
+      apiUrl: '${baseUrl}/livesession/${id}',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -2937,21 +4191,18 @@ class RetreiveASessionCall {
         'MP-Auth-Device': '${mPAuthDevice}',
       },
       params: {},
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
 
 class GetAListOfSessionsCall {
   Future<ApiCallResponse> call({
-    String? origin = '',
-    String? mPUserAgent = '',
-    String? mPAuthToken = '',
-    String? mPAuthRole = '',
-    String? mPAuthDevice = '',
     String? type = '',
     String? provider = '',
     int? limit,
@@ -2959,33 +4210,50 @@ class GetAListOfSessionsCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Get a list of Sessions',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/livesession/list',
+      apiUrl: '${baseUrl}/livesession/list',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
-        'Origin': '${origin}',
-        'MP-User-Agent': '${mPUserAgent}',
-        'MP-Auth-Token': '${mPAuthToken}',
-        'MP-Auth-Role': '${mPAuthRole}',
-        'MP-Auth-Device': '${mPAuthDevice}',
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
       },
       params: {
         'type': type,
         'provider': provider,
         'limit': limit,
       },
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
+
+  List? sessions(dynamic response) => getJsonField(
+        response,
+        r'''$.sessions''',
+        true,
+      ) as List?;
 }
 
 class SearchASessionCall {
@@ -3001,16 +4269,30 @@ class SearchASessionCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Search a Session',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/livesession/search',
+      apiUrl: '${baseUrl}/livesession/search',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -3021,10 +4303,12 @@ class SearchASessionCall {
         'query': query,
         'filters': filters,
       },
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -3041,17 +4325,30 @@ class DeleteASessionCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Delete a Session',
-      apiUrl:
-          '${LXPLearningExperiencePortalGroup.baseUrl}/livesession/delete/${id}',
+      apiUrl: '${baseUrl}/livesession/delete/${id}',
       callType: ApiCallType.DELETE,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -3059,10 +4356,12 @@ class DeleteASessionCall {
         'MP-Auth-Device': '${mPAuthDevice}',
       },
       params: {},
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -3078,18 +4377,32 @@ class CreateANewLearningPathCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     final ffApiRequestBody = '''
 {}''';
     return ApiManager.instance.makeApiCall(
       callName: 'Create a New Learning Path',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/learningpath/create',
+      apiUrl: '${baseUrl}/learningpath/create',
       callType: ApiCallType.POST,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -3099,10 +4412,12 @@ class CreateANewLearningPathCall {
       params: {},
       body: ffApiRequestBody,
       bodyType: BodyType.JSON,
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -3119,16 +4434,30 @@ class RetreiveALearningPathCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Retreive a Learning Path',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/learningpath/${id}',
+      apiUrl: '${baseUrl}/learningpath/${id}',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -3136,10 +4465,12 @@ class RetreiveALearningPathCall {
         'MP-Auth-Device': '${mPAuthDevice}',
       },
       params: {},
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -3155,16 +4486,30 @@ class GetAListOfLearningPathsCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Get a list of Learning Paths',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/learningpath/list',
+      apiUrl: '${baseUrl}/learningpath/list',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -3172,10 +4517,12 @@ class GetAListOfLearningPathsCall {
         'MP-Auth-Device': '${mPAuthDevice}',
       },
       params: {},
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -3193,16 +4540,30 @@ class SearchALearningPathCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Search a Learning Path',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/learningpath/search',
+      apiUrl: '${baseUrl}/learningpath/search',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -3213,10 +4574,12 @@ class SearchALearningPathCall {
         'query': query,
         'filters': filters,
       },
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -3233,19 +4596,32 @@ class UpdateALearningPathCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     final ffApiRequestBody = '''
 {}''';
     return ApiManager.instance.makeApiCall(
       callName: 'Update a Learning Path',
-      apiUrl:
-          '${LXPLearningExperiencePortalGroup.baseUrl}/learningpath/update/${id}',
+      apiUrl: '${baseUrl}/learningpath/update/${id}',
       callType: ApiCallType.PUT,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -3255,10 +4631,12 @@ class UpdateALearningPathCall {
       params: {},
       body: ffApiRequestBody,
       bodyType: BodyType.JSON,
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -3275,17 +4653,30 @@ class DeleteALearningPathCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Delete a Learning Path',
-      apiUrl:
-          '${LXPLearningExperiencePortalGroup.baseUrl}/learningpath/delete/${id}',
+      apiUrl: '${baseUrl}/learningpath/delete/${id}',
       callType: ApiCallType.DELETE,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -3293,10 +4684,12 @@ class DeleteALearningPathCall {
         'MP-Auth-Device': '${mPAuthDevice}',
       },
       params: {},
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -3308,22 +4701,38 @@ class EnrollToACourseOrProgramCall {
     String? mPAuthToken = '',
     String? mPAuthRole = '',
     String? mPAuthDevice = '',
+    String? id = '',
+    String? type = '',
     String? lXPTenantOrigin = 'https://sdt.multipple.com',
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     final ffApiRequestBody = '''
 {}''';
     return ApiManager.instance.makeApiCall(
       callName: 'Enroll to a Course or Program',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/enrollment/add',
+      apiUrl: '${baseUrl}/enrollment/add',
       callType: ApiCallType.POST,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -3333,10 +4742,12 @@ class EnrollToACourseOrProgramCall {
       params: {},
       body: ffApiRequestBody,
       bodyType: BodyType.JSON,
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -3353,16 +4764,30 @@ class RetreiveAnEnrollmentCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Retreive an Enrollment',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/enrollment/${id}',
+      apiUrl: '${baseUrl}/enrollment/${id}',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -3370,46 +4795,54 @@ class RetreiveAnEnrollmentCall {
         'MP-Auth-Device': '${mPAuthDevice}',
       },
       params: {},
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
 
 class GetAListOfEnrollmentsByALearnerCall {
   Future<ApiCallResponse> call({
-    String? origin = '',
-    String? mPUserAgent = '',
-    String? mPAuthToken = '',
-    String? mPAuthRole = '',
-    String? mPAuthDevice = '',
     String? lXPTenantOrigin = 'https://sdt.multipple.com',
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Get a list of Enrollments by a Learner',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/enrollment/list',
+      apiUrl: '${baseUrl}/enrollment/list',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
-        'Origin': '${origin}',
-        'MP-User-Agent': '${mPUserAgent}',
-        'MP-Auth-Token': '${mPAuthToken}',
-        'MP-Auth-Role': '${mPAuthRole}',
-        'MP-Auth-Device': '${mPAuthDevice}',
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
       },
       params: {},
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -3426,17 +4859,30 @@ class GetAListOfEnrollmentsByAAdminOrInstructorCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Get a list of Enrollments by a Admin or Instructor',
-      apiUrl:
-          '${LXPLearningExperiencePortalGroup.baseUrl}/enrollment/list/${targetId}',
+      apiUrl: '${baseUrl}/enrollment/list/${targetId}',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -3444,10 +4890,12 @@ class GetAListOfEnrollmentsByAAdminOrInstructorCall {
         'MP-Auth-Device': '${mPAuthDevice}',
       },
       params: {},
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -3465,16 +4913,30 @@ class SearchAnEnrollmentCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Search an Enrollment',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/enrollment/search',
+      apiUrl: '${baseUrl}/enrollment/search',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -3485,10 +4947,12 @@ class SearchAnEnrollmentCall {
         'query': query,
         'filters': filters,
       },
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -3505,17 +4969,30 @@ class CancelAnEnrollmentCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Cancel an Enrollment',
-      apiUrl:
-          '${LXPLearningExperiencePortalGroup.baseUrl}/enrollment/cancel/${id}',
+      apiUrl: '${baseUrl}/enrollment/cancel/${id}',
       callType: ApiCallType.PUT,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -3524,10 +5001,12 @@ class CancelAnEnrollmentCall {
       },
       params: {},
       bodyType: BodyType.JSON,
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -3545,17 +5024,30 @@ class SuspendAndRevertAnEnrollmentByAdminCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Suspend and Revert an enrollment by Admin',
-      apiUrl:
-          '${LXPLearningExperiencePortalGroup.baseUrl}/enrollment/${action}/${id}',
+      apiUrl: '${baseUrl}/enrollment/${action}/${id}',
       callType: ApiCallType.PUT,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -3564,10 +5056,12 @@ class SuspendAndRevertAnEnrollmentByAdminCall {
       },
       params: {},
       bodyType: BodyType.X_WWW_FORM_URL_ENCODED,
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -3584,19 +5078,32 @@ class DeclareALearningProgressStageCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     final ffApiRequestBody = '''
 {}''';
     return ApiManager.instance.makeApiCall(
       callName: 'Declare a Learning Progress Stage',
-      apiUrl:
-          '${LXPLearningExperiencePortalGroup.baseUrl}/classroom/${id}/progress/stage/declare',
+      apiUrl: '${baseUrl}/classroom/${id}/progress/stage/declare',
       callType: ApiCallType.POST,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -3606,10 +5113,12 @@ class DeclareALearningProgressStageCall {
       params: {},
       body: ffApiRequestBody,
       bodyType: BodyType.JSON,
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -3626,17 +5135,30 @@ class UpdateALearningProgressStageRecordCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Update a Learning Progress Stage Record',
-      apiUrl:
-          '${LXPLearningExperiencePortalGroup.baseUrl}/classroom/${id}/progress/stage/update',
+      apiUrl: '${baseUrl}/classroom/${id}/progress/stage/update',
       callType: ApiCallType.PUT,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -3645,10 +5167,12 @@ class UpdateALearningProgressStageRecordCall {
       },
       params: {},
       bodyType: BodyType.X_WWW_FORM_URL_ENCODED,
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -3665,19 +5189,32 @@ class RecordAnAssessmentResultsCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     final ffApiRequestBody = '''
 {}''';
     return ApiManager.instance.makeApiCall(
       callName: 'Record an Assessment Results',
-      apiUrl:
-          '${LXPLearningExperiencePortalGroup.baseUrl}/classroom/${id}/progress/assessment',
+      apiUrl: '${baseUrl}/classroom/${id}/progress/assessment',
       callType: ApiCallType.POST,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -3687,10 +5224,12 @@ class RecordAnAssessmentResultsCall {
       params: {},
       body: ffApiRequestBody,
       bodyType: BodyType.JSON,
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -3707,19 +5246,32 @@ class IssueACertificateToALearnerCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     final ffApiRequestBody = '''
 {}''';
     return ApiManager.instance.makeApiCall(
       callName: 'Issue a Certificate to a Learner',
-      apiUrl:
-          '${LXPLearningExperiencePortalGroup.baseUrl}/certificate/${templateId}/issue',
+      apiUrl: '${baseUrl}/certificate/${templateId}/issue',
       callType: ApiCallType.POST,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -3733,6 +5285,8 @@ class IssueACertificateToALearnerCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -3749,19 +5303,32 @@ class ConfigureAnExtensionCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     final ffApiRequestBody = '''
 {}''';
     return ApiManager.instance.makeApiCall(
       callName: 'Configure an Extension',
-      apiUrl:
-          '${LXPLearningExperiencePortalGroup.baseUrl}/extension/${id}/configure',
+      apiUrl: '${baseUrl}/extension/${id}/configure',
       callType: ApiCallType.POST,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -3771,10 +5338,12 @@ class ConfigureAnExtensionCall {
       params: {},
       body: ffApiRequestBody,
       bodyType: BodyType.JSON,
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -3792,17 +5361,30 @@ class RetreiveExtensionConfigurationCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Retreive Extension Configuration',
-      apiUrl:
-          '${LXPLearningExperiencePortalGroup.baseUrl}/extension/${id}/${configType}',
+      apiUrl: '${baseUrl}/extension/${id}/${configType}',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -3810,10 +5392,12 @@ class RetreiveExtensionConfigurationCall {
         'MP-Auth-Device': '${mPAuthDevice}',
       },
       params: {},
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -3831,17 +5415,30 @@ class UpdateSpecificExtensionConfigurationCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Update Specific Extension Configuration',
-      apiUrl:
-          '${LXPLearningExperiencePortalGroup.baseUrl}/extension/${id}/${configType}/update',
+      apiUrl: '${baseUrl}/extension/${id}/${configType}/update',
       callType: ApiCallType.PUT,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -3850,10 +5447,12 @@ class UpdateSpecificExtensionConfigurationCall {
       },
       params: {},
       bodyType: BodyType.X_WWW_FORM_URL_ENCODED,
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -3869,18 +5468,32 @@ class InstallANewExtensionCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     final ffApiRequestBody = '''
 {}''';
     return ApiManager.instance.makeApiCall(
       callName: 'Install a new Extension',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/extension/install',
+      apiUrl: '${baseUrl}/extension/install',
       callType: ApiCallType.POST,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -3890,10 +5503,12 @@ class InstallANewExtensionCall {
       params: {},
       body: ffApiRequestBody,
       bodyType: BodyType.JSON,
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -3910,16 +5525,30 @@ class RetreiveExtensionCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Retreive Extension',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/extension/${id}',
+      apiUrl: '${baseUrl}/extension/${id}',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -3927,10 +5556,12 @@ class RetreiveExtensionCall {
         'MP-Auth-Device': '${mPAuthDevice}',
       },
       params: {},
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -3946,16 +5577,30 @@ class GetAllInstalledExtensionListCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Get all installed Extension List',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/extension/list',
+      apiUrl: '${baseUrl}/extension/list',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -3963,10 +5608,12 @@ class GetAllInstalledExtensionListCall {
         'MP-Auth-Device': '${mPAuthDevice}',
       },
       params: {},
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -3984,16 +5631,30 @@ class SearchAnExtensionCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Search an Extension',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/extension/search',
+      apiUrl: '${baseUrl}/extension/search',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -4004,10 +5665,12 @@ class SearchAnExtensionCall {
         'query': query,
         'filters': filters,
       },
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -4024,17 +5687,30 @@ class UninstallAnExtensionCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Uninstall an Extension',
-      apiUrl:
-          '${LXPLearningExperiencePortalGroup.baseUrl}/extension/${id}/uninstall',
+      apiUrl: '${baseUrl}/extension/${id}/uninstall',
       callType: ApiCallType.DELETE,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -4042,10 +5718,12 @@ class UninstallAnExtensionCall {
         'MP-Auth-Device': '${mPAuthDevice}',
       },
       params: {},
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -4061,18 +5739,32 @@ class CreateNewAppCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     final ffApiRequestBody = '''
 {}''';
     return ApiManager.instance.makeApiCall(
       callName: 'Create new App',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/app/create',
+      apiUrl: '${baseUrl}/app/create',
       callType: ApiCallType.POST,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -4082,10 +5774,12 @@ class CreateNewAppCall {
       params: {},
       body: ffApiRequestBody,
       bodyType: BodyType.JSON,
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -4102,16 +5796,30 @@ class RetreiveAppCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Retreive App',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/app/${id}',
+      apiUrl: '${baseUrl}/app/${id}',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -4119,10 +5827,12 @@ class RetreiveAppCall {
         'MP-Auth-Device': '${mPAuthDevice}',
       },
       params: {},
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -4139,16 +5849,30 @@ class GetAppsListCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Get Apps List',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/app/list/${type}',
+      apiUrl: '${baseUrl}/app/list/${type}',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -4156,10 +5880,12 @@ class GetAppsListCall {
         'MP-Auth-Device': '${mPAuthDevice}',
       },
       params: {},
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -4177,16 +5903,30 @@ class SearchAnAppCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Search an App',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/app/search',
+      apiUrl: '${baseUrl}/app/search',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -4197,10 +5937,12 @@ class SearchAnAppCall {
         'query': query,
         'filters': filters,
       },
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -4217,16 +5959,30 @@ class UpdateAnAppCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Update an App',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/app/${id}/update',
+      apiUrl: '${baseUrl}/app/${id}/update',
       callType: ApiCallType.PUT,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -4235,10 +5991,12 @@ class UpdateAnAppCall {
       },
       params: {},
       bodyType: BodyType.X_WWW_FORM_URL_ENCODED,
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -4255,16 +6013,30 @@ class DeleteAnAppCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Delete an App',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/app/${id}/delete',
+      apiUrl: '${baseUrl}/app/${id}/delete',
       callType: ApiCallType.DELETE,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -4272,10 +6044,12 @@ class DeleteAnAppCall {
         'MP-Auth-Device': '${mPAuthDevice}',
       },
       params: {},
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -4291,18 +6065,32 @@ class CreateNewSiteCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     final ffApiRequestBody = '''
 {}''';
     return ApiManager.instance.makeApiCall(
       callName: 'Create new site',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/site/create',
+      apiUrl: '${baseUrl}/site/create',
       callType: ApiCallType.POST,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -4312,10 +6100,12 @@ class CreateNewSiteCall {
       params: {},
       body: ffApiRequestBody,
       bodyType: BodyType.JSON,
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -4332,16 +6122,30 @@ class RetreiveSiteInformationCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Retreive site information',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/site/${id}',
+      apiUrl: '${baseUrl}/site/${id}',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -4349,10 +6153,12 @@ class RetreiveSiteInformationCall {
         'MP-Auth-Device': '${mPAuthDevice}',
       },
       params: {},
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -4369,16 +6175,30 @@ class GetListOfSitesCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Get list of sites',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/site/list',
+      apiUrl: '${baseUrl}/site/list',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -4388,10 +6208,12 @@ class GetListOfSitesCall {
       params: {
         'limit': limit,
       },
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -4409,16 +6231,30 @@ class SearchSiteCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Search site',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/site/search',
+      apiUrl: '${baseUrl}/site/search',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -4429,10 +6265,12 @@ class SearchSiteCall {
         'query': query,
         'filters': filters,
       },
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -4449,16 +6287,30 @@ class DeleteArchiveASiteCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Delete/Archive a site',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/site/delete/${id}',
+      apiUrl: '${baseUrl}/site/delete/${id}',
       callType: ApiCallType.DELETE,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -4466,10 +6318,12 @@ class DeleteArchiveASiteCall {
         'MP-Auth-Device': '${mPAuthDevice}',
       },
       params: {},
-      returnBody: false,
+      returnBody: true,
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -4486,18 +6340,32 @@ class RecordASaleCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     final ffApiRequestBody = '''
 {}''';
     return ApiManager.instance.makeApiCall(
       callName: 'Record a sale',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/sales',
+      apiUrl: '${baseUrl}/sales',
       callType: ApiCallType.POST,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -4511,6 +6379,8 @@ class RecordASaleCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -4527,16 +6397,30 @@ class RetreiveSaleDetailsCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Retreive sale details',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/sales/${id}',
+      apiUrl: '${baseUrl}/sales/${id}',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -4548,6 +6432,8 @@ class RetreiveSaleDetailsCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -4565,16 +6451,30 @@ class FetchSalesRecordListCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Fetch sales record list',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/sales/list',
+      apiUrl: '${baseUrl}/sales/list',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -4589,6 +6489,8 @@ class FetchSalesRecordListCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -4604,16 +6506,30 @@ class GetSalesStatsCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Get Sales Stats',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/sales/stats',
+      apiUrl: '${baseUrl}/sales/stats',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -4625,6 +6541,8 @@ class GetSalesStatsCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -4641,16 +6559,30 @@ class SearchSaleCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Search sale',
-      apiUrl: '${LXPLearningExperiencePortalGroup.baseUrl}/sales/search',
+      apiUrl: '${baseUrl}/sales/search',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -4664,6 +6596,8 @@ class SearchSaleCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -4681,19 +6615,32 @@ class UpdateSiteInformationCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     final ffApiRequestBody = '''
 {}''';
     return ApiManager.instance.makeApiCall(
       callName: 'Update Site information',
-      apiUrl:
-          '${LXPLearningExperiencePortalGroup.baseUrl}/sales/${id}/status/${status}',
+      apiUrl: '${baseUrl}/sales/${id}/status/${status}',
       callType: ApiCallType.PATCH,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -4707,6 +6654,8 @@ class UpdateSiteInformationCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -4722,19 +6671,32 @@ class SubscribeCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     final ffApiRequestBody = '''
 {}''';
     return ApiManager.instance.makeApiCall(
       callName: 'Subscribe',
-      apiUrl:
-          '${LXPLearningExperiencePortalGroup.baseUrl}/subscription/tenant/add',
+      apiUrl: '${baseUrl}/subscription/tenant/add',
       callType: ApiCallType.POST,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -4748,6 +6710,8 @@ class SubscribeCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -4764,17 +6728,30 @@ class PreviousSubscriptionsHistoryCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Previous subscriptions history',
-      apiUrl:
-          '${LXPLearningExperiencePortalGroup.baseUrl}/subscription/tenant/history',
+      apiUrl: '${baseUrl}/subscription/tenant/history',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -4788,6 +6765,8 @@ class PreviousSubscriptionsHistoryCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -4805,17 +6784,30 @@ class SearchPreviousSubscriptionCall {
     String? homeOrigin = 'https://app.multipple.com',
     String? lXPUserAgent = 'MP.mobile/1.0',
     String? lXPAuthToken =
-        'DkBGD3Ec1c02qizDirAzfnv8l71zkuuFCmyuv5Dfn5kE42irkrvnoiGglB3Ahz5h1o5E1iiCm0bzgr1tndexrfufeD93k4ijv78k9vFr6rew6698F9Gnth7mFd4Bl0lwq8oydccsC5enlcy5eqkB13embwDm1GFry2lGbx86kzqikFpnvirma9rroxA3lspfg4fF95Apd4sq1DpylrAcGjFygnclt0AdlG20BCmos6q7iahqbkGvbBn6jssFgvkD7fhf9i3sGk4Dh7yFg1ow6l2\$3oJLbsu6iw4JQ9i9ZHBFxXMa5h6gt9UWBq9d',
-    String? lXPAuthRole = 'SUPER',
-    String? lXPAuthDevice = '048502b1-d7ac-4ebc-b567-a2a7b1b746de',
-  }) {
+        '3UXZxpXNypGZ0kWY3hGallGdwZzcnp2axEjNrZWM3o2ctFTM4AHcxpHZ3g2d1oWZzUHdyZWMzoWM1QTcp5mZqZWNx4Wdzk2ax4GdxJ3YihzMrBXZpVjct9mao9mZzoGc0U3MhJXN3Ene0V2dkRXYwZWN0YzZ0omcjRXZylmbzoWMr92aydmayRDdlt2ZhZGe3VXZh5Gd5BHO112a4ETajFnY3U2czIWZz02MlhzMmNWc1RjcudTZyNWb042czl2YuJWbyFzc3AHZ112anNnYx9Wb0UGOzlWcwVXblhTMwFHez02d1NjYxdHZ382Z0VGOuRXNxMXdmBXM1UjcxcjY\$3oJLnUSxtPKDY7mowTEuj1tbZjoB3XS7Xd1u',
+    String? lXPAuthRole = 'LEARNER',
+    String? lXPAuthDevice = '88670343-3036-4f3a-b8b0-baf8c704d43e',
+  }) async {
+    final baseUrl = LXPLearningExperiencePortalGroup.getBaseUrl(
+      lXPTenantOrigin: lXPTenantOrigin,
+      homeOrigin: homeOrigin,
+      lXPUserAgent: lXPUserAgent,
+      lXPAuthToken: lXPAuthToken,
+      lXPAuthRole: lXPAuthRole,
+      lXPAuthDevice: lXPAuthDevice,
+    );
+
     return ApiManager.instance.makeApiCall(
       callName: 'Search Previous Subscription',
-      apiUrl:
-          '${LXPLearningExperiencePortalGroup.baseUrl}/subscription/history/search',
+      apiUrl: '${baseUrl}/subscription/history/search',
       callType: ApiCallType.GET,
       headers: {
-        ...LXPLearningExperiencePortalGroup.headers,
+        'Origin': '${lXPTenantOrigin}',
+        'MP-User-Agent': '${lXPUserAgent}',
+        'MP-Auth-Token': '${lXPAuthToken}',
+        'MP-Auth-Device': '${lXPAuthDevice}',
+        'MP-Auth-Role': '${lXPAuthRole}',
+        'MP-RO': '${lXPTenantOrigin}',
         'Origin': '${origin}',
         'MP-User-Agent': '${mPUserAgent}',
         'MP-Auth-Token': '${mPAuthToken}',
@@ -4830,6 +6822,8 @@ class SearchPreviousSubscriptionCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -4839,7 +6833,7 @@ class SearchPreviousSubscriptionCall {
 /// Start WEB - Web Application Support Services Group Code
 
 class WEBWebApplicationSupportServicesGroup {
-  static String baseUrl = 'http://{{mp_tenantorigin}}';
+  static String getBaseUrl() => 'http://{{mp_tenantorigin}}';
   static Map<String, String> headers = {};
   static ProxyExtensionRequestCall proxyExtensionRequestCall =
       ProxyExtensionRequestCall();
@@ -4849,17 +6843,16 @@ class WEBWebApplicationSupportServicesGroup {
 }
 
 class ProxyExtensionRequestCall {
-  Future<ApiCallResponse> call() {
+  Future<ApiCallResponse> call() async {
+    final baseUrl = WEBWebApplicationSupportServicesGroup.getBaseUrl();
+
     final ffApiRequestBody = '''
 {}''';
     return ApiManager.instance.makeApiCall(
       callName: 'Proxy extension request',
-      apiUrl:
-          '${WEBWebApplicationSupportServicesGroup.baseUrl}/extension/request',
+      apiUrl: '${baseUrl}/extension/request',
       callType: ApiCallType.POST,
-      headers: {
-        ...WEBWebApplicationSupportServicesGroup.headers,
-      },
+      headers: {},
       params: {},
       body: ffApiRequestBody,
       bodyType: BodyType.JSON,
@@ -4867,6 +6860,8 @@ class ProxyExtensionRequestCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -4874,14 +6869,14 @@ class ProxyExtensionRequestCall {
 class LookupDomainCall {
   Future<ApiCallResponse> call({
     String? hostname = '',
-  }) {
+  }) async {
+    final baseUrl = WEBWebApplicationSupportServicesGroup.getBaseUrl();
+
     return ApiManager.instance.makeApiCall(
       callName: 'Lookup domain',
-      apiUrl: '${WEBWebApplicationSupportServicesGroup.baseUrl}/lookup',
+      apiUrl: '${baseUrl}/lookup',
       callType: ApiCallType.GET,
-      headers: {
-        ...WEBWebApplicationSupportServicesGroup.headers,
-      },
+      headers: {},
       params: {
         'hostname': hostname,
       },
@@ -4889,21 +6884,23 @@ class LookupDomainCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
 
 class GetStripeClientSecretCall {
-  Future<ApiCallResponse> call() {
+  Future<ApiCallResponse> call() async {
+    final baseUrl = WEBWebApplicationSupportServicesGroup.getBaseUrl();
+
     final ffApiRequestBody = '''
 {}''';
     return ApiManager.instance.makeApiCall(
       callName: 'Get stripe client secret',
-      apiUrl: '${WEBWebApplicationSupportServicesGroup.baseUrl}/stripe/cs',
+      apiUrl: '${baseUrl}/stripe/cs',
       callType: ApiCallType.POST,
-      headers: {
-        ...WEBWebApplicationSupportServicesGroup.headers,
-      },
+      headers: {},
       params: {},
       body: ffApiRequestBody,
       bodyType: BodyType.JSON,
@@ -4911,6 +6908,8 @@ class GetStripeClientSecretCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -4920,7 +6919,7 @@ class GetStripeClientSecretCall {
 /// Start MDP - Multi-tenancy Data Provider Group Code
 
 class MDPMultiTenancyDataProviderGroup {
-  static String baseUrl = 'http://{{mdp_base_url}}';
+  static String getBaseUrl() => 'http://{{mdp_base_url}}';
   static Map<String, String> headers = {};
   static AddNewTenantCall addNewTenantCall = AddNewTenantCall();
   static UpdateTenantDatabaseInformationCall
@@ -4940,13 +6939,14 @@ class AddNewTenantCall {
     String? mdpAccessToken = '',
     String? mdpUserAgent = '',
     String? origin = '',
-  }) {
+  }) async {
+    final baseUrl = MDPMultiTenancyDataProviderGroup.getBaseUrl();
+
     return ApiManager.instance.makeApiCall(
       callName: 'Add new Tenant',
-      apiUrl: '${MDPMultiTenancyDataProviderGroup.baseUrl}/tenant/add',
+      apiUrl: '${baseUrl}/tenant/add',
       callType: ApiCallType.POST,
       headers: {
-        ...MDPMultiTenancyDataProviderGroup.headers,
         'mdp-access-token': '${mdpAccessToken}',
         'mdp-user-agent': '${mdpUserAgent}',
         'origin': '${origin}',
@@ -4957,6 +6957,8 @@ class AddNewTenantCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -4967,13 +6969,14 @@ class UpdateTenantDatabaseInformationCall {
     String? mdpUserAgent = '',
     String? origin = '',
     String? id = '',
-  }) {
+  }) async {
+    final baseUrl = MDPMultiTenancyDataProviderGroup.getBaseUrl();
+
     return ApiManager.instance.makeApiCall(
       callName: 'Update tenant database information',
-      apiUrl: '${MDPMultiTenancyDataProviderGroup.baseUrl}/tenant/${id}/update',
+      apiUrl: '${baseUrl}/tenant/${id}/update',
       callType: ApiCallType.PUT,
       headers: {
-        ...MDPMultiTenancyDataProviderGroup.headers,
         'mdp-access-token': '${mdpAccessToken}',
         'mdp-user-agent': '${mdpUserAgent}',
         'origin': '${origin}',
@@ -4984,6 +6987,8 @@ class UpdateTenantDatabaseInformationCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -4994,13 +6999,14 @@ class DeleteTenantDatabaseCall {
     String? mdpUserAgent = '',
     String? origin = '',
     String? id = '',
-  }) {
+  }) async {
+    final baseUrl = MDPMultiTenancyDataProviderGroup.getBaseUrl();
+
     return ApiManager.instance.makeApiCall(
       callName: 'Delete tenant database',
-      apiUrl: '${MDPMultiTenancyDataProviderGroup.baseUrl}/tenant/${id}/drop',
+      apiUrl: '${baseUrl}/tenant/${id}/drop',
       callType: ApiCallType.DELETE,
       headers: {
-        ...MDPMultiTenancyDataProviderGroup.headers,
         'mdp-access-token': '${mdpAccessToken}',
         'mdp-user-agent': '${mdpUserAgent}',
         'origin': '${origin}',
@@ -5010,6 +7016,8 @@ class DeleteTenantDatabaseCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -5020,15 +7028,16 @@ class InsertCall {
     String? mdpUserAgent = '',
     String? mdpTenantId = '',
     String? origin = '',
-  }) {
+  }) async {
+    final baseUrl = MDPMultiTenancyDataProviderGroup.getBaseUrl();
+
     final ffApiRequestBody = '''
 {}''';
     return ApiManager.instance.makeApiCall(
       callName: 'Insert',
-      apiUrl: '${MDPMultiTenancyDataProviderGroup.baseUrl}/query/insert',
+      apiUrl: '${baseUrl}/query/insert',
       callType: ApiCallType.POST,
       headers: {
-        ...MDPMultiTenancyDataProviderGroup.headers,
         'mdp-access-token': '${mdpAccessToken}',
         'mdp-user-agent': '${mdpUserAgent}',
         'mdp-tenant-id': '${mdpTenantId}',
@@ -5041,6 +7050,8 @@ class InsertCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -5052,15 +7063,16 @@ class FindCall {
     String? mdpTenantId = '',
     String? origin = '',
     String? target = '',
-  }) {
+  }) async {
+    final baseUrl = MDPMultiTenancyDataProviderGroup.getBaseUrl();
+
     final ffApiRequestBody = '''
 {}''';
     return ApiManager.instance.makeApiCall(
       callName: 'Find',
-      apiUrl: '${MDPMultiTenancyDataProviderGroup.baseUrl}/query/find',
+      apiUrl: '${baseUrl}/query/find',
       callType: ApiCallType.POST,
       headers: {
-        ...MDPMultiTenancyDataProviderGroup.headers,
         'mdp-access-token': '${mdpAccessToken}',
         'mdp-user-agent': '${mdpUserAgent}',
         'mdp-tenant-id': '${mdpTenantId}',
@@ -5073,6 +7085,8 @@ class FindCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -5083,15 +7097,16 @@ class UpdateCall {
     String? mdpUserAgent = '',
     String? mdpTenantId = '',
     String? origin = '',
-  }) {
+  }) async {
+    final baseUrl = MDPMultiTenancyDataProviderGroup.getBaseUrl();
+
     final ffApiRequestBody = '''
 {}''';
     return ApiManager.instance.makeApiCall(
       callName: 'Update',
-      apiUrl: '${MDPMultiTenancyDataProviderGroup.baseUrl}/query/update',
+      apiUrl: '${baseUrl}/query/update',
       callType: ApiCallType.PUT,
       headers: {
-        ...MDPMultiTenancyDataProviderGroup.headers,
         'mdp-access-token': '${mdpAccessToken}',
         'mdp-user-agent': '${mdpUserAgent}',
         'mdp-tenant-id': '${mdpTenantId}',
@@ -5104,6 +7119,8 @@ class UpdateCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -5115,13 +7132,14 @@ class DeleteCall {
     String? mdpTenantId = '',
     String? origin = '',
     String? target = '',
-  }) {
+  }) async {
+    final baseUrl = MDPMultiTenancyDataProviderGroup.getBaseUrl();
+
     return ApiManager.instance.makeApiCall(
       callName: 'Delete',
-      apiUrl: '${MDPMultiTenancyDataProviderGroup.baseUrl}/query/delete',
+      apiUrl: '${baseUrl}/query/delete',
       callType: ApiCallType.DELETE,
       headers: {
-        ...MDPMultiTenancyDataProviderGroup.headers,
         'mdp-access-token': '${mdpAccessToken}',
         'mdp-user-agent': '${mdpUserAgent}',
         'mdp-tenant-id': '${mdpTenantId}',
@@ -5134,6 +7152,8 @@ class DeleteCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -5144,15 +7164,16 @@ class AggregateCall {
     String? mdpUserAgent = '',
     String? mdpTenantId = '',
     String? origin = '',
-  }) {
+  }) async {
+    final baseUrl = MDPMultiTenancyDataProviderGroup.getBaseUrl();
+
     final ffApiRequestBody = '''
 {}''';
     return ApiManager.instance.makeApiCall(
       callName: 'Aggregate',
-      apiUrl: '${MDPMultiTenancyDataProviderGroup.baseUrl}/query/aggregate',
+      apiUrl: '${baseUrl}/query/aggregate',
       callType: ApiCallType.POST,
       headers: {
-        ...MDPMultiTenancyDataProviderGroup.headers,
         'mdp-access-token': '${mdpAccessToken}',
         'mdp-user-agent': '${mdpUserAgent}',
         'mdp-tenant-id': '${mdpTenantId}',
@@ -5165,6 +7186,8 @@ class AggregateCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
 }
@@ -5172,7 +7195,7 @@ class AggregateCall {
 /// End MDP - Multi-tenancy Data Provider Group Code
 
 class SigningCall {
-  static Future<ApiCallResponse> call() {
+  static Future<ApiCallResponse> call() async {
     return ApiManager.instance.makeApiCall(
       callName: 'Signing',
       apiUrl: 'https://auth.multipple.com/v1/signin',
@@ -5191,8 +7214,55 @@ class SigningCall {
       encodeBodyUtf8: false,
       decodeUtf8: false,
       cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
     );
   }
+}
+
+class GetVTSDataCall {
+  static Future<ApiCallResponse> call({
+    String? url = 'https://vts.webmicros.com/v1/video/hYWXMOVRxvfz',
+    String? vtsNamespace = 'school-oBtUghCrb0v',
+    String? vtsAccessToken =
+        'eE9nPRXKzPDlkOTc1NjQyN2M1NGUjZTg5yNRzi3gR2M0Zcj9GVNxZKTI4MzY3ND2N5aSpkQr6NjNDOpdoU07DddWOO',
+    String? vtsApplication = 'Multipple',
+    String? vtsUserAgent = 'MP.WEB/2.0',
+    String? origin = 'https://sdt.multipple.com',
+  }) async {
+    return ApiManager.instance.makeApiCall(
+      callName: 'Get VTS Data',
+      apiUrl: '${url}',
+      callType: ApiCallType.GET,
+      headers: {
+        'vts-namespace': '${vtsNamespace}',
+        'vts-access-token': '${vtsAccessToken}',
+        'vts-application': '${vtsApplication}',
+        'vts-user-agent': '${vtsUserAgent}',
+      },
+      params: {},
+      returnBody: true,
+      encodeBodyUtf8: false,
+      decodeUtf8: false,
+      cache: false,
+      isStreamingApi: false,
+      alwaysAllowBody: false,
+    );
+  }
+
+  static String? originalUrl(dynamic response) =>
+      castToType<String>(getJsonField(
+        response,
+        r'''$.dataset.sources.original''',
+      ));
+  static String? hlsUrl(dynamic response) => castToType<String>(getJsonField(
+        response,
+        r'''$.dataset.sources.hls''',
+      ));
+  static bool? error(dynamic response) => castToType<bool>(getJsonField(
+        response,
+        r'''$.error''',
+      ));
 }
 
 class ApiPagingParams {
@@ -5211,11 +7281,18 @@ class ApiPagingParams {
       'PagingParams(nextPageNumber: $nextPageNumber, numItems: $numItems, lastResponse: $lastResponse,)';
 }
 
+String _toEncodable(dynamic item) {
+  return item;
+}
+
 String _serializeList(List? list) {
   list ??= <String>[];
   try {
-    return json.encode(list);
+    return json.encode(list, toEncodable: _toEncodable);
   } catch (_) {
+    if (kDebugMode) {
+      print("List serialization failed. Returning empty list.");
+    }
     return '[]';
   }
 }
@@ -5223,8 +7300,11 @@ String _serializeList(List? list) {
 String _serializeJson(dynamic jsonVar, [bool isList = false]) {
   jsonVar ??= (isList ? [] : {});
   try {
-    return json.encode(jsonVar);
+    return json.encode(jsonVar, toEncodable: _toEncodable);
   } catch (_) {
+    if (kDebugMode) {
+      print("Json serialization failed. Returning empty json.");
+    }
     return isList ? '[]' : '{}';
   }
 }

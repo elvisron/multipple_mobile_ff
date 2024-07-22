@@ -8,10 +8,10 @@ import 'video_list_unplayed_model.dart';
 export 'video_list_unplayed_model.dart';
 
 class VideoListUnplayedWidget extends StatefulWidget {
-  const VideoListUnplayedWidget({Key? key}) : super(key: key);
+  const VideoListUnplayedWidget({super.key});
 
   @override
-  _VideoListUnplayedWidgetState createState() =>
+  State<VideoListUnplayedWidget> createState() =>
       _VideoListUnplayedWidgetState();
 }
 
@@ -39,10 +39,8 @@ class _VideoListUnplayedWidgetState extends State<VideoListUnplayedWidget> {
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return Align(
-      alignment: AlignmentDirectional(0.00, 0.00),
+      alignment: AlignmentDirectional(0.0, 0.0),
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
@@ -67,7 +65,7 @@ class _VideoListUnplayedWidgetState extends State<VideoListUnplayedWidget> {
                         decoration: BoxDecoration(
                           shape: BoxShape.rectangle,
                         ),
-                        alignment: AlignmentDirectional(0.00, 0.00),
+                        alignment: AlignmentDirectional(0.0, 0.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -100,7 +98,7 @@ class _VideoListUnplayedWidgetState extends State<VideoListUnplayedWidget> {
                         color: FlutterFlowTheme.of(context).secondaryText,
                         shape: BoxShape.circle,
                       ),
-                      alignment: AlignmentDirectional(0.00, 0.00),
+                      alignment: AlignmentDirectional(0.0, 0.0),
                       child: Padding(
                         padding:
                             EdgeInsetsDirectional.fromSTEB(3.0, 0.0, 0.0, 0.0),
@@ -122,6 +120,7 @@ class _VideoListUnplayedWidgetState extends State<VideoListUnplayedWidget> {
                               fontFamily: 'Readex Pro',
                               color: FlutterFlowTheme.of(context).secondaryText,
                               fontSize: 16.0,
+                              letterSpacing: 0.0,
                             ),
                       ),
                     ),
@@ -132,6 +131,7 @@ class _VideoListUnplayedWidgetState extends State<VideoListUnplayedWidget> {
                           fontFamily: 'Readex Pro',
                           color: FlutterFlowTheme.of(context).secondaryText,
                           fontSize: 12.0,
+                          letterSpacing: 0.0,
                         ),
                   ),
                   Text(
@@ -140,6 +140,7 @@ class _VideoListUnplayedWidgetState extends State<VideoListUnplayedWidget> {
                           fontFamily: 'Readex Pro',
                           color: FlutterFlowTheme.of(context).secondaryText,
                           fontSize: 12.0,
+                          letterSpacing: 0.0,
                         ),
                   ),
                 ],
@@ -160,7 +161,7 @@ class _VideoListUnplayedWidgetState extends State<VideoListUnplayedWidget> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                       ),
-                      alignment: AlignmentDirectional(0.00, 0.00),
+                      alignment: AlignmentDirectional(0.0, 0.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -183,6 +184,7 @@ class _VideoListUnplayedWidgetState extends State<VideoListUnplayedWidget> {
                               fontFamily: 'Readex Pro',
                               color: FlutterFlowTheme.of(context).secondaryText,
                               fontSize: 12.0,
+                              letterSpacing: 0.0,
                             ),
                       ),
                     ),

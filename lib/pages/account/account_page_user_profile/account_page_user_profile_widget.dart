@@ -1,5 +1,3 @@
-import '/components/certificate_card_widget.dart';
-import '/components/user_profile_card_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -12,10 +10,10 @@ import 'account_page_user_profile_model.dart';
 export 'account_page_user_profile_model.dart';
 
 class AccountPageUserProfileWidget extends StatefulWidget {
-  const AccountPageUserProfileWidget({Key? key}) : super(key: key);
+  const AccountPageUserProfileWidget({super.key});
 
   @override
-  _AccountPageUserProfileWidgetState createState() =>
+  State<AccountPageUserProfileWidget> createState() =>
       _AccountPageUserProfileWidgetState();
 }
 
@@ -29,6 +27,26 @@ class _AccountPageUserProfileWidgetState
   void initState() {
     super.initState();
     _model = createModel(context, () => AccountPageUserProfileModel());
+
+    _model.fullNameTextController ??= TextEditingController(
+        text: getJsonField(
+      FFAppState().user,
+      r'''$.first_name''',
+    ).toString().toString());
+    _model.fullNameFocusNode ??= FocusNode();
+
+    _model.emailAddressTextController ??= TextEditingController(
+        text: getJsonField(
+      FFAppState().user,
+      r'''$.email''',
+    ).toString().toString());
+    _model.emailAddressFocusNode ??= FocusNode();
+
+    _model.dateOfBirthTextController ??= TextEditingController();
+    _model.dateOfBirthFocusNode ??= FocusNode();
+
+    _model.phoneTextController ??= TextEditingController();
+    _model.phoneFocusNode ??= FocusNode();
   }
 
   @override
@@ -43,7 +61,9 @@ class _AccountPageUserProfileWidgetState
     context.watch<FFAppState>();
 
     return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
+      onTap: () => _model.unfocusNode.canRequestFocus
+          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+          : FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
@@ -69,6 +89,7 @@ class _AccountPageUserProfileWidgetState
             style: FlutterFlowTheme.of(context).headlineMedium.override(
                   fontFamily: 'Outfit',
                   fontSize: 21.0,
+                  letterSpacing: 0.0,
                 ),
           ),
           actions: [],
@@ -81,35 +102,27 @@ class _AccountPageUserProfileWidgetState
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: [
+                Container(
+                  width: double.infinity,
+                  height: 200.0,
+                  decoration: BoxDecoration(
+                    color: FlutterFlowTheme.of(context).secondaryBackground,
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(0.0),
+                    child: Image.network(
+                      'https://picsum.photos/seed/76/600',
+                      width: double.infinity,
+                      height: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
                 SingleChildScrollView(
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SingleChildScrollView(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            ListView(
-                              padding: EdgeInsets.zero,
-                              shrinkWrap: true,
-                              scrollDirection: Axis.vertical,
-                              children: [
-                                Container(
-                                  width: 363.0,
-                                  height: 0.0,
-                                  decoration: BoxDecoration(),
-                                  child: wrapWithModel(
-                                    model: _model.userProfileCardModel,
-                                    updateCallback: () => setState(() {}),
-                                    child: UserProfileCardWidget(),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
                       Padding(
                         padding: EdgeInsetsDirectional.fromSTEB(
                             16.0, 16.0, 16.0, 0.0),
@@ -117,12 +130,13 @@ class _AccountPageUserProfileWidgetState
                           mainAxisSize: MainAxisSize.max,
                           children: [
                             Text(
-                              'All Certificates',
+                              'Personal info',
                               style: FlutterFlowTheme.of(context)
                                   .bodyMedium
                                   .override(
                                     fontFamily: 'Readex Pro',
                                     fontSize: 18.0,
+                                    letterSpacing: 0.0,
                                     fontWeight: FontWeight.w600,
                                   ),
                             ),
@@ -137,30 +151,259 @@ class _AccountPageUserProfileWidgetState
                     ],
                   ),
                 ),
-                wrapWithModel(
-                  model: _model.certificateCardModel1,
-                  updateCallback: () => setState(() {}),
-                  child: CertificateCardWidget(),
+                Padding(
+                  padding:
+                      EdgeInsetsDirectional.fromSTEB(16.0, 10.0, 16.0, 0.0),
+                  child: TextFormField(
+                    controller: _model.fullNameTextController,
+                    focusNode: _model.fullNameFocusNode,
+                    autofocus: false,
+                    obscureText: false,
+                    decoration: InputDecoration(
+                      labelText: 'Full Name',
+                      labelStyle:
+                          FlutterFlowTheme.of(context).labelLarge.override(
+                                fontFamily: 'Plus Jakarta Sans',
+                                color: Color(0xFF57636C),
+                                fontSize: 16.0,
+                                letterSpacing: 0.0,
+                                fontWeight: FontWeight.w500,
+                              ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color(0xFFE0E3E7),
+                          width: 2.0,
+                        ),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color(0xFF4B39EF),
+                          width: 2.0,
+                        ),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color(0xFFFF5963),
+                          width: 2.0,
+                        ),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color(0xFFFF5963),
+                          width: 2.0,
+                        ),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      filled: true,
+                      fillColor: Colors.white,
+                      contentPadding:
+                          EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 8.0),
+                    ),
+                    style: FlutterFlowTheme.of(context).bodyLarge.override(
+                          fontFamily: 'Plus Jakarta Sans',
+                          color: Color(0xFF101213),
+                          fontSize: 14.0,
+                          letterSpacing: 0.0,
+                          fontWeight: FontWeight.w500,
+                          lineHeight: 1.0,
+                        ),
+                    validator: _model.fullNameTextControllerValidator
+                        .asValidator(context),
+                  ),
                 ),
-                wrapWithModel(
-                  model: _model.certificateCardModel2,
-                  updateCallback: () => setState(() {}),
-                  child: CertificateCardWidget(),
+                Padding(
+                  padding:
+                      EdgeInsetsDirectional.fromSTEB(16.0, 10.0, 16.0, 0.0),
+                  child: TextFormField(
+                    controller: _model.emailAddressTextController,
+                    focusNode: _model.emailAddressFocusNode,
+                    autofocus: false,
+                    obscureText: false,
+                    decoration: InputDecoration(
+                      labelText: 'Email Address',
+                      labelStyle:
+                          FlutterFlowTheme.of(context).labelLarge.override(
+                                fontFamily: 'Plus Jakarta Sans',
+                                color: Color(0xFF57636C),
+                                fontSize: 16.0,
+                                letterSpacing: 0.0,
+                                fontWeight: FontWeight.w500,
+                              ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color(0xFFE0E3E7),
+                          width: 2.0,
+                        ),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color(0xFF4B39EF),
+                          width: 2.0,
+                        ),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color(0xFFFF5963),
+                          width: 2.0,
+                        ),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color(0xFFFF5963),
+                          width: 2.0,
+                        ),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      filled: true,
+                      fillColor: Colors.white,
+                      contentPadding:
+                          EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 8.0),
+                    ),
+                    style: FlutterFlowTheme.of(context).bodyLarge.override(
+                          fontFamily: 'Plus Jakarta Sans',
+                          color: Color(0xFF101213),
+                          fontSize: 14.0,
+                          letterSpacing: 0.0,
+                          fontWeight: FontWeight.w500,
+                          lineHeight: 1.0,
+                        ),
+                    validator: _model.emailAddressTextControllerValidator
+                        .asValidator(context),
+                  ),
                 ),
-                wrapWithModel(
-                  model: _model.certificateCardModel3,
-                  updateCallback: () => setState(() {}),
-                  child: CertificateCardWidget(),
+                Padding(
+                  padding:
+                      EdgeInsetsDirectional.fromSTEB(16.0, 10.0, 16.0, 0.0),
+                  child: TextFormField(
+                    controller: _model.dateOfBirthTextController,
+                    focusNode: _model.dateOfBirthFocusNode,
+                    autofocus: false,
+                    obscureText: false,
+                    decoration: InputDecoration(
+                      labelText: 'Date of birth',
+                      labelStyle:
+                          FlutterFlowTheme.of(context).labelLarge.override(
+                                fontFamily: 'Plus Jakarta Sans',
+                                color: Color(0xFF57636C),
+                                fontSize: 16.0,
+                                letterSpacing: 0.0,
+                                fontWeight: FontWeight.w500,
+                              ),
+                      hintText: 'Date of birth',
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color(0xFFE0E3E7),
+                          width: 2.0,
+                        ),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color(0xFF4B39EF),
+                          width: 2.0,
+                        ),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color(0xFFFF5963),
+                          width: 2.0,
+                        ),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color(0xFFFF5963),
+                          width: 2.0,
+                        ),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      filled: true,
+                      fillColor: Colors.white,
+                      contentPadding:
+                          EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 8.0),
+                    ),
+                    style: FlutterFlowTheme.of(context).bodyLarge.override(
+                          fontFamily: 'Plus Jakarta Sans',
+                          color: Color(0xFF101213),
+                          fontSize: 14.0,
+                          letterSpacing: 0.0,
+                          fontWeight: FontWeight.w500,
+                          lineHeight: 1.0,
+                        ),
+                    validator: _model.dateOfBirthTextControllerValidator
+                        .asValidator(context),
+                  ),
                 ),
-                wrapWithModel(
-                  model: _model.certificateCardModel4,
-                  updateCallback: () => setState(() {}),
-                  child: CertificateCardWidget(),
-                ),
-                wrapWithModel(
-                  model: _model.certificateCardModel5,
-                  updateCallback: () => setState(() {}),
-                  child: CertificateCardWidget(),
+                Padding(
+                  padding:
+                      EdgeInsetsDirectional.fromSTEB(16.0, 10.0, 16.0, 0.0),
+                  child: TextFormField(
+                    controller: _model.phoneTextController,
+                    focusNode: _model.phoneFocusNode,
+                    autofocus: false,
+                    obscureText: false,
+                    decoration: InputDecoration(
+                      labelText: 'Phone number',
+                      labelStyle:
+                          FlutterFlowTheme.of(context).labelLarge.override(
+                                fontFamily: 'Plus Jakarta Sans',
+                                color: Color(0xFF57636C),
+                                fontSize: 16.0,
+                                letterSpacing: 0.0,
+                                fontWeight: FontWeight.w500,
+                              ),
+                      hintText: 'Phone',
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color(0xFFE0E3E7),
+                          width: 2.0,
+                        ),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color(0xFF4B39EF),
+                          width: 2.0,
+                        ),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color(0xFFFF5963),
+                          width: 2.0,
+                        ),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Color(0xFFFF5963),
+                          width: 2.0,
+                        ),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      filled: true,
+                      fillColor: Colors.white,
+                      contentPadding:
+                          EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 8.0),
+                    ),
+                    style: FlutterFlowTheme.of(context).bodyLarge.override(
+                          fontFamily: 'Plus Jakarta Sans',
+                          color: Color(0xFF101213),
+                          fontSize: 14.0,
+                          letterSpacing: 0.0,
+                          fontWeight: FontWeight.w500,
+                          lineHeight: 1.0,
+                        ),
+                    validator: _model.phoneTextControllerValidator
+                        .asValidator(context),
+                  ),
                 ),
               ],
             ),

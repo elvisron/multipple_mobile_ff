@@ -7,10 +7,10 @@ import 'audio_list_unplayed_model.dart';
 export 'audio_list_unplayed_model.dart';
 
 class AudioListUnplayedWidget extends StatefulWidget {
-  const AudioListUnplayedWidget({Key? key}) : super(key: key);
+  const AudioListUnplayedWidget({super.key});
 
   @override
-  _AudioListUnplayedWidgetState createState() =>
+  State<AudioListUnplayedWidget> createState() =>
       _AudioListUnplayedWidgetState();
 }
 
@@ -38,10 +38,8 @@ class _AudioListUnplayedWidgetState extends State<AudioListUnplayedWidget> {
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return Align(
-      alignment: AlignmentDirectional(0.00, 0.00),
+      alignment: AlignmentDirectional(0.0, 0.0),
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
@@ -66,7 +64,7 @@ class _AudioListUnplayedWidgetState extends State<AudioListUnplayedWidget> {
                         decoration: BoxDecoration(
                           shape: BoxShape.rectangle,
                         ),
-                        alignment: AlignmentDirectional(0.00, 0.00),
+                        alignment: AlignmentDirectional(0.0, 0.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -99,7 +97,7 @@ class _AudioListUnplayedWidgetState extends State<AudioListUnplayedWidget> {
                         color: FlutterFlowTheme.of(context).secondaryText,
                         shape: BoxShape.circle,
                       ),
-                      alignment: AlignmentDirectional(0.00, 0.00),
+                      alignment: AlignmentDirectional(0.0, 0.0),
                       child: Icon(
                         Icons.audiotrack,
                         color: FlutterFlowTheme.of(context).primaryBackground,
@@ -117,6 +115,7 @@ class _AudioListUnplayedWidgetState extends State<AudioListUnplayedWidget> {
                               fontFamily: 'Readex Pro',
                               color: FlutterFlowTheme.of(context).secondaryText,
                               fontSize: 16.0,
+                              letterSpacing: 0.0,
                             ),
                       ),
                     ),
@@ -127,6 +126,7 @@ class _AudioListUnplayedWidgetState extends State<AudioListUnplayedWidget> {
                           fontFamily: 'Readex Pro',
                           color: FlutterFlowTheme.of(context).secondaryText,
                           fontSize: 12.0,
+                          letterSpacing: 0.0,
                         ),
                   ),
                   Text(
@@ -135,6 +135,7 @@ class _AudioListUnplayedWidgetState extends State<AudioListUnplayedWidget> {
                           fontFamily: 'Readex Pro',
                           color: FlutterFlowTheme.of(context).secondaryText,
                           fontSize: 12.0,
+                          letterSpacing: 0.0,
                         ),
                   ),
                 ],
@@ -155,7 +156,7 @@ class _AudioListUnplayedWidgetState extends State<AudioListUnplayedWidget> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                       ),
-                      alignment: AlignmentDirectional(0.00, 0.00),
+                      alignment: AlignmentDirectional(0.0, 0.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -178,6 +179,7 @@ class _AudioListUnplayedWidgetState extends State<AudioListUnplayedWidget> {
                               fontFamily: 'Readex Pro',
                               color: FlutterFlowTheme.of(context).secondaryText,
                               fontSize: 12.0,
+                              letterSpacing: 0.0,
                             ),
                       ),
                     ),

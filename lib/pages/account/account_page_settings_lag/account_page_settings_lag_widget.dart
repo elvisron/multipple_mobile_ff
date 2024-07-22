@@ -13,10 +13,10 @@ import 'account_page_settings_lag_model.dart';
 export 'account_page_settings_lag_model.dart';
 
 class AccountPageSettingsLagWidget extends StatefulWidget {
-  const AccountPageSettingsLagWidget({Key? key}) : super(key: key);
+  const AccountPageSettingsLagWidget({super.key});
 
   @override
-  _AccountPageSettingsLagWidgetState createState() =>
+  State<AccountPageSettingsLagWidget> createState() =>
       _AccountPageSettingsLagWidgetState();
 }
 
@@ -41,10 +41,10 @@ class _AccountPageSettingsLagWidgetState
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
+      onTap: () => _model.unfocusNode.canRequestFocus
+          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+          : FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
@@ -70,6 +70,7 @@ class _AccountPageSettingsLagWidgetState
             style: FlutterFlowTheme.of(context).headlineMedium.override(
                   fontFamily: 'Outfit',
                   fontSize: 21.0,
+                  letterSpacing: 0.0,
                 ),
           ),
           actions: [],
@@ -120,9 +121,16 @@ class _AccountPageSettingsLagWidgetState
                           controller: _model.radioButtonValueController ??=
                               FormFieldController<String>(null),
                           optionHeight: 32.0,
-                          textStyle: FlutterFlowTheme.of(context).labelMedium,
+                          textStyle:
+                              FlutterFlowTheme.of(context).labelMedium.override(
+                                    fontFamily: 'Readex Pro',
+                                    letterSpacing: 0.0,
+                                  ),
                           selectedTextStyle:
-                              FlutterFlowTheme.of(context).bodyMedium,
+                              FlutterFlowTheme.of(context).bodyMedium.override(
+                                    fontFamily: 'Readex Pro',
+                                    letterSpacing: 0.0,
+                                  ),
                           buttonPosition: RadioButtonPosition.left,
                           direction: Axis.vertical,
                           radioButtonColor:

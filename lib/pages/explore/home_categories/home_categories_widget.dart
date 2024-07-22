@@ -1,11 +1,15 @@
+import '/auth/custom_auth/auth_util.dart';
+import '/backend/api_requests/api_calls.dart';
 import '/components/explore_card_with_module_widget.dart';
-import '/components/live_session_long_card_widget.dart';
+import '/components/explore_feature_widget.dart';
+import '/components/no_data_widget.dart';
 import '/flutter_flow/flutter_flow_choice_chips.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,10 +18,10 @@ import 'home_categories_model.dart';
 export 'home_categories_model.dart';
 
 class HomeCategoriesWidget extends StatefulWidget {
-  const HomeCategoriesWidget({Key? key}) : super(key: key);
+  const HomeCategoriesWidget({super.key});
 
   @override
-  _HomeCategoriesWidgetState createState() => _HomeCategoriesWidgetState();
+  State<HomeCategoriesWidget> createState() => _HomeCategoriesWidgetState();
 }
 
 class _HomeCategoriesWidgetState extends State<HomeCategoriesWidget> {
@@ -31,6 +35,7 @@ class _HomeCategoriesWidgetState extends State<HomeCategoriesWidget> {
     _model = createModel(context, () => HomeCategoriesModel());
 
     _model.textController ??= TextEditingController();
+    _model.textFieldFocusNode ??= FocusNode();
   }
 
   @override
@@ -45,7 +50,9 @@ class _HomeCategoriesWidgetState extends State<HomeCategoriesWidget> {
     context.watch<FFAppState>();
 
     return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
+      onTap: () => _model.unfocusNode.canRequestFocus
+          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+          : FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
@@ -71,6 +78,7 @@ class _HomeCategoriesWidgetState extends State<HomeCategoriesWidget> {
             style: FlutterFlowTheme.of(context).headlineMedium.override(
                   fontFamily: 'Outfit',
                   fontSize: 21.0,
+                  letterSpacing: 0.0,
                 ),
           ),
           actions: [],
@@ -95,16 +103,15 @@ class _HomeCategoriesWidgetState extends State<HomeCategoriesWidget> {
                           padding: EdgeInsetsDirectional.fromSTEB(
                               0.0, 8.0, 0.0, 8.0),
                           child: FlutterFlowChoiceChips(
-                            options: [
-                              ChipData('All'),
-                              ChipData('TypeScript'),
-                              ChipData('JavaScript'),
-                              ChipData('UX Design'),
-                              ChipData('Machine Learning'),
-                              ChipData('Startups')
-                            ],
-                            onChanged: (val) => setState(
-                                () => _model.choiceChipsValue = val?.first),
+                            options: functions
+                                .convertCategoriesToList(
+                                    FFAppState().categories)
+                                .map((e) => e.toString())
+                                .toList()
+                                .map((label) => ChipData(label))
+                                .toList(),
+                            onChanged: (val) =>
+                                setState(() => _model.choiceChipsValues = val),
                             selectedChipStyle: ChipStyle(
                               backgroundColor:
                                   FlutterFlowTheme.of(context).primary,
@@ -113,6 +120,7 @@ class _HomeCategoriesWidgetState extends State<HomeCategoriesWidget> {
                                   .override(
                                     fontFamily: 'Readex Pro',
                                     color: FlutterFlowTheme.of(context).info,
+                                    letterSpacing: 0.0,
                                   ),
                               iconColor: FlutterFlowTheme.of(context).info,
                               iconSize: 18.0,
@@ -130,6 +138,7 @@ class _HomeCategoriesWidgetState extends State<HomeCategoriesWidget> {
                                     fontFamily: 'Readex Pro',
                                     color: FlutterFlowTheme.of(context)
                                         .secondaryText,
+                                    letterSpacing: 0.0,
                                   ),
                               iconColor:
                                   FlutterFlowTheme.of(context).secondaryText,
@@ -142,12 +151,12 @@ class _HomeCategoriesWidgetState extends State<HomeCategoriesWidget> {
                             ),
                             chipSpacing: 8.0,
                             rowSpacing: 12.0,
-                            multiselect: false,
-                            initialized: _model.choiceChipsValue != null,
+                            multiselect: true,
+                            initialized: _model.choiceChipsValues != null,
                             alignment: WrapAlignment.start,
                             controller: _model.choiceChipsValueController ??=
                                 FormFieldController<List<String>>(
-                              ['All'],
+                              [],
                             ),
                             wrapped: true,
                           ),
@@ -162,7 +171,8 @@ class _HomeCategoriesWidgetState extends State<HomeCategoriesWidget> {
                         EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 8.0),
                     child: TextFormField(
                       controller: _model.textController,
-                      autofocus: true,
+                      focusNode: _model.textFieldFocusNode,
+                      autofocus: false,
                       obscureText: false,
                       decoration: InputDecoration(
                         labelText: 'Search ',
@@ -170,11 +180,13 @@ class _HomeCategoriesWidgetState extends State<HomeCategoriesWidget> {
                             FlutterFlowTheme.of(context).labelMedium.override(
                                   fontFamily: 'Readex Pro',
                                   fontSize: 16.0,
+                                  letterSpacing: 0.0,
                                 ),
                         hintStyle:
                             FlutterFlowTheme.of(context).labelMedium.override(
                                   fontFamily: 'Readex Pro',
                                   fontSize: 16.0,
+                                  letterSpacing: 0.0,
                                 ),
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(
@@ -211,162 +223,13 @@ class _HomeCategoriesWidgetState extends State<HomeCategoriesWidget> {
                           color: FlutterFlowTheme.of(context).secondaryText,
                         ),
                       ),
-                      style: FlutterFlowTheme.of(context).bodyMedium,
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily: 'Readex Pro',
+                            letterSpacing: 0.0,
+                          ),
                       cursorColor: FlutterFlowTheme.of(context).primary,
                       validator:
                           _model.textControllerValidator.asValidator(context),
-                    ),
-                  ),
-                  Padding(
-                    padding:
-                        EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 0.0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Text(
-                          'Coding',
-                          style:
-                              FlutterFlowTheme.of(context).bodyMedium.override(
-                                    fontFamily: 'Readex Pro',
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 15.0, 0.0, 0.0),
-                    child: Container(
-                      width: double.infinity,
-                      height: 351.0,
-                      decoration: BoxDecoration(),
-                      alignment: AlignmentDirectional(-1.00, 0.00),
-                      child: ListView(
-                        padding: EdgeInsets.fromLTRB(
-                          16.0,
-                          0,
-                          16.0,
-                          0,
-                        ),
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          wrapWithModel(
-                            model: _model.exploreCardWithModuleModel1,
-                            updateCallback: () => setState(() {}),
-                            child: ExploreCardWithModuleWidget(),
-                          ),
-                          wrapWithModel(
-                            model: _model.exploreCardWithModuleModel2,
-                            updateCallback: () => setState(() {}),
-                            child: ExploreCardWithModuleWidget(),
-                          ),
-                        ].divide(SizedBox(width: 12.0)),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding:
-                        EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 0.0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Text(
-                          'UX',
-                          style:
-                              FlutterFlowTheme.of(context).bodyMedium.override(
-                                    fontFamily: 'Readex Pro',
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 15.0, 0.0, 0.0),
-                    child: Container(
-                      width: double.infinity,
-                      height: 351.0,
-                      decoration: BoxDecoration(),
-                      alignment: AlignmentDirectional(-1.00, 0.00),
-                      child: ListView(
-                        padding: EdgeInsets.fromLTRB(
-                          16.0,
-                          0,
-                          16.0,
-                          0,
-                        ),
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          wrapWithModel(
-                            model: _model.exploreCardWithModuleModel3,
-                            updateCallback: () => setState(() {}),
-                            child: ExploreCardWithModuleWidget(),
-                          ),
-                          wrapWithModel(
-                            model: _model.exploreCardWithModuleModel4,
-                            updateCallback: () => setState(() {}),
-                            child: ExploreCardWithModuleWidget(),
-                          ),
-                        ].divide(SizedBox(width: 12.0)),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding:
-                        EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 0.0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Text(
-                          'CyberSecurity',
-                          style:
-                              FlutterFlowTheme.of(context).bodyMedium.override(
-                                    fontFamily: 'Readex Pro',
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding:
-                        EdgeInsetsDirectional.fromSTEB(0.0, 15.0, 0.0, 50.0),
-                    child: Container(
-                      width: double.infinity,
-                      height: 351.0,
-                      decoration: BoxDecoration(),
-                      alignment: AlignmentDirectional(-1.00, 0.00),
-                      child: ListView(
-                        padding: EdgeInsets.fromLTRB(
-                          16.0,
-                          0,
-                          16.0,
-                          0,
-                        ),
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          wrapWithModel(
-                            model: _model.liveSessionLongCardModel1,
-                            updateCallback: () => setState(() {}),
-                            child: LiveSessionLongCardWidget(),
-                          ),
-                          wrapWithModel(
-                            model: _model.liveSessionLongCardModel2,
-                            updateCallback: () => setState(() {}),
-                            child: LiveSessionLongCardWidget(),
-                          ),
-                          wrapWithModel(
-                            model: _model.liveSessionLongCardModel3,
-                            updateCallback: () => setState(() {}),
-                            child: LiveSessionLongCardWidget(),
-                          ),
-                        ].divide(SizedBox(width: 12.0)),
-                      ),
                     ),
                   ),
                   Divider(
@@ -374,7 +237,139 @@ class _HomeCategoriesWidgetState extends State<HomeCategoriesWidget> {
                     thickness: 1.0,
                     color: FlutterFlowTheme.of(context).alternate,
                   ),
-                ],
+                  wrapWithModel(
+                    model: _model.exploreFeatureModel,
+                    updateCallback: () => setState(() {}),
+                    child: ExploreFeatureWidget(),
+                  ),
+                  Container(
+                    width: double.infinity,
+                    height: 500.0,
+                    decoration: BoxDecoration(
+                      color: FlutterFlowTheme.of(context).secondaryBackground,
+                    ),
+                    child: Padding(
+                      padding:
+                          EdgeInsetsDirectional.fromSTEB(12.0, 0.0, 12.0, 0.0),
+                      child: FutureBuilder<ApiCallResponse>(
+                        future: LXPLearningExperiencePortalGroup
+                            .getAListOfCoursesByLearnerCall
+                            .call(
+                          scope: 'explore',
+                          lXPAuthToken: currentAuthenticationToken,
+                          lXPAuthDevice: FFAppState().deviceId,
+                        ),
+                        builder: (context, snapshot) {
+                          // Customize what your widget looks like when it's loading.
+                          if (!snapshot.hasData) {
+                            return Center(
+                              child: SizedBox(
+                                width: 60.0,
+                                height: 60.0,
+                                child: CircularProgressIndicator(
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    FlutterFlowTheme.of(context).secondaryText,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }
+                          final gridViewGetAListOfCoursesByLearnerResponse =
+                              snapshot.data!;
+
+                          return Builder(
+                            builder: (context) {
+                              final categoryCourses =
+                                  LXPLearningExperiencePortalGroup
+                                          .getAListOfCoursesByLearnerCall
+                                          .results(
+                                            gridViewGetAListOfCoursesByLearnerResponse
+                                                .jsonBody,
+                                          )
+                                          ?.where((e) =>
+                                              (functions.filterByCategory(
+                                                      _model.choiceChipsValues
+                                                          ?.toList(),
+                                                      getJsonField(
+                                                        e,
+                                                        r'''$.categories''',
+                                                        true,
+                                                      ))
+                                                  ? true
+                                                  : false) &&
+                                              (functions.stringContainsQuery(
+                                                      getJsonField(
+                                                        e,
+                                                        r'''$.name''',
+                                                      ).toString(),
+                                                      _model.textController
+                                                          .text) ==
+                                                  true))
+                                          .toList()
+                                          ?.toList() ??
+                                      [];
+                              if (categoryCourses.isEmpty) {
+                                return Container(
+                                  width: double.infinity,
+                                  child: NoDataWidget(
+                                    message: 'No Courses found',
+                                  ),
+                                );
+                              }
+
+                              return GridView.builder(
+                                padding: EdgeInsets.zero,
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 10.0,
+                                  mainAxisSpacing: 5.0,
+                                  childAspectRatio: 0.5,
+                                ),
+                                scrollDirection: Axis.vertical,
+                                itemCount: categoryCourses.length,
+                                itemBuilder: (context, categoryCoursesIndex) {
+                                  final categoryCoursesItem =
+                                      categoryCourses[categoryCoursesIndex];
+                                  return wrapWithModel(
+                                    model: _model.exploreCardWithModuleModels
+                                        .getModel(
+                                      categoryCoursesIndex.toString(),
+                                      categoryCoursesIndex,
+                                    ),
+                                    updateCallback: () => setState(() {}),
+                                    child: ExploreCardWithModuleWidget(
+                                      key: Key(
+                                        'Keywag_${categoryCoursesIndex.toString()}',
+                                      ),
+                                      title: getJsonField(
+                                        categoryCoursesItem,
+                                        r'''$.name''',
+                                      ).toString(),
+                                      totalModules: functions
+                                          .getTotalModules((getJsonField(
+                                        categoryCoursesItem,
+                                        r'''$.outlines''',
+                                        true,
+                                      ) as List)
+                                              .map<String>((s) => s.toString())
+                                              .toList()!),
+                                      courseId: getJsonField(
+                                        categoryCoursesItem,
+                                        r'''$.courseId''',
+                                      ).toString(),
+                                      course: categoryCoursesItem,
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ].addToEnd(SizedBox(height: 58.0)),
               ),
             ),
           ),

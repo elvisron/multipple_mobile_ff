@@ -1,3 +1,4 @@
+import '/auth/custom_auth/auth_util.dart';
 import '/components/dashboard_user_activity_stats_widget.dart';
 import '/components/user_profile_card_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
@@ -5,6 +6,7 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -15,10 +17,10 @@ import 'account_page_model.dart';
 export 'account_page_model.dart';
 
 class AccountPageWidget extends StatefulWidget {
-  const AccountPageWidget({Key? key}) : super(key: key);
+  const AccountPageWidget({super.key});
 
   @override
-  _AccountPageWidgetState createState() => _AccountPageWidgetState();
+  State<AccountPageWidget> createState() => _AccountPageWidgetState();
 }
 
 class _AccountPageWidgetState extends State<AccountPageWidget>
@@ -27,90 +29,91 @@ class _AccountPageWidgetState extends State<AccountPageWidget>
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  final animationsMap = {
-    'containerOnPageLoadAnimation1': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: 0.0,
-          end: 1.0,
-        ),
-        MoveEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: Offset(0.0, 30.0),
-          end: Offset(0.0, 0.0),
-        ),
-      ],
-    ),
-    'containerOnPageLoadAnimation2': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: 0.0,
-          end: 1.0,
-        ),
-        MoveEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: Offset(0.0, 30.0),
-          end: Offset(0.0, 0.0),
-        ),
-      ],
-    ),
-    'containerOnPageLoadAnimation3': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: 0.0,
-          end: 1.0,
-        ),
-        MoveEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: Offset(0.0, 30.0),
-          end: Offset(0.0, 0.0),
-        ),
-      ],
-    ),
-    'containerOnPageLoadAnimation4': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: 0.0,
-          end: 1.0,
-        ),
-        MoveEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: Offset(0.0, 30.0),
-          end: Offset(0.0, 0.0),
-        ),
-      ],
-    ),
-  };
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => AccountPageModel());
 
+    animationsMap.addAll({
+      'containerOnPageLoadAnimation1': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: Offset(0.0, 30.0),
+            end: Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+      'containerOnPageLoadAnimation2': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: Offset(0.0, 30.0),
+            end: Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+      'containerOnPageLoadAnimation3': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: Offset(0.0, 30.0),
+            end: Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+      'containerOnPageLoadAnimation4': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: Offset(0.0, 30.0),
+            end: Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+    });
     setupAnimations(
       animationsMap.values.where((anim) =>
           anim.trigger == AnimationTrigger.onActionTrigger ||
@@ -131,7 +134,9 @@ class _AccountPageWidgetState extends State<AccountPageWidget>
     context.watch<FFAppState>();
 
     return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
+      onTap: () => _model.unfocusNode.canRequestFocus
+          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+          : FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
@@ -157,6 +162,7 @@ class _AccountPageWidgetState extends State<AccountPageWidget>
             style: FlutterFlowTheme.of(context).headlineMedium.override(
                   fontFamily: 'Outfit',
                   fontSize: 21.0,
+                  letterSpacing: 0.0,
                 ),
           ),
           actions: [],
@@ -182,8 +188,7 @@ class _AccountPageWidgetState extends State<AccountPageWidget>
                           children: [
                             Expanded(
                               child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    12.0, 12.0, 12.0, 12.0),
+                                padding: EdgeInsets.all(12.0),
                                 child: Container(
                                   width: 160.0,
                                   height: 137.0,
@@ -204,36 +209,79 @@ class _AccountPageWidgetState extends State<AccountPageWidget>
                                             borderRadius:
                                                 BorderRadius.circular(50.0),
                                             child: Image.network(
-                                              'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZmlsZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=900&q=60',
+                                              getJsonField(
+                                                FFAppState().user,
+                                                r'''$.photo''',
+                                              ).toString(),
                                               width: 80.0,
                                               height: 80.0,
                                               fit: BoxFit.cover,
                                             ),
                                           ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 4.0, 0.0, 0.0),
-                                            child: Text(
-                                              'Charles  Yawson',
-                                              style: FlutterFlowTheme.of(
-                                                      context)
-                                                  .bodyMedium
-                                                  .override(
-                                                    fontFamily:
-                                                        'Plus Jakarta Sans',
-                                                    color: Color(0xFF14181B),
-                                                    fontSize: 22.0,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                            ),
+                                          Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Padding(
+                                                padding: EdgeInsetsDirectional
+                                                    .fromSTEB(
+                                                        0.0, 4.0, 0.0, 0.0),
+                                                child: Text(
+                                                  getJsonField(
+                                                    FFAppState().user,
+                                                    r'''$.first_name''',
+                                                  ).toString(),
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .bodyMedium
+                                                      .override(
+                                                        fontFamily:
+                                                            'Plus Jakarta Sans',
+                                                        color:
+                                                            Color(0xFF14181B),
+                                                        fontSize: 22.0,
+                                                        letterSpacing: 0.0,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: EdgeInsetsDirectional
+                                                    .fromSTEB(
+                                                        0.0, 4.0, 0.0, 0.0),
+                                                child: Text(
+                                                  getJsonField(
+                                                    FFAppState().user,
+                                                    r'''$.last_name''',
+                                                  ).toString(),
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .bodyMedium
+                                                      .override(
+                                                        fontFamily:
+                                                            'Plus Jakarta Sans',
+                                                        color:
+                                                            Color(0xFF14181B),
+                                                        fontSize: 22.0,
+                                                        letterSpacing: 0.0,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                ),
+                                              ),
+                                            ].divide(SizedBox(width: 5.0)),
                                           ),
                                           Padding(
                                             padding:
                                                 EdgeInsetsDirectional.fromSTEB(
                                                     0.0, 4.0, 0.0, 0.0),
                                             child: Text(
-                                              'c.yawson@gmail.com',
+                                              getJsonField(
+                                                FFAppState().user,
+                                                r'''$.email''',
+                                              ).toString(),
                                               style: FlutterFlowTheme.of(
                                                       context)
                                                   .labelSmall
@@ -242,6 +290,7 @@ class _AccountPageWidgetState extends State<AccountPageWidget>
                                                         'Plus Jakarta Sans',
                                                     color: Color(0xFF57636C),
                                                     fontSize: 12.0,
+                                                    letterSpacing: 0.0,
                                                     fontWeight: FontWeight.w500,
                                                   ),
                                             ),
@@ -260,7 +309,7 @@ class _AccountPageWidgetState extends State<AccountPageWidget>
                         width: double.infinity,
                         height: 129.0,
                         decoration: BoxDecoration(),
-                        alignment: AlignmentDirectional(-1.00, 0.00),
+                        alignment: AlignmentDirectional(-1.0, 0.0),
                         child: ListView(
                           padding: EdgeInsets.fromLTRB(
                             16.0,
@@ -330,6 +379,7 @@ class _AccountPageWidgetState extends State<AccountPageWidget>
                                   .override(
                                     fontFamily: 'Readex Pro',
                                     fontSize: 18.0,
+                                    letterSpacing: 0.0,
                                     fontWeight: FontWeight.w600,
                                   ),
                             ),
@@ -362,7 +412,10 @@ class _AccountPageWidgetState extends State<AccountPageWidget>
                         boxShadow: [
                           BoxShadow(
                             color: Color(0xFFF1F4F8),
-                            offset: Offset(0.0, 1.0),
+                            offset: Offset(
+                              0.0,
+                              1.0,
+                            ),
                           )
                         ],
                         borderRadius: BorderRadius.circular(8.0),
@@ -388,8 +441,7 @@ class _AccountPageWidgetState extends State<AccountPageWidget>
                             ),
                             Expanded(
                               child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    12.0, 12.0, 12.0, 12.0),
+                                padding: EdgeInsets.all(12.0),
                                 child: Column(
                                   mainAxisSize: MainAxisSize.max,
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -402,6 +454,7 @@ class _AccountPageWidgetState extends State<AccountPageWidget>
                                             fontFamily: 'Outfit',
                                             color: Color(0xFFF3F9FF),
                                             fontSize: 16.0,
+                                            letterSpacing: 0.0,
                                             fontWeight: FontWeight.w500,
                                           ),
                                     ),
@@ -416,6 +469,7 @@ class _AccountPageWidgetState extends State<AccountPageWidget>
                                               fontFamily: 'Plus Jakarta Sans',
                                               color: Color(0xFFE6E6E6),
                                               fontSize: 12.0,
+                                              letterSpacing: 0.0,
                                               fontWeight: FontWeight.w500,
                                             ),
                                       ),
@@ -454,7 +508,10 @@ class _AccountPageWidgetState extends State<AccountPageWidget>
                         boxShadow: [
                           BoxShadow(
                             color: Color(0xFFF1F4F8),
-                            offset: Offset(0.0, 1.0),
+                            offset: Offset(
+                              0.0,
+                              1.0,
+                            ),
                           )
                         ],
                         borderRadius: BorderRadius.circular(8.0),
@@ -480,8 +537,7 @@ class _AccountPageWidgetState extends State<AccountPageWidget>
                             ),
                             Expanded(
                               child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    12.0, 12.0, 12.0, 12.0),
+                                padding: EdgeInsets.all(12.0),
                                 child: Column(
                                   mainAxisSize: MainAxisSize.max,
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -494,6 +550,7 @@ class _AccountPageWidgetState extends State<AccountPageWidget>
                                             fontFamily: 'Outfit',
                                             color: Color(0xFFF3F9FF),
                                             fontSize: 16.0,
+                                            letterSpacing: 0.0,
                                             fontWeight: FontWeight.w500,
                                           ),
                                     ),
@@ -508,6 +565,7 @@ class _AccountPageWidgetState extends State<AccountPageWidget>
                                               fontFamily: 'Plus Jakarta Sans',
                                               color: Color(0xFFE6E6E6),
                                               fontSize: 12.0,
+                                              letterSpacing: 0.0,
                                               fontWeight: FontWeight.w500,
                                             ),
                                       ),
@@ -537,7 +595,7 @@ class _AccountPageWidgetState extends State<AccountPageWidget>
                     hoverColor: Colors.transparent,
                     highlightColor: Colors.transparent,
                     onTap: () async {
-                      context.pushNamed('accountPageUserProfile');
+                      context.pushNamed('accountPageUserAchievement');
                     },
                     child: Container(
                       width: double.infinity,
@@ -546,7 +604,10 @@ class _AccountPageWidgetState extends State<AccountPageWidget>
                         boxShadow: [
                           BoxShadow(
                             color: Color(0xFFF1F4F8),
-                            offset: Offset(0.0, 1.0),
+                            offset: Offset(
+                              0.0,
+                              1.0,
+                            ),
                           )
                         ],
                         borderRadius: BorderRadius.circular(8.0),
@@ -572,8 +633,7 @@ class _AccountPageWidgetState extends State<AccountPageWidget>
                             ),
                             Expanded(
                               child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    12.0, 12.0, 12.0, 12.0),
+                                padding: EdgeInsets.all(12.0),
                                 child: Column(
                                   mainAxisSize: MainAxisSize.max,
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -586,6 +646,7 @@ class _AccountPageWidgetState extends State<AccountPageWidget>
                                             fontFamily: 'Outfit',
                                             color: Color(0xFFF3F9FF),
                                             fontSize: 16.0,
+                                            letterSpacing: 0.0,
                                             fontWeight: FontWeight.w500,
                                           ),
                                     ),
@@ -600,6 +661,7 @@ class _AccountPageWidgetState extends State<AccountPageWidget>
                                               fontFamily: 'Plus Jakarta Sans',
                                               color: Color(0xFFE6E6E6),
                                               fontSize: 12.0,
+                                              letterSpacing: 0.0,
                                               fontWeight: FontWeight.w500,
                                             ),
                                       ),
@@ -629,7 +691,11 @@ class _AccountPageWidgetState extends State<AccountPageWidget>
                     hoverColor: Colors.transparent,
                     highlightColor: Colors.transparent,
                     onTap: () async {
-                      context.pushNamed('Login');
+                      GoRouter.of(context).prepareAuthEvent();
+                      await authManager.signOut();
+                      GoRouter.of(context).clearRedirectLocation();
+
+                      context.goNamedAuth('LoginAndSignup', context.mounted);
                     },
                     child: Container(
                       width: double.infinity,
@@ -638,7 +704,10 @@ class _AccountPageWidgetState extends State<AccountPageWidget>
                         boxShadow: [
                           BoxShadow(
                             color: Color(0xFFF1F4F8),
-                            offset: Offset(0.0, 1.0),
+                            offset: Offset(
+                              0.0,
+                              1.0,
+                            ),
                           )
                         ],
                         borderRadius: BorderRadius.circular(8.0),
@@ -664,8 +733,7 @@ class _AccountPageWidgetState extends State<AccountPageWidget>
                             ),
                             Expanded(
                               child: Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    12.0, 12.0, 12.0, 12.0),
+                                padding: EdgeInsets.all(12.0),
                                 child: Column(
                                   mainAxisSize: MainAxisSize.max,
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -678,6 +746,7 @@ class _AccountPageWidgetState extends State<AccountPageWidget>
                                             fontFamily: 'Outfit',
                                             color: Color(0xFFF3F9FF),
                                             fontSize: 16.0,
+                                            letterSpacing: 0.0,
                                             fontWeight: FontWeight.w500,
                                           ),
                                     ),
@@ -692,6 +761,7 @@ class _AccountPageWidgetState extends State<AccountPageWidget>
                                               fontFamily: 'Plus Jakarta Sans',
                                               color: Color(0xFFE6E6E6),
                                               fontSize: 12.0,
+                                              letterSpacing: 0.0,
                                               fontWeight: FontWeight.w500,
                                             ),
                                       ),
@@ -714,9 +784,12 @@ class _AccountPageWidgetState extends State<AccountPageWidget>
                 ),
                 Text(
                   'Delete Account',
-                  style: FlutterFlowTheme.of(context).bodyMedium,
+                  style: FlutterFlowTheme.of(context).bodyMedium.override(
+                        fontFamily: 'Readex Pro',
+                        letterSpacing: 0.0,
+                      ),
                 ),
-              ],
+              ].addToEnd(SizedBox(height: 58.0)),
             ),
           ),
         ),

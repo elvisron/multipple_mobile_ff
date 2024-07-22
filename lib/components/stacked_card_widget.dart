@@ -1,6 +1,8 @@
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import 'dart:math';
+import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -11,37 +13,26 @@ import 'stacked_card_model.dart';
 export 'stacked_card_model.dart';
 
 class StackedCardWidget extends StatefulWidget {
-  const StackedCardWidget({Key? key}) : super(key: key);
+  const StackedCardWidget({
+    super.key,
+    String? title,
+    required this.courseId,
+    this.course,
+  }) : this.title = title ?? 'course title';
+
+  final String title;
+  final String? courseId;
+  final dynamic course;
 
   @override
-  _StackedCardWidgetState createState() => _StackedCardWidgetState();
+  State<StackedCardWidget> createState() => _StackedCardWidgetState();
 }
 
 class _StackedCardWidgetState extends State<StackedCardWidget>
     with TickerProviderStateMixin {
   late StackedCardModel _model;
 
-  final animationsMap = {
-    'containerOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: 0.0,
-          end: 1.0,
-        ),
-        MoveEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: Offset(30.0, 0.0),
-          end: Offset(0.0, 0.0),
-        ),
-      ],
-    ),
-  };
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void setState(VoidCallback callback) {
@@ -54,6 +45,27 @@ class _StackedCardWidgetState extends State<StackedCardWidget>
     super.initState();
     _model = createModel(context, () => StackedCardModel());
 
+    animationsMap.addAll({
+      'containerOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: Offset(30.0, 0.0),
+            end: Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+    });
     setupAnimations(
       animationsMap.values.where((anim) =>
           anim.trigger == AnimationTrigger.onActionTrigger ||
@@ -71,10 +83,26 @@ class _StackedCardWidgetState extends State<StackedCardWidget>
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
-    return Padding(
-      padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 12.0),
+    return InkWell(
+      splashColor: Colors.transparent,
+      focusColor: Colors.transparent,
+      hoverColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      onTap: () async {
+        context.pushNamed(
+          'learnCourseInfo',
+          queryParameters: {
+            'courseId': serializeParam(
+              widget!.courseId,
+              ParamType.String,
+            ),
+            'course': serializeParam(
+              widget!.course,
+              ParamType.JSON,
+            ),
+          }.withoutNulls,
+        );
+      },
       child: Material(
         color: Colors.transparent,
         elevation: 1.0,
@@ -87,14 +115,20 @@ class _StackedCardWidgetState extends State<StackedCardWidget>
             image: DecorationImage(
               fit: BoxFit.cover,
               image: Image.network(
-                'https://picsum.photos/seed/584/600',
+                functions.replaceAssetPath(getJsonField(
+                  widget!.course,
+                  r'''$.poster''',
+                ).toString()),
               ).image,
             ),
             boxShadow: [
               BoxShadow(
                 blurRadius: 4.0,
                 color: Color(0x34090F13),
-                offset: Offset(0.0, 2.0),
+                offset: Offset(
+                  0.0,
+                  2.0,
+                ),
               )
             ],
             borderRadius: BorderRadius.circular(20.0),
@@ -119,21 +153,24 @@ class _StackedCardWidgetState extends State<StackedCardWidget>
                       borderRadius: BorderRadius.circular(0.0),
                     ),
                     child: Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(
-                          12.0, 12.0, 12.0, 12.0),
+                      padding: EdgeInsets.all(12.0),
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'TypeScript for beginners',
+                            widget!.title.maybeHandleOverflow(
+                              maxChars: 20,
+                              replacement: '…',
+                            ),
                             style: FlutterFlowTheme.of(context)
                                 .titleMedium
                                 .override(
                                   fontFamily: 'Readex Pro',
                                   color: Colors.white,
                                   fontSize: 18.0,
+                                  letterSpacing: 0.0,
                                   fontWeight: FontWeight.normal,
                                 ),
                           ),
@@ -155,7 +192,7 @@ class _StackedCardWidgetState extends State<StackedCardWidget>
                           alignment: AlignmentDirectional(-1.0, 0.0),
                           children: [
                             Align(
-                              alignment: AlignmentDirectional(-1.00, 0.00),
+                              alignment: AlignmentDirectional(-1.0, 0.0),
                               child: FaIcon(
                                 FontAwesomeIcons.bookmark,
                                 color: Color(0xFFE7E8E8),
@@ -167,7 +204,7 @@ class _StackedCardWidgetState extends State<StackedCardWidget>
                       ),
                       Flexible(
                         child: Align(
-                          alignment: AlignmentDirectional(1.00, 0.00),
+                          alignment: AlignmentDirectional(1.0, 0.0),
                           child: FaIcon(
                             FontAwesomeIcons.clock,
                             color: Color(0xFFE7E8E8),
@@ -185,6 +222,7 @@ class _StackedCardWidgetState extends State<StackedCardWidget>
                                     fontFamily: 'Readex Pro',
                                     color: Color(0xFFE7E8E8),
                                     fontSize: 14.0,
+                                    letterSpacing: 0.0,
                                     fontWeight: FontWeight.w300,
                                   ),
                         ),
@@ -196,7 +234,7 @@ class _StackedCardWidgetState extends State<StackedCardWidget>
             ),
           ),
         ),
-      ).animateOnPageLoad(animationsMap['containerOnPageLoadAnimation']!),
-    );
+      ),
+    ).animateOnPageLoad(animationsMap['containerOnPageLoadAnimation']!);
   }
 }

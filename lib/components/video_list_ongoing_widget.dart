@@ -1,7 +1,6 @@
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -9,10 +8,10 @@ import 'video_list_ongoing_model.dart';
 export 'video_list_ongoing_model.dart';
 
 class VideoListOngoingWidget extends StatefulWidget {
-  const VideoListOngoingWidget({Key? key}) : super(key: key);
+  const VideoListOngoingWidget({super.key});
 
   @override
-  _VideoListOngoingWidgetState createState() => _VideoListOngoingWidgetState();
+  State<VideoListOngoingWidget> createState() => _VideoListOngoingWidgetState();
 }
 
 class _VideoListOngoingWidgetState extends State<VideoListOngoingWidget> {
@@ -28,11 +27,6 @@ class _VideoListOngoingWidgetState extends State<VideoListOngoingWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => VideoListOngoingModel());
-
-    // On component load action.
-    SchedulerBinding.instance.addPostFrameCallback((_) async {
-      context.pushNamed('learnvVideo');
-    });
   }
 
   @override
@@ -44,10 +38,8 @@ class _VideoListOngoingWidgetState extends State<VideoListOngoingWidget> {
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return Align(
-      alignment: AlignmentDirectional(0.00, 0.00),
+      alignment: AlignmentDirectional(0.0, 0.0),
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
@@ -72,7 +64,7 @@ class _VideoListOngoingWidgetState extends State<VideoListOngoingWidget> {
                         decoration: BoxDecoration(
                           shape: BoxShape.rectangle,
                         ),
-                        alignment: AlignmentDirectional(0.00, 0.00),
+                        alignment: AlignmentDirectional(0.0, 0.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -105,7 +97,7 @@ class _VideoListOngoingWidgetState extends State<VideoListOngoingWidget> {
                         color: FlutterFlowTheme.of(context).warning,
                         shape: BoxShape.circle,
                       ),
-                      alignment: AlignmentDirectional(0.00, 0.00),
+                      alignment: AlignmentDirectional(0.0, 0.0),
                       child: Padding(
                         padding:
                             EdgeInsetsDirectional.fromSTEB(3.0, 0.0, 0.0, 0.0),
@@ -127,6 +119,7 @@ class _VideoListOngoingWidgetState extends State<VideoListOngoingWidget> {
                               fontFamily: 'Readex Pro',
                               color: FlutterFlowTheme.of(context).secondaryText,
                               fontSize: 16.0,
+                              letterSpacing: 0.0,
                             ),
                       ),
                     ),
@@ -137,6 +130,7 @@ class _VideoListOngoingWidgetState extends State<VideoListOngoingWidget> {
                           fontFamily: 'Readex Pro',
                           color: FlutterFlowTheme.of(context).secondaryText,
                           fontSize: 12.0,
+                          letterSpacing: 0.0,
                         ),
                   ),
                   Text(
@@ -145,6 +139,7 @@ class _VideoListOngoingWidgetState extends State<VideoListOngoingWidget> {
                           fontFamily: 'Readex Pro',
                           color: FlutterFlowTheme.of(context).secondaryText,
                           fontSize: 12.0,
+                          letterSpacing: 0.0,
                         ),
                   ),
                 ],
@@ -165,7 +160,7 @@ class _VideoListOngoingWidgetState extends State<VideoListOngoingWidget> {
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                       ),
-                      alignment: AlignmentDirectional(0.00, 0.00),
+                      alignment: AlignmentDirectional(0.0, 0.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -188,6 +183,7 @@ class _VideoListOngoingWidgetState extends State<VideoListOngoingWidget> {
                               fontFamily: 'Readex Pro',
                               color: FlutterFlowTheme.of(context).secondaryText,
                               fontSize: 12.0,
+                              letterSpacing: 0.0,
                             ),
                       ),
                     ),

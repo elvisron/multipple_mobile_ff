@@ -1,6 +1,7 @@
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -11,10 +12,17 @@ import 'live_session_long_card_model.dart';
 export 'live_session_long_card_model.dart';
 
 class LiveSessionLongCardWidget extends StatefulWidget {
-  const LiveSessionLongCardWidget({Key? key}) : super(key: key);
+  const LiveSessionLongCardWidget({
+    super.key,
+    this.title,
+    this.meetingUrl,
+  });
+
+  final String? title;
+  final String? meetingUrl;
 
   @override
-  _LiveSessionLongCardWidgetState createState() =>
+  State<LiveSessionLongCardWidget> createState() =>
       _LiveSessionLongCardWidgetState();
 }
 
@@ -22,27 +30,7 @@ class _LiveSessionLongCardWidgetState extends State<LiveSessionLongCardWidget>
     with TickerProviderStateMixin {
   late LiveSessionLongCardModel _model;
 
-  final animationsMap = {
-    'containerOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: 0.0,
-          end: 1.0,
-        ),
-        MoveEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: Offset(30.0, 0.0),
-          end: Offset(0.0, 0.0),
-        ),
-      ],
-    ),
-  };
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void setState(VoidCallback callback) {
@@ -55,6 +43,27 @@ class _LiveSessionLongCardWidgetState extends State<LiveSessionLongCardWidget>
     super.initState();
     _model = createModel(context, () => LiveSessionLongCardModel());
 
+    animationsMap.addAll({
+      'containerOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: Offset(30.0, 0.0),
+            end: Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+    });
     setupAnimations(
       animationsMap.values.where((anim) =>
           anim.trigger == AnimationTrigger.onActionTrigger ||
@@ -72,12 +81,11 @@ class _LiveSessionLongCardWidgetState extends State<LiveSessionLongCardWidget>
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return Padding(
-      padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 16.0, 12.0),
+      padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 16.0, 0.0),
       child: Container(
         width: 230.0,
+        height: 355.0,
         decoration: BoxDecoration(
           color: FlutterFlowTheme.of(context).primaryBackground,
           borderRadius: BorderRadius.circular(12.0),
@@ -106,17 +114,16 @@ class _LiveSessionLongCardWidgetState extends State<LiveSessionLongCardWidget>
                     borderRadius: BorderRadius.circular(20.0),
                   ),
                   child: Align(
-                    alignment: AlignmentDirectional(-1.00, 0.00),
+                    alignment: AlignmentDirectional(-1.0, 0.0),
                     child: Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(
-                          12.0, 12.0, 12.0, 12.0),
+                      padding: EdgeInsets.all(12.0),
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Align(
-                            alignment: AlignmentDirectional(-0.90, 0.85),
+                            alignment: AlignmentDirectional(-0.9, 0.85),
                             child: Container(
                               width: 55.0,
                               height: 55.0,
@@ -126,15 +133,27 @@ class _LiveSessionLongCardWidgetState extends State<LiveSessionLongCardWidget>
                                   BoxShadow(
                                     blurRadius: 4.0,
                                     color: Color(0x230E151B),
-                                    offset: Offset(0.0, 2.0),
+                                    offset: Offset(
+                                      0.0,
+                                      2.0,
+                                    ),
                                   )
                                 ],
                                 shape: BoxShape.circle,
                               ),
-                              child: Icon(
-                                Icons.play_arrow_rounded,
-                                color: Color(0xFF14181B),
-                                size: 35.0,
+                              child: InkWell(
+                                splashColor: Colors.transparent,
+                                focusColor: Colors.transparent,
+                                hoverColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
+                                onTap: () async {
+                                  await launchURL(widget!.meetingUrl!);
+                                },
+                                child: Icon(
+                                  Icons.play_arrow_rounded,
+                                  color: Color(0xFF14181B),
+                                  size: 35.0,
+                                ),
                               ),
                             ),
                           ),
@@ -145,7 +164,7 @@ class _LiveSessionLongCardWidgetState extends State<LiveSessionLongCardWidget>
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(15.0, 15.0, 15.0, 15.0),
+                padding: EdgeInsetsDirectional.fromSTEB(15.0, 15.0, 15.0, 10.0),
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
@@ -162,6 +181,7 @@ class _LiveSessionLongCardWidgetState extends State<LiveSessionLongCardWidget>
                         style: FlutterFlowTheme.of(context).bodyMedium.override(
                               fontFamily: 'Readex Pro',
                               color: Color(0xFF9AA3AD),
+                              letterSpacing: 0.0,
                             ),
                       ),
                     ),
@@ -176,10 +196,17 @@ class _LiveSessionLongCardWidgetState extends State<LiveSessionLongCardWidget>
                       padding:
                           EdgeInsetsDirectional.fromSTEB(15.0, 0.0, 15.0, 5.0),
                       child: Text(
-                        'Python for Data Analytics',
+                        valueOrDefault<String>(
+                          widget!.title,
+                          'course title',
+                        ).maybeHandleOverflow(
+                          maxChars: 21,
+                          replacement: '…',
+                        ),
                         style: FlutterFlowTheme.of(context).bodyMedium.override(
                               fontFamily: 'Readex Pro',
                               fontSize: 18.0,
+                              letterSpacing: 0.0,
                             ),
                       ),
                     ),
@@ -187,26 +214,30 @@ class _LiveSessionLongCardWidgetState extends State<LiveSessionLongCardWidget>
                 ],
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(15.0, 0.0, 15.0, 15.0),
+                padding: EdgeInsetsDirectional.fromSTEB(15.0, 0.0, 15.0, 10.0),
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     Text(
                       'Host: ',
-                      style: FlutterFlowTheme.of(context).bodyMedium,
+                      style: FlutterFlowTheme.of(context).bodyMedium.override(
+                            fontFamily: 'Readex Pro',
+                            letterSpacing: 0.0,
+                          ),
                     ),
                     Text(
                       'Patience Williams',
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
                             fontFamily: 'Readex Pro',
                             color: Color(0xFF9AA3AD),
+                            letterSpacing: 0.0,
                           ),
                     ),
                   ],
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(15.0, 15.0, 15.0, 0.0),
+                padding: EdgeInsetsDirectional.fromSTEB(15.0, 0.0, 15.0, 0.0),
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
@@ -215,6 +246,7 @@ class _LiveSessionLongCardWidgetState extends State<LiveSessionLongCardWidget>
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
                             fontFamily: 'Readex Pro',
                             color: Color(0xFF9AA3AD),
+                            letterSpacing: 0.0,
                             fontWeight: FontWeight.w300,
                           ),
                     ),
@@ -222,7 +254,7 @@ class _LiveSessionLongCardWidgetState extends State<LiveSessionLongCardWidget>
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(12.0, 3.0, 12.0, 12.0),
+                padding: EdgeInsetsDirectional.fromSTEB(12.0, 3.0, 12.0, 10.0),
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -233,7 +265,7 @@ class _LiveSessionLongCardWidgetState extends State<LiveSessionLongCardWidget>
                         alignment: AlignmentDirectional(-1.0, 0.0),
                         children: [
                           Align(
-                            alignment: AlignmentDirectional(-0.91, 0.00),
+                            alignment: AlignmentDirectional(-0.91, 0.0),
                             child: Container(
                               width: 35.0,
                               height: 35.0,
@@ -248,7 +280,7 @@ class _LiveSessionLongCardWidgetState extends State<LiveSessionLongCardWidget>
                             ),
                           ),
                           Align(
-                            alignment: AlignmentDirectional(-0.62, 0.00),
+                            alignment: AlignmentDirectional(-0.62, 0.0),
                             child: Container(
                               width: 35.0,
                               height: 35.0,
@@ -263,7 +295,7 @@ class _LiveSessionLongCardWidgetState extends State<LiveSessionLongCardWidget>
                             ),
                           ),
                           Align(
-                            alignment: AlignmentDirectional(-0.35, 0.00),
+                            alignment: AlignmentDirectional(-0.35, 0.0),
                             child: Container(
                               width: 35.0,
                               height: 35.0,
@@ -283,48 +315,56 @@ class _LiveSessionLongCardWidgetState extends State<LiveSessionLongCardWidget>
                   ],
                 ),
               ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(15.0, 15.0, 15.0, 15.0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    FaIcon(
-                      FontAwesomeIcons.calendar,
-                      color: FlutterFlowTheme.of(context).secondaryText,
-                      size: 20.0,
-                    ),
-                    Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 0.0, 0.0),
-                      child: Text(
-                        '03/09/23',
-                        style: FlutterFlowTheme.of(context).bodyMedium.override(
-                              fontFamily: 'Readex Pro',
-                              fontWeight: FontWeight.w300,
-                            ),
-                      ),
-                    ),
-                    Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(12.0, 0.0, 0.0, 0.0),
-                      child: FaIcon(
-                        FontAwesomeIcons.clock,
+              Align(
+                alignment: AlignmentDirectional(0.0, 1.0),
+                child: Padding(
+                  padding:
+                      EdgeInsetsDirectional.fromSTEB(15.0, 0.0, 15.0, 10.0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      FaIcon(
+                        FontAwesomeIcons.calendar,
                         color: FlutterFlowTheme.of(context).secondaryText,
                         size: 20.0,
                       ),
-                    ),
-                    Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(6.0, 0.0, 0.0, 0.0),
-                      child: Text(
-                        '15:30 am',
-                        style: FlutterFlowTheme.of(context).bodyMedium.override(
-                              fontFamily: 'Readex Pro',
-                              fontWeight: FontWeight.w300,
-                            ),
+                      Padding(
+                        padding:
+                            EdgeInsetsDirectional.fromSTEB(8.0, 0.0, 0.0, 0.0),
+                        child: Text(
+                          '03/09/23',
+                          style:
+                              FlutterFlowTheme.of(context).bodyMedium.override(
+                                    fontFamily: 'Readex Pro',
+                                    letterSpacing: 0.0,
+                                    fontWeight: FontWeight.w300,
+                                  ),
+                        ),
                       ),
-                    ),
-                  ],
+                      Padding(
+                        padding:
+                            EdgeInsetsDirectional.fromSTEB(12.0, 0.0, 0.0, 0.0),
+                        child: FaIcon(
+                          FontAwesomeIcons.clock,
+                          color: FlutterFlowTheme.of(context).secondaryText,
+                          size: 20.0,
+                        ),
+                      ),
+                      Padding(
+                        padding:
+                            EdgeInsetsDirectional.fromSTEB(6.0, 0.0, 0.0, 0.0),
+                        child: Text(
+                          '15:30 am',
+                          style:
+                              FlutterFlowTheme.of(context).bodyMedium.override(
+                                    fontFamily: 'Readex Pro',
+                                    letterSpacing: 0.0,
+                                    fontWeight: FontWeight.w300,
+                                  ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

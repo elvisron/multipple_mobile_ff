@@ -9,10 +9,17 @@ import 'happening_card_model.dart';
 export 'happening_card_model.dart';
 
 class HappeningCardWidget extends StatefulWidget {
-  const HappeningCardWidget({Key? key}) : super(key: key);
+  const HappeningCardWidget({
+    super.key,
+    this.topic,
+    this.meetingUrl,
+  });
+
+  final String? topic;
+  final String? meetingUrl;
 
   @override
-  _HappeningCardWidgetState createState() => _HappeningCardWidgetState();
+  State<HappeningCardWidget> createState() => _HappeningCardWidgetState();
 }
 
 class _HappeningCardWidgetState extends State<HappeningCardWidget> {
@@ -39,8 +46,6 @@ class _HappeningCardWidgetState extends State<HappeningCardWidget> {
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return Container(
       width: 200.0,
       decoration: BoxDecoration(
@@ -73,13 +78,14 @@ class _HappeningCardWidgetState extends State<HappeningCardWidget> {
                           padding: EdgeInsetsDirectional.fromSTEB(
                               0.0, 5.0, 0.0, 0.0),
                           child: Text(
-                            'Find a new course you would like',
+                            widget!.topic!,
                             style: FlutterFlowTheme.of(context)
                                 .headlineMedium
                                 .override(
                                   fontFamily: 'Outfit',
                                   color: Colors.white,
                                   fontSize: 20.0,
+                                  letterSpacing: 0.0,
                                   fontWeight: FontWeight.normal,
                                   lineHeight: 1.0,
                                 ),
@@ -105,8 +111,8 @@ class _HappeningCardWidgetState extends State<HappeningCardWidget> {
                                 FlutterFlowTheme.of(context).primaryBackground,
                             size: 24.0,
                           ),
-                          onPressed: () {
-                            print('IconButton pressed ...');
+                          onPressed: () async {
+                            await launchURL(widget!.meetingUrl!);
                           },
                         ),
                       ],

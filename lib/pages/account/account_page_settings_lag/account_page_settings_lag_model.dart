@@ -5,12 +5,15 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
+import 'account_page_settings_lag_widget.dart'
+    show AccountPageSettingsLagWidget;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class AccountPageSettingsLagModel extends FlutterFlowModel {
+class AccountPageSettingsLagModel
+    extends FlutterFlowModel<AccountPageSettingsLagWidget> {
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
@@ -19,20 +22,17 @@ class AccountPageSettingsLagModel extends FlutterFlowModel {
   // State field(s) for RadioButton widget.
   FormFieldController<String>? radioButtonValueController;
 
-  /// Initialization and disposal methods.
-
+  @override
   void initState(BuildContext context) {
     userProfileCardModel = createModel(context, () => UserProfileCardModel());
   }
 
+  @override
   void dispose() {
     unfocusNode.dispose();
     userProfileCardModel.dispose();
   }
 
-  /// Action blocks are added here.
-
-  /// Additional helper methods are added here.
-
+  /// Additional helper methods.
   String? get radioButtonValue => radioButtonValueController?.value;
 }

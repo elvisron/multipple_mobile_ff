@@ -10,10 +10,10 @@ import 'explore_filter_tag_model.dart';
 export 'explore_filter_tag_model.dart';
 
 class ExploreFilterTagWidget extends StatefulWidget {
-  const ExploreFilterTagWidget({Key? key}) : super(key: key);
+  const ExploreFilterTagWidget({super.key});
 
   @override
-  _ExploreFilterTagWidgetState createState() => _ExploreFilterTagWidgetState();
+  State<ExploreFilterTagWidget> createState() => _ExploreFilterTagWidgetState();
 }
 
 class _ExploreFilterTagWidgetState extends State<ExploreFilterTagWidget> {
@@ -40,8 +40,6 @@ class _ExploreFilterTagWidgetState extends State<ExploreFilterTagWidget> {
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return Container(
       width: double.infinity,
       height: 731.0,
@@ -65,7 +63,7 @@ class _ExploreFilterTagWidgetState extends State<ExploreFilterTagWidget> {
                 children: [
                   Expanded(
                     child: Align(
-                      alignment: AlignmentDirectional(1.00, 0.00),
+                      alignment: AlignmentDirectional(1.0, 0.0),
                       child: FaIcon(
                         FontAwesomeIcons.windowClose,
                         color: FlutterFlowTheme.of(context).secondaryText,
@@ -89,6 +87,7 @@ class _ExploreFilterTagWidgetState extends State<ExploreFilterTagWidget> {
                         style: FlutterFlowTheme.of(context).bodyMedium.override(
                               fontFamily: 'Readex Pro',
                               fontSize: 18.0,
+                              letterSpacing: 0.0,
                               fontWeight: FontWeight.w600,
                             ),
                       ),
@@ -100,8 +99,7 @@ class _ExploreFilterTagWidgetState extends State<ExploreFilterTagWidget> {
                   children: [
                     Expanded(
                       child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            16.0, 16.0, 16.0, 16.0),
+                        padding: EdgeInsets.all(16.0),
                         child: FlutterFlowChoiceChips(
                           options: [
                             ChipData('Computer Science'),
@@ -123,6 +121,7 @@ class _ExploreFilterTagWidgetState extends State<ExploreFilterTagWidget> {
                                 .override(
                                   fontFamily: 'Readex Pro',
                                   color: FlutterFlowTheme.of(context).info,
+                                  letterSpacing: 0.0,
                                   fontWeight: FontWeight.bold,
                                 ),
                             iconColor:
@@ -143,6 +142,7 @@ class _ExploreFilterTagWidgetState extends State<ExploreFilterTagWidget> {
                                   fontFamily: 'Readex Pro',
                                   color: FlutterFlowTheme.of(context)
                                       .secondaryText,
+                                  letterSpacing: 0.0,
                                   fontWeight: FontWeight.bold,
                                 ),
                             iconColor:
@@ -185,6 +185,7 @@ class _ExploreFilterTagWidgetState extends State<ExploreFilterTagWidget> {
                         style: FlutterFlowTheme.of(context).bodyMedium.override(
                               fontFamily: 'Readex Pro',
                               fontSize: 18.0,
+                              letterSpacing: 0.0,
                               fontWeight: FontWeight.w600,
                             ),
                       ),
@@ -196,16 +197,15 @@ class _ExploreFilterTagWidgetState extends State<ExploreFilterTagWidget> {
                   children: [
                     Expanded(
                       child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            16.0, 16.0, 16.0, 16.0),
+                        padding: EdgeInsets.all(16.0),
                         child: FlutterFlowChoiceChips(
                           options: [
                             ChipData('Beginner'),
                             ChipData('Intermediate'),
                             ChipData('Expert')
                           ],
-                          onChanged: (val) => setState(
-                              () => _model.choiceChipsValue2 = val?.first),
+                          onChanged: (val) => setState(() =>
+                              _model.choiceChipsValue2 = val?.firstOrNull),
                           selectedChipStyle: ChipStyle(
                             backgroundColor:
                                 FlutterFlowTheme.of(context).secondary,
@@ -214,6 +214,7 @@ class _ExploreFilterTagWidgetState extends State<ExploreFilterTagWidget> {
                                 .override(
                                   fontFamily: 'Readex Pro',
                                   color: FlutterFlowTheme.of(context).info,
+                                  letterSpacing: 0.0,
                                 ),
                             iconColor:
                                 FlutterFlowTheme.of(context).secondaryText,
@@ -233,6 +234,7 @@ class _ExploreFilterTagWidgetState extends State<ExploreFilterTagWidget> {
                                   fontFamily: 'Readex Pro',
                                   color: FlutterFlowTheme.of(context)
                                       .secondaryText,
+                                  letterSpacing: 0.0,
                                   fontWeight: FontWeight.bold,
                                 ),
                             iconColor:
@@ -274,6 +276,7 @@ class _ExploreFilterTagWidgetState extends State<ExploreFilterTagWidget> {
                         style: FlutterFlowTheme.of(context).bodyMedium.override(
                               fontFamily: 'Readex Pro',
                               fontSize: 18.0,
+                              letterSpacing: 0.0,
                               fontWeight: FontWeight.w600,
                             ),
                       ),
@@ -285,12 +288,11 @@ class _ExploreFilterTagWidgetState extends State<ExploreFilterTagWidget> {
                   children: [
                     Expanded(
                       child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            16.0, 16.0, 16.0, 16.0),
+                        padding: EdgeInsets.all(16.0),
                         child: FlutterFlowChoiceChips(
                           options: [ChipData('Free'), ChipData('Paid')],
-                          onChanged: (val) => setState(
-                              () => _model.choiceChipsValue3 = val?.first),
+                          onChanged: (val) => setState(() =>
+                              _model.choiceChipsValue3 = val?.firstOrNull),
                           selectedChipStyle: ChipStyle(
                             backgroundColor:
                                 FlutterFlowTheme.of(context).secondary,
@@ -299,6 +301,7 @@ class _ExploreFilterTagWidgetState extends State<ExploreFilterTagWidget> {
                                 .override(
                                   fontFamily: 'Readex Pro',
                                   color: FlutterFlowTheme.of(context).info,
+                                  letterSpacing: 0.0,
                                 ),
                             iconColor:
                                 FlutterFlowTheme.of(context).secondaryText,
@@ -318,6 +321,7 @@ class _ExploreFilterTagWidgetState extends State<ExploreFilterTagWidget> {
                                   fontFamily: 'Readex Pro',
                                   color: FlutterFlowTheme.of(context)
                                       .secondaryText,
+                                  letterSpacing: 0.0,
                                   fontWeight: FontWeight.bold,
                                 ),
                             iconColor:
@@ -359,6 +363,7 @@ class _ExploreFilterTagWidgetState extends State<ExploreFilterTagWidget> {
                         style: FlutterFlowTheme.of(context).bodyMedium.override(
                               fontFamily: 'Readex Pro',
                               fontSize: 18.0,
+                              letterSpacing: 0.0,
                               fontWeight: FontWeight.w600,
                             ),
                       ),
@@ -370,15 +375,14 @@ class _ExploreFilterTagWidgetState extends State<ExploreFilterTagWidget> {
                   children: [
                     Expanded(
                       child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            16.0, 16.0, 16.0, 16.0),
+                        padding: EdgeInsets.all(16.0),
                         child: FlutterFlowChoiceChips(
                           options: [
                             ChipData('Recently Added'),
                             ChipData('Certificate')
                           ],
-                          onChanged: (val) => setState(
-                              () => _model.choiceChipsValue4 = val?.first),
+                          onChanged: (val) => setState(() =>
+                              _model.choiceChipsValue4 = val?.firstOrNull),
                           selectedChipStyle: ChipStyle(
                             backgroundColor:
                                 FlutterFlowTheme.of(context).secondary,
@@ -387,6 +391,7 @@ class _ExploreFilterTagWidgetState extends State<ExploreFilterTagWidget> {
                                 .override(
                                   fontFamily: 'Readex Pro',
                                   color: FlutterFlowTheme.of(context).info,
+                                  letterSpacing: 0.0,
                                 ),
                             iconColor:
                                 FlutterFlowTheme.of(context).secondaryText,
@@ -406,6 +411,7 @@ class _ExploreFilterTagWidgetState extends State<ExploreFilterTagWidget> {
                                   fontFamily: 'Readex Pro',
                                   color: FlutterFlowTheme.of(context)
                                       .secondaryText,
+                                  letterSpacing: 0.0,
                                   fontWeight: FontWeight.bold,
                                 ),
                             iconColor:

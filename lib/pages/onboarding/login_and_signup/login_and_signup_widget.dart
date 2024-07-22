@@ -9,10 +9,10 @@ import 'login_and_signup_model.dart';
 export 'login_and_signup_model.dart';
 
 class LoginAndSignupWidget extends StatefulWidget {
-  const LoginAndSignupWidget({Key? key}) : super(key: key);
+  const LoginAndSignupWidget({super.key});
 
   @override
-  _LoginAndSignupWidgetState createState() => _LoginAndSignupWidgetState();
+  State<LoginAndSignupWidget> createState() => _LoginAndSignupWidgetState();
 }
 
 class _LoginAndSignupWidgetState extends State<LoginAndSignupWidget> {
@@ -35,15 +35,15 @@ class _LoginAndSignupWidgetState extends State<LoginAndSignupWidget> {
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
+      onTap: () => _model.unfocusNode.canRequestFocus
+          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+          : FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: Colors.white,
         body: Align(
-          alignment: AlignmentDirectional(0.00, 0.00),
+          alignment: AlignmentDirectional(0.0, 0.0),
           child: Container(
             width: double.infinity,
             constraints: BoxConstraints(
@@ -78,7 +78,7 @@ class _LoginAndSignupWidgetState extends State<LoginAndSignupWidget> {
                           end: AlignmentDirectional(0, 1.0),
                         ),
                       ),
-                      alignment: AlignmentDirectional(0.00, 1.00),
+                      alignment: AlignmentDirectional(0.0, 1.0),
                       child: Padding(
                         padding:
                             EdgeInsetsDirectional.fromSTEB(0.0, 30.0, 0.0, 0.0),
@@ -96,8 +96,7 @@ class _LoginAndSignupWidgetState extends State<LoginAndSignupWidget> {
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  4.0, 4.0, 4.0, 4.0),
+                              padding: EdgeInsets.all(4.0),
                               child: Text(
                                 'Your ultimate learning platform!',
                                 textAlign: TextAlign.center,
@@ -107,6 +106,7 @@ class _LoginAndSignupWidgetState extends State<LoginAndSignupWidget> {
                                       fontFamily: 'Urbanist',
                                       color: Color(0xFF101213),
                                       fontSize: 18.0,
+                                      letterSpacing: 0.0,
                                       fontWeight: FontWeight.w500,
                                     ),
                               ),
@@ -145,6 +145,7 @@ class _LoginAndSignupWidgetState extends State<LoginAndSignupWidget> {
                                   fontFamily: 'Urbanist',
                                   color: Colors.white,
                                   fontSize: 18.0,
+                                  letterSpacing: 0.0,
                                   fontWeight: FontWeight.bold,
                                 ),
                             elevation: 0.0,
@@ -182,6 +183,7 @@ class _LoginAndSignupWidgetState extends State<LoginAndSignupWidget> {
                                   color:
                                       FlutterFlowTheme.of(context).primaryText,
                                   fontSize: 18.0,
+                                  letterSpacing: 0.0,
                                   fontWeight: FontWeight.bold,
                                 ),
                             elevation: 0.0,
@@ -204,6 +206,7 @@ class _LoginAndSignupWidgetState extends State<LoginAndSignupWidget> {
                                     fontFamily: 'Plus Jakarta Sans',
                                     color: Color(0xFF57636C),
                                     fontSize: 14.0,
+                                    letterSpacing: 0.0,
                                     fontWeight: FontWeight.w500,
                                   ),
                         ),
@@ -235,6 +238,7 @@ class _LoginAndSignupWidgetState extends State<LoginAndSignupWidget> {
                                   fontFamily: 'Urbanist',
                                   color: Color(0xFF101213),
                                   fontSize: 18.0,
+                                  letterSpacing: 0.0,
                                   fontWeight: FontWeight.bold,
                                 ),
                             elevation: 0.0,

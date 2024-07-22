@@ -1,6 +1,7 @@
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -11,37 +12,17 @@ import 'learn_course_saved_model.dart';
 export 'learn_course_saved_model.dart';
 
 class LearnCourseSavedWidget extends StatefulWidget {
-  const LearnCourseSavedWidget({Key? key}) : super(key: key);
+  const LearnCourseSavedWidget({super.key});
 
   @override
-  _LearnCourseSavedWidgetState createState() => _LearnCourseSavedWidgetState();
+  State<LearnCourseSavedWidget> createState() => _LearnCourseSavedWidgetState();
 }
 
 class _LearnCourseSavedWidgetState extends State<LearnCourseSavedWidget>
     with TickerProviderStateMixin {
   late LearnCourseSavedModel _model;
 
-  final animationsMap = {
-    'containerOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: 0.0,
-          end: 1.0,
-        ),
-        MoveEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: Offset(0.0, 30.0),
-          end: Offset(0.0, 0.0),
-        ),
-      ],
-    ),
-  };
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void setState(VoidCallback callback) {
@@ -54,6 +35,27 @@ class _LearnCourseSavedWidgetState extends State<LearnCourseSavedWidget>
     super.initState();
     _model = createModel(context, () => LearnCourseSavedModel());
 
+    animationsMap.addAll({
+      'containerOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: Offset(0.0, 30.0),
+            end: Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+    });
     setupAnimations(
       animationsMap.values.where((anim) =>
           anim.trigger == AnimationTrigger.onActionTrigger ||
@@ -71,8 +73,6 @@ class _LearnCourseSavedWidgetState extends State<LearnCourseSavedWidget>
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return Padding(
       padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 1.0),
       child: Container(
@@ -100,8 +100,7 @@ class _LearnCourseSavedWidgetState extends State<LearnCourseSavedWidget>
               ),
               Expanded(
                 child: Padding(
-                  padding:
-                      EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 12.0, 12.0),
+                  padding: EdgeInsets.all(12.0),
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,6 +112,7 @@ class _LearnCourseSavedWidgetState extends State<LearnCourseSavedWidget>
                                   fontFamily: 'Outfit',
                                   color: FlutterFlowTheme.of(context).primary,
                                   fontSize: 16.0,
+                                  letterSpacing: 0.0,
                                   fontWeight: FontWeight.w500,
                                 ),
                       ),
@@ -128,6 +128,7 @@ class _LearnCourseSavedWidgetState extends State<LearnCourseSavedWidget>
                                 color:
                                     FlutterFlowTheme.of(context).secondaryText,
                                 fontSize: 12.0,
+                                letterSpacing: 0.0,
                                 fontWeight: FontWeight.w500,
                               ),
                         ),

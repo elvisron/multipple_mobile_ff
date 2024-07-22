@@ -11,10 +11,10 @@ import 'forgotten_password_model.dart';
 export 'forgotten_password_model.dart';
 
 class ForgottenPasswordWidget extends StatefulWidget {
-  const ForgottenPasswordWidget({Key? key}) : super(key: key);
+  const ForgottenPasswordWidget({super.key});
 
   @override
-  _ForgottenPasswordWidgetState createState() =>
+  State<ForgottenPasswordWidget> createState() =>
       _ForgottenPasswordWidgetState();
 }
 
@@ -40,8 +40,13 @@ class _ForgottenPasswordWidgetState extends State<ForgottenPasswordWidget> {
     }
 
     _model.textController1 ??= TextEditingController();
+    _model.textFieldFocusNode1 ??= FocusNode();
+
     _model.textController2 ??= TextEditingController();
+    _model.textFieldFocusNode2 ??= FocusNode();
+
     _model.textController3 ??= TextEditingController();
+    _model.textFieldFocusNode3 ??= FocusNode();
   }
 
   @override
@@ -56,10 +61,10 @@ class _ForgottenPasswordWidgetState extends State<ForgottenPasswordWidget> {
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
+      onTap: () => _model.unfocusNode.canRequestFocus
+          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+          : FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: Colors.white,
@@ -87,7 +92,7 @@ class _ForgottenPasswordWidgetState extends State<ForgottenPasswordWidget> {
         body: SafeArea(
           top: true,
           child: Align(
-            alignment: AlignmentDirectional(0.00, 0.00),
+            alignment: AlignmentDirectional(0.0, 0.0),
             child: Container(
               width: double.infinity,
               constraints: BoxConstraints(
@@ -121,6 +126,7 @@ class _ForgottenPasswordWidgetState extends State<ForgottenPasswordWidget> {
                                       fontFamily: 'Urbanist',
                                       color: Color(0xFF101213),
                                       fontSize: 38.0,
+                                      letterSpacing: 0.0,
                                       fontWeight: FontWeight.bold,
                                     ),
                               ),
@@ -137,6 +143,7 @@ class _ForgottenPasswordWidgetState extends State<ForgottenPasswordWidget> {
                                       fontFamily: 'Plus Jakarta Sans',
                                       color: Color(0xFF57636C),
                                       fontSize: 16.0,
+                                      letterSpacing: 0.0,
                                       fontWeight: FontWeight.w500,
                                     ),
                               ),
@@ -146,6 +153,8 @@ class _ForgottenPasswordWidgetState extends State<ForgottenPasswordWidget> {
                                   16.0, 12.0, 16.0, 0.0),
                               child: TextFormField(
                                 controller: _model.textController1,
+                                focusNode: _model.textFieldFocusNode1,
+                                autofocus: false,
                                 obscureText: false,
                                 decoration: InputDecoration(
                                   labelText: 'Email Address',
@@ -155,6 +164,7 @@ class _ForgottenPasswordWidgetState extends State<ForgottenPasswordWidget> {
                                         fontFamily: 'Plus Jakarta Sans',
                                         color: Color(0xFF57636C),
                                         fontSize: 16.0,
+                                        letterSpacing: 0.0,
                                         fontWeight: FontWeight.w500,
                                       ),
                                   enabledBorder: UnderlineInputBorder(
@@ -209,6 +219,7 @@ class _ForgottenPasswordWidgetState extends State<ForgottenPasswordWidget> {
                                       fontFamily: 'Plus Jakarta Sans',
                                       color: Color(0xFF101213),
                                       fontSize: 16.0,
+                                      letterSpacing: 0.0,
                                       fontWeight: FontWeight.w500,
                                       lineHeight: 3.0,
                                     ),
@@ -221,6 +232,8 @@ class _ForgottenPasswordWidgetState extends State<ForgottenPasswordWidget> {
                                   16.0, 12.0, 16.0, 0.0),
                               child: TextFormField(
                                 controller: _model.textController2,
+                                focusNode: _model.textFieldFocusNode2,
+                                autofocus: false,
                                 textCapitalization: TextCapitalization.none,
                                 obscureText: !_model.passwordVisibility1,
                                 decoration: InputDecoration(
@@ -231,6 +244,7 @@ class _ForgottenPasswordWidgetState extends State<ForgottenPasswordWidget> {
                                         fontFamily: 'Plus Jakarta Sans',
                                         color: Color(0xFF57636C),
                                         fontSize: 16.0,
+                                        letterSpacing: 0.0,
                                         fontWeight: FontWeight.w500,
                                       ),
                                   enabledBorder: UnderlineInputBorder(
@@ -299,6 +313,7 @@ class _ForgottenPasswordWidgetState extends State<ForgottenPasswordWidget> {
                                       fontFamily: 'Plus Jakarta Sans',
                                       color: Color(0xFF101213),
                                       fontSize: 16.0,
+                                      letterSpacing: 0.0,
                                       fontWeight: FontWeight.w500,
                                       lineHeight: 3.0,
                                     ),
@@ -311,6 +326,8 @@ class _ForgottenPasswordWidgetState extends State<ForgottenPasswordWidget> {
                                   16.0, 12.0, 16.0, 0.0),
                               child: TextFormField(
                                 controller: _model.textController3,
+                                focusNode: _model.textFieldFocusNode3,
+                                autofocus: false,
                                 textCapitalization: TextCapitalization.none,
                                 obscureText: !_model.passwordVisibility2,
                                 decoration: InputDecoration(
@@ -321,6 +338,7 @@ class _ForgottenPasswordWidgetState extends State<ForgottenPasswordWidget> {
                                         fontFamily: 'Plus Jakarta Sans',
                                         color: Color(0xFF57636C),
                                         fontSize: 16.0,
+                                        letterSpacing: 0.0,
                                         fontWeight: FontWeight.w500,
                                       ),
                                   enabledBorder: UnderlineInputBorder(
@@ -389,6 +407,7 @@ class _ForgottenPasswordWidgetState extends State<ForgottenPasswordWidget> {
                                       fontFamily: 'Plus Jakarta Sans',
                                       color: Color(0xFF101213),
                                       fontSize: 16.0,
+                                      letterSpacing: 0.0,
                                       fontWeight: FontWeight.w500,
                                       lineHeight: 3.0,
                                     ),
@@ -405,11 +424,15 @@ class _ForgottenPasswordWidgetState extends State<ForgottenPasswordWidget> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Align(
-                                    alignment: AlignmentDirectional(0.00, 1.00),
+                                    alignment: AlignmentDirectional(0.0, 1.0),
                                     child: Text(
                                       'Already have an account? ',
                                       style: FlutterFlowTheme.of(context)
-                                          .bodyMedium,
+                                          .bodyMedium
+                                          .override(
+                                            fontFamily: 'Readex Pro',
+                                            letterSpacing: 0.0,
+                                          ),
                                     ),
                                   ),
                                   Text(
@@ -420,6 +443,7 @@ class _ForgottenPasswordWidgetState extends State<ForgottenPasswordWidget> {
                                           fontFamily: 'Readex Pro',
                                           color: FlutterFlowTheme.of(context)
                                               .primary,
+                                          letterSpacing: 0.0,
                                           fontWeight: FontWeight.w600,
                                         ),
                                   ),
@@ -455,6 +479,11 @@ class _ForgottenPasswordWidgetState extends State<ForgottenPasswordWidget> {
                                         setState(() =>
                                             _model.checkboxValue = newValue!);
                                       },
+                                      side: BorderSide(
+                                        width: 2,
+                                        color: FlutterFlowTheme.of(context)
+                                            .secondaryText,
+                                      ),
                                       activeColor:
                                           FlutterFlowTheme.of(context).primary,
                                       checkColor:
@@ -462,11 +491,15 @@ class _ForgottenPasswordWidgetState extends State<ForgottenPasswordWidget> {
                                     ),
                                   ),
                                   Align(
-                                    alignment: AlignmentDirectional(0.00, 1.00),
+                                    alignment: AlignmentDirectional(0.0, 1.0),
                                     child: Text(
                                       'I agree with the ',
                                       style: FlutterFlowTheme.of(context)
-                                          .bodyMedium,
+                                          .bodyMedium
+                                          .override(
+                                            fontFamily: 'Readex Pro',
+                                            letterSpacing: 0.0,
+                                          ),
                                     ),
                                   ),
                                   Text(
@@ -477,6 +510,7 @@ class _ForgottenPasswordWidgetState extends State<ForgottenPasswordWidget> {
                                           fontFamily: 'Readex Pro',
                                           color: FlutterFlowTheme.of(context)
                                               .primary,
+                                          letterSpacing: 0.0,
                                           fontWeight: FontWeight.w600,
                                         ),
                                   ),
@@ -488,6 +522,7 @@ class _ForgottenPasswordWidgetState extends State<ForgottenPasswordWidget> {
                                           fontFamily: 'Readex Pro',
                                           color: FlutterFlowTheme.of(context)
                                               .primary,
+                                          letterSpacing: 0.0,
                                           fontWeight: FontWeight.w600,
                                         ),
                                   ),
@@ -499,6 +534,7 @@ class _ForgottenPasswordWidgetState extends State<ForgottenPasswordWidget> {
                                           fontFamily: 'Readex Pro',
                                           color: FlutterFlowTheme.of(context)
                                               .primary,
+                                          letterSpacing: 0.0,
                                           fontWeight: FontWeight.w600,
                                         ),
                                   ),
@@ -514,11 +550,15 @@ class _ForgottenPasswordWidgetState extends State<ForgottenPasswordWidget> {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Align(
-                                    alignment: AlignmentDirectional(0.00, 1.00),
+                                    alignment: AlignmentDirectional(0.0, 1.0),
                                     child: Text(
                                       'of Multipple',
                                       style: FlutterFlowTheme.of(context)
-                                          .bodyMedium,
+                                          .bodyMedium
+                                          .override(
+                                            fontFamily: 'Readex Pro',
+                                            letterSpacing: 0.0,
+                                          ),
                                     ),
                                   ),
                                 ],
@@ -553,6 +593,7 @@ class _ForgottenPasswordWidgetState extends State<ForgottenPasswordWidget> {
                                     fontFamily: 'Plus Jakarta Sans',
                                     color: Colors.white,
                                     fontSize: 18.0,
+                                    letterSpacing: 0.0,
                                     fontWeight: FontWeight.w500,
                                   ),
                           elevation: 4.0,

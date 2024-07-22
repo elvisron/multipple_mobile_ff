@@ -8,10 +8,10 @@ import 'user_profile_card_model.dart';
 export 'user_profile_card_model.dart';
 
 class UserProfileCardWidget extends StatefulWidget {
-  const UserProfileCardWidget({Key? key}) : super(key: key);
+  const UserProfileCardWidget({super.key});
 
   @override
-  _UserProfileCardWidgetState createState() => _UserProfileCardWidgetState();
+  State<UserProfileCardWidget> createState() => _UserProfileCardWidgetState();
 }
 
 class _UserProfileCardWidgetState extends State<UserProfileCardWidget> {
@@ -38,10 +38,8 @@ class _UserProfileCardWidgetState extends State<UserProfileCardWidget> {
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return Align(
-      alignment: AlignmentDirectional(0.00, 0.00),
+      alignment: AlignmentDirectional(0.0, 0.0),
       child: Container(
         width: double.infinity,
         constraints: BoxConstraints(
@@ -63,7 +61,7 @@ class _UserProfileCardWidgetState extends State<UserProfileCardWidget> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                 ),
-                alignment: AlignmentDirectional(0.00, 0.00),
+                alignment: AlignmentDirectional(0.0, 0.0),
                 child: FaIcon(
                   FontAwesomeIcons.user,
                   color: Color(0xFFEFEFEF),
@@ -85,6 +83,7 @@ class _UserProfileCardWidgetState extends State<UserProfileCardWidget> {
                                 fontFamily: 'Outfit',
                                 color: Color(0xFFF3FCFF),
                                 fontSize: 18.0,
+                                letterSpacing: 0.0,
                                 fontWeight: FontWeight.w500,
                               ),
                     ),
@@ -99,6 +98,7 @@ class _UserProfileCardWidgetState extends State<UserProfileCardWidget> {
                                     fontFamily: 'Plus Jakarta Sans',
                                     color: Color(0xFFEFEFEF),
                                     fontSize: 12.0,
+                                    letterSpacing: 0.0,
                                     fontWeight: FontWeight.w500,
                                   ),
                         ),

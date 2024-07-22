@@ -1,17 +1,14 @@
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import 'stack_course_card_widget.dart' show StackCourseCardWidget;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class StackCourseCardModel extends FlutterFlowModel {
-  /// Initialization and disposal methods.
-
+class StackCourseCardModel extends FlutterFlowModel<StackCourseCardWidget> {
+  @override
   void initState(BuildContext context) {}
 
+  @override
   void dispose() {}
-
-  /// Action blocks are added here.
-
-  /// Additional helper methods are added here.
 }

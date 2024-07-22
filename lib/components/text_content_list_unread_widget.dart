@@ -8,10 +8,10 @@ import 'text_content_list_unread_model.dart';
 export 'text_content_list_unread_model.dart';
 
 class TextContentListUnreadWidget extends StatefulWidget {
-  const TextContentListUnreadWidget({Key? key}) : super(key: key);
+  const TextContentListUnreadWidget({super.key});
 
   @override
-  _TextContentListUnreadWidgetState createState() =>
+  State<TextContentListUnreadWidget> createState() =>
       _TextContentListUnreadWidgetState();
 }
 
@@ -40,10 +40,8 @@ class _TextContentListUnreadWidgetState
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return Align(
-      alignment: AlignmentDirectional(0.00, 0.00),
+      alignment: AlignmentDirectional(0.0, 0.0),
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
@@ -68,7 +66,7 @@ class _TextContentListUnreadWidgetState
                         decoration: BoxDecoration(
                           shape: BoxShape.rectangle,
                         ),
-                        alignment: AlignmentDirectional(0.00, 0.00),
+                        alignment: AlignmentDirectional(0.0, 0.0),
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -101,7 +99,7 @@ class _TextContentListUnreadWidgetState
                         color: FlutterFlowTheme.of(context).secondaryText,
                         shape: BoxShape.circle,
                       ),
-                      alignment: AlignmentDirectional(0.00, 0.00),
+                      alignment: AlignmentDirectional(0.0, 0.0),
                       child: FaIcon(
                         FontAwesomeIcons.book,
                         color: FlutterFlowTheme.of(context).primaryBackground,
@@ -119,6 +117,7 @@ class _TextContentListUnreadWidgetState
                               fontFamily: 'Readex Pro',
                               color: FlutterFlowTheme.of(context).secondaryText,
                               fontSize: 16.0,
+                              letterSpacing: 0.0,
                             ),
                       ),
                     ),
@@ -129,6 +128,7 @@ class _TextContentListUnreadWidgetState
                           fontFamily: 'Readex Pro',
                           color: FlutterFlowTheme.of(context).secondaryText,
                           fontSize: 12.0,
+                          letterSpacing: 0.0,
                         ),
                   ),
                   Text(
@@ -137,6 +137,7 @@ class _TextContentListUnreadWidgetState
                           fontFamily: 'Readex Pro',
                           color: FlutterFlowTheme.of(context).secondaryText,
                           fontSize: 12.0,
+                          letterSpacing: 0.0,
                         ),
                   ),
                 ],
@@ -157,7 +158,7 @@ class _TextContentListUnreadWidgetState
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                       ),
-                      alignment: AlignmentDirectional(0.00, 0.00),
+                      alignment: AlignmentDirectional(0.0, 0.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -180,6 +181,7 @@ class _TextContentListUnreadWidgetState
                               fontFamily: 'Readex Pro',
                               color: FlutterFlowTheme.of(context).secondaryText,
                               fontSize: 12.0,
+                              letterSpacing: 0.0,
                             ),
                       ),
                     ),

@@ -1,3 +1,5 @@
+import '/auth/custom_auth/auth_util.dart';
+import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -12,10 +14,15 @@ import 'pin_code_model.dart';
 export 'pin_code_model.dart';
 
 class PinCodeWidget extends StatefulWidget {
-  const PinCodeWidget({Key? key}) : super(key: key);
+  const PinCodeWidget({
+    super.key,
+    required this.email,
+  });
+
+  final String? email;
 
   @override
-  _PinCodeWidgetState createState() => _PinCodeWidgetState();
+  State<PinCodeWidget> createState() => _PinCodeWidgetState();
 }
 
 class _PinCodeWidgetState extends State<PinCodeWidget> {
@@ -52,10 +59,10 @@ class _PinCodeWidgetState extends State<PinCodeWidget> {
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
+      onTap: () => _model.unfocusNode.canRequestFocus
+          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+          : FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: Colors.white,
@@ -83,7 +90,7 @@ class _PinCodeWidgetState extends State<PinCodeWidget> {
         body: SafeArea(
           top: true,
           child: Align(
-            alignment: AlignmentDirectional(0.00, 0.00),
+            alignment: AlignmentDirectional(0.0, 0.0),
             child: Container(
               width: double.infinity,
               constraints: BoxConstraints(
@@ -117,6 +124,7 @@ class _PinCodeWidgetState extends State<PinCodeWidget> {
                                       fontFamily: 'Urbanist',
                                       color: Color(0xFF101213),
                                       fontSize: 48.0,
+                                      letterSpacing: 0.0,
                                       fontWeight: FontWeight.bold,
                                     ),
                               ),
@@ -133,6 +141,7 @@ class _PinCodeWidgetState extends State<PinCodeWidget> {
                                       fontFamily: 'Plus Jakarta Sans',
                                       color: Color(0xFF57636C),
                                       fontSize: 16.0,
+                                      letterSpacing: 0.0,
                                       fontWeight: FontWeight.w500,
                                     ),
                               ),
@@ -150,6 +159,7 @@ class _PinCodeWidgetState extends State<PinCodeWidget> {
                                       fontFamily: 'Outfit',
                                       color: Color(0xFF4B39EF),
                                       fontSize: 16.0,
+                                      letterSpacing: 0.0,
                                       fontWeight: FontWeight.w500,
                                     ),
                                 mainAxisAlignment:
@@ -162,11 +172,17 @@ class _PinCodeWidgetState extends State<PinCodeWidget> {
                                 cursorColor: Color(0xFF4B39EF),
                                 obscureText: false,
                                 hintCharacter: '-',
+                                keyboardType: TextInputType.number,
                                 pinTheme: PinTheme(
-                                  fieldHeight: 60.0,
-                                  fieldWidth: 60.0,
+                                  fieldHeight: 70.0,
+                                  fieldWidth: 70.0,
                                   borderWidth: 2.0,
-                                  borderRadius: BorderRadius.circular(12.0),
+                                  borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(12.0),
+                                    bottomRight: Radius.circular(12.0),
+                                    topLeft: Radius.circular(12.0),
+                                    topRight: Radius.circular(12.0),
+                                  ),
                                   shape: PinCodeFieldShape.box,
                                   activeColor: Color(0xFF4B39EF),
                                   inactiveColor: Color(0xFFF1F4F8),
@@ -186,31 +202,94 @@ class _PinCodeWidgetState extends State<PinCodeWidget> {
                             Padding(
                               padding: EdgeInsetsDirectional.fromSTEB(
                                   0.0, 60.0, 0.0, 0.0),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Align(
-                                    alignment: AlignmentDirectional(0.00, 1.00),
-                                    child: Text(
-                                      'Didn\'t get the code? ',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Resend',
-                                    style: FlutterFlowTheme.of(context)
-                                        .bodyMedium
-                                        .override(
-                                          fontFamily: 'Readex Pro',
-                                          color: FlutterFlowTheme.of(context)
-                                              .primary,
-                                          fontWeight: FontWeight.w600,
+                              child: InkWell(
+                                splashColor: Colors.transparent,
+                                focusColor: Colors.transparent,
+                                hoverColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
+                                onTap: () async {
+                                  _model.apiResultzlc =
+                                      await APSAuthenticationProcessingServiceGroup
+                                          .resendVerificationEmailCall
+                                          .call(
+                                    email: widget!.email,
+                                  );
+
+                                  if ((_model.apiResultzlc?.succeeded ??
+                                      true)) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          getJsonField(
+                                            (_model.apiResultzlc?.jsonBody ??
+                                                ''),
+                                            r'''$.message''',
+                                          ).toString(),
+                                          style: TextStyle(
+                                            color: FlutterFlowTheme.of(context)
+                                                .info,
+                                          ),
                                         ),
-                                  ),
-                                ],
+                                        duration: Duration(milliseconds: 4000),
+                                        backgroundColor:
+                                            FlutterFlowTheme.of(context)
+                                                .success,
+                                      ),
+                                    );
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          getJsonField(
+                                            (_model.apiResultzlc?.jsonBody ??
+                                                ''),
+                                            r'''$.message''',
+                                          ).toString(),
+                                          style: TextStyle(
+                                            color: FlutterFlowTheme.of(context)
+                                                .info,
+                                          ),
+                                        ),
+                                        duration: Duration(milliseconds: 4000),
+                                        backgroundColor:
+                                            FlutterFlowTheme.of(context).error,
+                                      ),
+                                    );
+                                  }
+
+                                  setState(() {});
+                                },
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Align(
+                                      alignment: AlignmentDirectional(0.0, 1.0),
+                                      child: Text(
+                                        'Didn\'t get the code? ',
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .override(
+                                              fontFamily: 'Readex Pro',
+                                              letterSpacing: 0.0,
+                                            ),
+                                      ),
+                                    ),
+                                    Text(
+                                      'Resend',
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .override(
+                                            fontFamily: 'Readex Pro',
+                                            color: FlutterFlowTheme.of(context)
+                                                .primary,
+                                            letterSpacing: 0.0,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],
@@ -225,9 +304,36 @@ class _PinCodeWidgetState extends State<PinCodeWidget> {
                       padding: EdgeInsetsDirectional.fromSTEB(
                           16.0, 12.0, 16.0, 24.0),
                       child: FFButtonWidget(
-                        onPressed: () {
-                          print('Button pressed ...');
-                        },
+                        onPressed: (_model.pinCodeController!.text == null ||
+                                _model.pinCodeController!.text == '')
+                            ? null
+                            : () async {
+                                Function() _navigate = () {};
+                                _model.apiResultp6e =
+                                    await APSAuthenticationProcessingServiceGroup
+                                        .emailAddressVerificationCall
+                                        .call(
+                                  code: int.tryParse(
+                                      _model.pinCodeController!.text),
+                                  email: widget!.email,
+                                );
+
+                                if ((_model.apiResultp6e?.succeeded ?? true)) {
+                                  GoRouter.of(context).prepareAuthEvent();
+                                  await authManager.signIn(
+                                    authenticationToken: getJsonField(
+                                      (_model.apiResultp6e?.jsonBody ?? ''),
+                                      r'''$.token''',
+                                    ).toString(),
+                                  );
+                                  _navigate = () => context.goNamedAuth(
+                                      'HomePage', context.mounted);
+                                }
+
+                                _navigate();
+
+                                setState(() {});
+                              },
                         text: 'Continue',
                         options: FFButtonOptions(
                           width: double.infinity,
@@ -242,15 +348,17 @@ class _PinCodeWidgetState extends State<PinCodeWidget> {
                                     fontFamily: 'Plus Jakarta Sans',
                                     color: Colors.white,
                                     fontSize: 18.0,
+                                    letterSpacing: 0.0,
                                     fontWeight: FontWeight.w500,
                                   ),
-                          elevation: 4.0,
                           borderSide: BorderSide(
                             color: Colors.transparent,
                             width: 1.0,
                           ),
                           borderRadius: BorderRadius.circular(50.0),
-                          hoverColor: Color(0xFF101213),
+                          disabledColor: Color(0xFFE0E3E7),
+                          disabledTextColor:
+                              FlutterFlowTheme.of(context).primary,
                         ),
                       ),
                     ),

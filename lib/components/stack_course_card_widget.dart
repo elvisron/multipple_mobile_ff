@@ -7,10 +7,10 @@ import 'stack_course_card_model.dart';
 export 'stack_course_card_model.dart';
 
 class StackCourseCardWidget extends StatefulWidget {
-  const StackCourseCardWidget({Key? key}) : super(key: key);
+  const StackCourseCardWidget({super.key});
 
   @override
-  _StackCourseCardWidgetState createState() => _StackCourseCardWidgetState();
+  State<StackCourseCardWidget> createState() => _StackCourseCardWidgetState();
 }
 
 class _StackCourseCardWidgetState extends State<StackCourseCardWidget> {
@@ -37,8 +37,6 @@ class _StackCourseCardWidgetState extends State<StackCourseCardWidget> {
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return Container(
       width: 143.0,
       height: 57.0,
@@ -51,6 +49,7 @@ class _StackCourseCardWidgetState extends State<StackCourseCardWidget> {
                 fontFamily: 'Readex Pro',
                 color: Colors.white,
                 fontSize: 16.0,
+                letterSpacing: 0.0,
                 fontWeight: FontWeight.w600,
               ),
         ),

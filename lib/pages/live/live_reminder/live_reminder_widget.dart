@@ -9,10 +9,10 @@ import 'live_reminder_model.dart';
 export 'live_reminder_model.dart';
 
 class LiveReminderWidget extends StatefulWidget {
-  const LiveReminderWidget({Key? key}) : super(key: key);
+  const LiveReminderWidget({super.key});
 
   @override
-  _LiveReminderWidgetState createState() => _LiveReminderWidgetState();
+  State<LiveReminderWidget> createState() => _LiveReminderWidgetState();
 }
 
 class _LiveReminderWidgetState extends State<LiveReminderWidget> {
@@ -35,8 +35,6 @@ class _LiveReminderWidgetState extends State<LiveReminderWidget> {
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
@@ -59,7 +57,10 @@ class _LiveReminderWidgetState extends State<LiveReminderWidget> {
         ),
         title: Text(
           'Live',
-          style: FlutterFlowTheme.of(context).headlineMedium,
+          style: FlutterFlowTheme.of(context).headlineMedium.override(
+                fontFamily: 'Outfit',
+                letterSpacing: 0.0,
+              ),
         ),
         actions: [],
         centerTitle: false,
@@ -82,7 +83,7 @@ class _LiveReminderWidgetState extends State<LiveReminderWidget> {
                   ),
                 ),
                 Align(
-                  alignment: AlignmentDirectional(-1.00, 0.00),
+                  alignment: AlignmentDirectional(-1.0, 0.0),
                   child: Padding(
                     padding:
                         EdgeInsetsDirectional.fromSTEB(16.0, 50.0, 0.0, 0.0),
@@ -98,6 +99,7 @@ class _LiveReminderWidgetState extends State<LiveReminderWidget> {
                                     fontFamily: 'Outfit',
                                     color: FlutterFlowTheme.of(context).info,
                                     fontSize: 12.0,
+                                    letterSpacing: 0.0,
                                   ),
                         ),
                         Padding(
@@ -111,6 +113,7 @@ class _LiveReminderWidgetState extends State<LiveReminderWidget> {
                                   fontFamily: 'Readex Pro',
                                   color: FlutterFlowTheme.of(context).info,
                                   fontSize: 18.0,
+                                  letterSpacing: 0.0,
                                 ),
                           ),
                         ),
@@ -138,6 +141,7 @@ class _LiveReminderWidgetState extends State<LiveReminderWidget> {
                                   .override(
                                     fontFamily: 'Readex Pro',
                                     color: Colors.white,
+                                    letterSpacing: 0.0,
                                   ),
                               elevation: 3.0,
                               borderSide: BorderSide(
@@ -165,7 +169,11 @@ class _LiveReminderWidgetState extends State<LiveReminderWidget> {
                         EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 10.0),
                     child: Text(
                       'Medical Coding for Optometry from Start to Finish',
-                      style: FlutterFlowTheme.of(context).headlineMedium,
+                      style:
+                          FlutterFlowTheme.of(context).headlineMedium.override(
+                                fontFamily: 'Outfit',
+                                letterSpacing: 0.0,
+                              ),
                     ),
                   ),
                   Text(
@@ -173,6 +181,7 @@ class _LiveReminderWidgetState extends State<LiveReminderWidget> {
                     style: FlutterFlowTheme.of(context).labelLarge.override(
                           fontFamily: 'Readex Pro',
                           fontSize: 12.0,
+                          letterSpacing: 0.0,
                         ),
                   ),
                   Divider(
@@ -209,6 +218,7 @@ class _LiveReminderWidgetState extends State<LiveReminderWidget> {
                                   .override(
                                     fontFamily: 'Readex Pro',
                                     fontSize: 14.0,
+                                    letterSpacing: 0.0,
                                   ),
                             ),
                             Text(
@@ -220,6 +230,7 @@ class _LiveReminderWidgetState extends State<LiveReminderWidget> {
                                     color: FlutterFlowTheme.of(context)
                                         .secondaryText,
                                     fontSize: 12.0,
+                                    letterSpacing: 0.0,
                                   ),
                             ),
                           ],
@@ -247,6 +258,7 @@ class _LiveReminderWidgetState extends State<LiveReminderWidget> {
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
                             fontFamily: 'Readex Pro',
                             fontSize: 12.0,
+                            letterSpacing: 0.0,
                           ),
                     ),
                   ),
@@ -266,6 +278,7 @@ class _LiveReminderWidgetState extends State<LiveReminderWidget> {
                       style: FlutterFlowTheme.of(context).bodyMedium.override(
                             fontFamily: 'Readex Pro',
                             fontSize: 12.0,
+                            letterSpacing: 0.0,
                           ),
                     ),
                   ),
@@ -282,6 +295,7 @@ class _LiveReminderWidgetState extends State<LiveReminderWidget> {
                     style: FlutterFlowTheme.of(context).bodyMedium.override(
                           fontFamily: 'Readex Pro',
                           fontSize: 12.0,
+                          letterSpacing: 0.0,
                         ),
                   ),
                 ],
@@ -312,8 +326,7 @@ class _LiveReminderWidgetState extends State<LiveReminderWidget> {
                               ),
                             ),
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  4.0, 4.0, 4.0, 4.0),
+                              padding: EdgeInsets.all(4.0),
                               child: Container(
                                 width: 20.0,
                                 height: 20.0,
@@ -349,8 +362,7 @@ class _LiveReminderWidgetState extends State<LiveReminderWidget> {
                               ),
                             ),
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  4.0, 4.0, 4.0, 4.0),
+                              padding: EdgeInsets.all(4.0),
                               child: Container(
                                 width: 70.0,
                                 height: 70.0,
@@ -386,8 +398,7 @@ class _LiveReminderWidgetState extends State<LiveReminderWidget> {
                               ),
                             ),
                             child: Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  4.0, 4.0, 4.0, 4.0),
+                              padding: EdgeInsets.all(4.0),
                               child: Container(
                                 width: 70.0,
                                 height: 70.0,
@@ -410,7 +421,7 @@ class _LiveReminderWidgetState extends State<LiveReminderWidget> {
               ),
             ),
             Align(
-              alignment: AlignmentDirectional(0.00, 0.00),
+              alignment: AlignmentDirectional(0.0, 0.0),
               child: Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(16.0, 20.0, 16.0, 24.0),
                 child: FFButtonWidget(
@@ -430,6 +441,7 @@ class _LiveReminderWidgetState extends State<LiveReminderWidget> {
                               fontFamily: 'Outfit',
                               color: Colors.white,
                               fontSize: 16.0,
+                              letterSpacing: 0.0,
                             ),
                     elevation: 3.0,
                     borderSide: BorderSide(
@@ -441,7 +453,7 @@ class _LiveReminderWidgetState extends State<LiveReminderWidget> {
                 ),
               ),
             ),
-          ],
+          ].addToEnd(SizedBox(height: 58.0)),
         ),
       ),
     );

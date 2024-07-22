@@ -1,3 +1,4 @@
+import '/auth/custom_auth/auth_util.dart';
 import '/components/dashboard_user_activity_stats_widget.dart';
 import '/components/user_profile_card_widget.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
@@ -5,6 +6,8 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import 'dart:math';
+import 'account_page_widget.dart' show AccountPageWidget;
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -12,7 +15,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class AccountPageModel extends FlutterFlowModel {
+class AccountPageModel extends FlutterFlowModel<AccountPageWidget> {
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();
@@ -27,8 +30,7 @@ class AccountPageModel extends FlutterFlowModel {
   // Model for userProfileCard component.
   late UserProfileCardModel userProfileCardModel;
 
-  /// Initialization and disposal methods.
-
+  @override
   void initState(BuildContext context) {
     dashboardUserActivityStatsModel1 =
         createModel(context, () => DashboardUserActivityStatsModel());
@@ -41,6 +43,7 @@ class AccountPageModel extends FlutterFlowModel {
     userProfileCardModel = createModel(context, () => UserProfileCardModel());
   }
 
+  @override
   void dispose() {
     unfocusNode.dispose();
     dashboardUserActivityStatsModel1.dispose();
@@ -49,8 +52,4 @@ class AccountPageModel extends FlutterFlowModel {
     dashboardUserActivityStatsModel4.dispose();
     userProfileCardModel.dispose();
   }
-
-  /// Action blocks are added here.
-
-  /// Additional helper methods are added here.
 }

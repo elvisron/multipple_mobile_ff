@@ -18,10 +18,10 @@ import 'learn_course_lessons_model.dart';
 export 'learn_course_lessons_model.dart';
 
 class LearnCourseLessonsWidget extends StatefulWidget {
-  const LearnCourseLessonsWidget({Key? key}) : super(key: key);
+  const LearnCourseLessonsWidget({super.key});
 
   @override
-  _LearnCourseLessonsWidgetState createState() =>
+  State<LearnCourseLessonsWidget> createState() =>
       _LearnCourseLessonsWidgetState();
 }
 
@@ -45,10 +45,10 @@ class _LearnCourseLessonsWidgetState extends State<LearnCourseLessonsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
+      onTap: () => _model.unfocusNode.canRequestFocus
+          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+          : FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
@@ -74,6 +74,7 @@ class _LearnCourseLessonsWidgetState extends State<LearnCourseLessonsWidget> {
             style: FlutterFlowTheme.of(context).headlineMedium.override(
                   fontFamily: 'Outfit',
                   fontSize: 21.0,
+                  letterSpacing: 0.0,
                 ),
           ),
           actions: [],
@@ -106,19 +107,10 @@ class _LearnCourseLessonsWidgetState extends State<LearnCourseLessonsWidget> {
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
                       children: [
-                        InkWell(
-                          splashColor: Colors.transparent,
-                          focusColor: Colors.transparent,
-                          hoverColor: Colors.transparent,
-                          highlightColor: Colors.transparent,
-                          onTap: () async {
-                            context.pushNamed('learnvVideo');
-                          },
-                          child: wrapWithModel(
-                            model: _model.videoListUnplayedModel,
-                            updateCallback: () => setState(() {}),
-                            child: VideoListUnplayedWidget(),
-                          ),
+                        wrapWithModel(
+                          model: _model.videoListUnplayedModel,
+                          updateCallback: () => setState(() {}),
+                          child: VideoListUnplayedWidget(),
                         ),
                         wrapWithModel(
                           model: _model.completedListCardModel,

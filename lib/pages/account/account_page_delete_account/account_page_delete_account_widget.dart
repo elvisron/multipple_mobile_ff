@@ -11,10 +11,10 @@ import 'account_page_delete_account_model.dart';
 export 'account_page_delete_account_model.dart';
 
 class AccountPageDeleteAccountWidget extends StatefulWidget {
-  const AccountPageDeleteAccountWidget({Key? key}) : super(key: key);
+  const AccountPageDeleteAccountWidget({super.key});
 
   @override
-  _AccountPageDeleteAccountWidgetState createState() =>
+  State<AccountPageDeleteAccountWidget> createState() =>
       _AccountPageDeleteAccountWidgetState();
 }
 
@@ -39,10 +39,10 @@ class _AccountPageDeleteAccountWidgetState
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
+      onTap: () => _model.unfocusNode.canRequestFocus
+          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+          : FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
@@ -68,6 +68,7 @@ class _AccountPageDeleteAccountWidgetState
             style: FlutterFlowTheme.of(context).headlineMedium.override(
                   fontFamily: 'Outfit',
                   fontSize: 21.0,
+                  letterSpacing: 0.0,
                 ),
           ),
           actions: [],
@@ -137,6 +138,7 @@ class _AccountPageDeleteAccountWidgetState
                                     .override(
                                       fontFamily: 'Readex Pro',
                                       fontSize: 32.0,
+                                      letterSpacing: 0.0,
                                     ),
                               ),
                             ),
@@ -157,6 +159,7 @@ class _AccountPageDeleteAccountWidgetState
                                     .override(
                                       fontFamily: 'Readex Pro',
                                       fontSize: 16.0,
+                                      letterSpacing: 0.0,
                                     ),
                               ),
                             ),
@@ -180,6 +183,7 @@ class _AccountPageDeleteAccountWidgetState
                                       .override(
                                         fontFamily: 'Readex Pro',
                                         fontSize: 16.0,
+                                        letterSpacing: 0.0,
                                       ),
                                 ),
                               ),
@@ -211,6 +215,7 @@ class _AccountPageDeleteAccountWidgetState
                                       fontFamily: 'Readex Pro',
                                       color: Colors.white,
                                       fontSize: 14.0,
+                                      letterSpacing: 0.0,
                                     ),
                                 borderSide: BorderSide(
                                   color: Colors.transparent,
@@ -241,6 +246,7 @@ class _AccountPageDeleteAccountWidgetState
                                         fontFamily: 'Readex Pro',
                                         color: FlutterFlowTheme.of(context)
                                             .primary,
+                                        letterSpacing: 0.0,
                                       ),
                                   borderSide: BorderSide(
                                     color:

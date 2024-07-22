@@ -1,6 +1,7 @@
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -11,56 +12,25 @@ import 'certificate_card_model.dart';
 export 'certificate_card_model.dart';
 
 class CertificateCardWidget extends StatefulWidget {
-  const CertificateCardWidget({Key? key}) : super(key: key);
+  const CertificateCardWidget({
+    super.key,
+    String? title,
+    String? issueDate,
+  })  : this.title = title ?? 'Title',
+        this.issueDate = issueDate ?? '21st June 2024';
+
+  final String title;
+  final String issueDate;
 
   @override
-  _CertificateCardWidgetState createState() => _CertificateCardWidgetState();
+  State<CertificateCardWidget> createState() => _CertificateCardWidgetState();
 }
 
 class _CertificateCardWidgetState extends State<CertificateCardWidget>
     with TickerProviderStateMixin {
   late CertificateCardModel _model;
 
-  final animationsMap = {
-    'containerOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: 0.0,
-          end: 1.0,
-        ),
-        MoveEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: Offset(0.0, 50.0),
-          end: Offset(0.0, 0.0),
-        ),
-      ],
-    ),
-    'columnOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: 0.0,
-          end: 1.0,
-        ),
-        MoveEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: Offset(40.0, 0.0),
-          end: Offset(0.0, 0.0),
-        ),
-      ],
-    ),
-  };
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void setState(VoidCallback callback) {
@@ -73,6 +43,46 @@ class _CertificateCardWidgetState extends State<CertificateCardWidget>
     super.initState();
     _model = createModel(context, () => CertificateCardModel());
 
+    animationsMap.addAll({
+      'containerOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: Offset(0.0, 50.0),
+            end: Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+      'columnOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: Offset(40.0, 0.0),
+            end: Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+    });
     setupAnimations(
       animationsMap.values.where((anim) =>
           anim.trigger == AnimationTrigger.onActionTrigger ||
@@ -90,8 +100,6 @@ class _CertificateCardWidgetState extends State<CertificateCardWidget>
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return Padding(
       padding: EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 0.0),
       child: Container(
@@ -103,13 +111,16 @@ class _CertificateCardWidgetState extends State<CertificateCardWidget>
             BoxShadow(
               blurRadius: 4.0,
               color: Color(0x33000000),
-              offset: Offset(0.0, 2.0),
+              offset: Offset(
+                0.0,
+                2.0,
+              ),
             )
           ],
           borderRadius: BorderRadius.circular(20.0),
         ),
         child: Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(16.0, 16.0, 16.0, 16.0),
+          padding: EdgeInsets.all(16.0),
           child: Row(
             mainAxisSize: MainAxisSize.max,
             children: [
@@ -120,12 +131,13 @@ class _CertificateCardWidgetState extends State<CertificateCardWidget>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'CyberSecurity',
+                      widget!.title,
                       style:
                           FlutterFlowTheme.of(context).headlineSmall.override(
                                 fontFamily: 'Outfit',
                                 color: Color(0xFFF3FCFF),
                                 fontSize: 18.0,
+                                letterSpacing: 0.0,
                                 fontWeight: FontWeight.w500,
                               ),
                     ),
@@ -140,6 +152,7 @@ class _CertificateCardWidgetState extends State<CertificateCardWidget>
                                     fontFamily: 'Plus Jakarta Sans',
                                     color: Color(0xFFE6E6E6),
                                     fontSize: 12.0,
+                                    letterSpacing: 0.0,
                                     fontWeight: FontWeight.w500,
                                   ),
                         ),
@@ -160,13 +173,14 @@ class _CertificateCardWidgetState extends State<CertificateCardWidget>
                             padding: EdgeInsetsDirectional.fromSTEB(
                                 8.0, 8.0, 0.0, 0.0),
                             child: Text(
-                              '3rd Sep \'23',
+                              widget!.issueDate,
                               style: FlutterFlowTheme.of(context)
                                   .headlineLarge
                                   .override(
                                     fontFamily: 'Outfit',
                                     color: Color(0xFFF3FCFF),
                                     fontSize: 14.0,
+                                    letterSpacing: 0.0,
                                     fontWeight: FontWeight.normal,
                                   ),
                             ),

@@ -39,3 +39,7 @@ export '/pages/live/live_reminder/live_reminder_widget.dart'
     show LiveReminderWidget;
 export '/pages/live/live_ongoing/live_ongoing_widget.dart'
     show LiveOngoingWidget;
+export '/pages/onboarding/request_password_reset/request_password_reset_widget.dart'
+    show RequestPasswordResetWidget;
+export '/pages/account/account_page_user_achievement/account_page_user_achievement_widget.dart'
+    show AccountPageUserAchievementWidget;

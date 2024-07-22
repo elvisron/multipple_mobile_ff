@@ -1,6 +1,7 @@
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -11,10 +12,10 @@ import 'learn_course_completed_model.dart';
 export 'learn_course_completed_model.dart';
 
 class LearnCourseCompletedWidget extends StatefulWidget {
-  const LearnCourseCompletedWidget({Key? key}) : super(key: key);
+  const LearnCourseCompletedWidget({super.key});
 
   @override
-  _LearnCourseCompletedWidgetState createState() =>
+  State<LearnCourseCompletedWidget> createState() =>
       _LearnCourseCompletedWidgetState();
 }
 
@@ -22,27 +23,7 @@ class _LearnCourseCompletedWidgetState extends State<LearnCourseCompletedWidget>
     with TickerProviderStateMixin {
   late LearnCourseCompletedModel _model;
 
-  final animationsMap = {
-    'containerOnPageLoadAnimation': AnimationInfo(
-      trigger: AnimationTrigger.onPageLoad,
-      effects: [
-        FadeEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: 0.0,
-          end: 1.0,
-        ),
-        MoveEffect(
-          curve: Curves.easeInOut,
-          delay: 0.ms,
-          duration: 600.ms,
-          begin: Offset(0.0, 30.0),
-          end: Offset(0.0, 0.0),
-        ),
-      ],
-    ),
-  };
+  final animationsMap = <String, AnimationInfo>{};
 
   @override
   void setState(VoidCallback callback) {
@@ -55,6 +36,27 @@ class _LearnCourseCompletedWidgetState extends State<LearnCourseCompletedWidget>
     super.initState();
     _model = createModel(context, () => LearnCourseCompletedModel());
 
+    animationsMap.addAll({
+      'containerOnPageLoadAnimation': AnimationInfo(
+        trigger: AnimationTrigger.onPageLoad,
+        effectsBuilder: () => [
+          FadeEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: 0.0,
+            end: 1.0,
+          ),
+          MoveEffect(
+            curve: Curves.easeInOut,
+            delay: 0.0.ms,
+            duration: 600.0.ms,
+            begin: Offset(0.0, 30.0),
+            end: Offset(0.0, 0.0),
+          ),
+        ],
+      ),
+    });
     setupAnimations(
       animationsMap.values.where((anim) =>
           anim.trigger == AnimationTrigger.onActionTrigger ||
@@ -72,8 +74,6 @@ class _LearnCourseCompletedWidgetState extends State<LearnCourseCompletedWidget>
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return Padding(
       padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 1.0),
       child: Container(
@@ -101,8 +101,7 @@ class _LearnCourseCompletedWidgetState extends State<LearnCourseCompletedWidget>
               ),
               Expanded(
                 child: Padding(
-                  padding:
-                      EdgeInsetsDirectional.fromSTEB(12.0, 12.0, 12.0, 12.0),
+                  padding: EdgeInsets.all(12.0),
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -114,6 +113,7 @@ class _LearnCourseCompletedWidgetState extends State<LearnCourseCompletedWidget>
                                   fontFamily: 'Outfit',
                                   color: FlutterFlowTheme.of(context).primary,
                                   fontSize: 16.0,
+                                  letterSpacing: 0.0,
                                   fontWeight: FontWeight.w500,
                                 ),
                       ),
@@ -129,6 +129,7 @@ class _LearnCourseCompletedWidgetState extends State<LearnCourseCompletedWidget>
                                 color:
                                     FlutterFlowTheme.of(context).secondaryText,
                                 fontSize: 12.0,
+                                letterSpacing: 0.0,
                                 fontWeight: FontWeight.w500,
                               ),
                         ),

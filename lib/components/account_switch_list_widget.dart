@@ -7,10 +7,10 @@ import 'account_switch_list_model.dart';
 export 'account_switch_list_model.dart';
 
 class AccountSwitchListWidget extends StatefulWidget {
-  const AccountSwitchListWidget({Key? key}) : super(key: key);
+  const AccountSwitchListWidget({super.key});
 
   @override
-  _AccountSwitchListWidgetState createState() =>
+  State<AccountSwitchListWidget> createState() =>
       _AccountSwitchListWidgetState();
 }
 
@@ -38,8 +38,6 @@ class _AccountSwitchListWidgetState extends State<AccountSwitchListWidget> {
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return Padding(
       padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
       child: SwitchListTile.adaptive(
@@ -51,6 +49,7 @@ class _AccountSwitchListWidgetState extends State<AccountSwitchListWidget> {
           'Push Notifications',
           style: FlutterFlowTheme.of(context).bodyLarge.override(
                 fontFamily: 'Readex Pro',
+                letterSpacing: 0.0,
                 lineHeight: 2.0,
               ),
         ),

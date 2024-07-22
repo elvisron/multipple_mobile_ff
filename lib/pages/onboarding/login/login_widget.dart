@@ -1,3 +1,4 @@
+import '/auth/custom_auth/auth_util.dart';
 import '/backend/api_requests/api_calls.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -12,10 +13,10 @@ import 'login_model.dart';
 export 'login_model.dart';
 
 class LoginWidget extends StatefulWidget {
-  const LoginWidget({Key? key}) : super(key: key);
+  const LoginWidget({super.key});
 
   @override
-  _LoginWidgetState createState() => _LoginWidgetState();
+  State<LoginWidget> createState() => _LoginWidgetState();
 }
 
 class _LoginWidgetState extends State<LoginWidget> {
@@ -39,8 +40,11 @@ class _LoginWidgetState extends State<LoginWidget> {
       });
     }
 
-    _model.textController1 ??= TextEditingController();
-    _model.textController2 ??= TextEditingController();
+    _model.emailTextController ??= TextEditingController();
+    _model.emailFocusNode ??= FocusNode();
+
+    _model.passwordTextController ??= TextEditingController();
+    _model.passwordFocusNode ??= FocusNode();
   }
 
   @override
@@ -58,7 +62,9 @@ class _LoginWidgetState extends State<LoginWidget> {
     context.watch<FFAppState>();
 
     return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
+      onTap: () => _model.unfocusNode.canRequestFocus
+          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+          : FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: Colors.white,
@@ -86,7 +92,7 @@ class _LoginWidgetState extends State<LoginWidget> {
         body: SafeArea(
           top: true,
           child: Align(
-            alignment: AlignmentDirectional(0.00, 0.00),
+            alignment: AlignmentDirectional(0.0, 0.0),
             child: Container(
               width: double.infinity,
               constraints: BoxConstraints(
@@ -120,6 +126,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                       fontFamily: 'Urbanist',
                                       color: Color(0xFF101213),
                                       fontSize: 48.0,
+                                      letterSpacing: 0.0,
                                       fontWeight: FontWeight.bold,
                                     ),
                               ),
@@ -136,21 +143,28 @@ class _LoginWidgetState extends State<LoginWidget> {
                                       fontFamily: 'Plus Jakarta Sans',
                                       color: Color(0xFF57636C),
                                       fontSize: 16.0,
+                                      letterSpacing: 0.0,
                                       fontWeight: FontWeight.w500,
                                     ),
                               ),
                             ),
                             Padding(
                               padding: EdgeInsetsDirectional.fromSTEB(
-                                  16.0, 12.0, 16.0, 0.0),
+                                  16.0, 10.0, 16.0, 0.0),
                               child: TextFormField(
-                                controller: _model.textController1,
+                                controller: _model.emailTextController,
+                                focusNode: _model.emailFocusNode,
                                 onFieldSubmitted: (_) async {
                                   setState(() {
-                                    _model.textController1?.text =
-                                        _model.textController1.text;
+                                    _model.emailTextController?.text =
+                                        _model.emailTextController.text;
+                                    _model.emailTextController?.selection =
+                                        TextSelection.collapsed(
+                                            offset: _model.emailTextController!
+                                                .text.length);
                                   });
                                 },
+                                autofocus: false,
                                 obscureText: false,
                                 decoration: InputDecoration(
                                   labelText: 'Email Address',
@@ -160,6 +174,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                         fontFamily: 'Plus Jakarta Sans',
                                         color: Color(0xFF57636C),
                                         fontSize: 16.0,
+                                        letterSpacing: 0.0,
                                         fontWeight: FontWeight.w500,
                                       ),
                                   enabledBorder: UnderlineInputBorder(
@@ -206,26 +221,29 @@ class _LoginWidgetState extends State<LoginWidget> {
                                   fillColor: Colors.white,
                                   contentPadding:
                                       EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 16.0, 16.0, 8.0),
+                                          0.0, 0.0, 16.0, 8.0),
                                 ),
                                 style: FlutterFlowTheme.of(context)
                                     .bodyLarge
                                     .override(
                                       fontFamily: 'Plus Jakarta Sans',
                                       color: Color(0xFF101213),
-                                      fontSize: 16.0,
+                                      fontSize: 14.0,
+                                      letterSpacing: 0.0,
                                       fontWeight: FontWeight.w500,
-                                      lineHeight: 3.0,
+                                      lineHeight: 1.0,
                                     ),
-                                validator: _model.textController1Validator
+                                validator: _model.emailTextControllerValidator
                                     .asValidator(context),
                               ),
                             ),
                             Padding(
                               padding: EdgeInsetsDirectional.fromSTEB(
-                                  16.0, 12.0, 16.0, 0.0),
+                                  16.0, 10.0, 16.0, 0.0),
                               child: TextFormField(
-                                controller: _model.textController2,
+                                controller: _model.passwordTextController,
+                                focusNode: _model.passwordFocusNode,
+                                autofocus: false,
                                 textCapitalization: TextCapitalization.none,
                                 obscureText: !_model.passwordVisibility,
                                 decoration: InputDecoration(
@@ -236,6 +254,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                         fontFamily: 'Plus Jakarta Sans',
                                         color: Color(0xFF57636C),
                                         fontSize: 16.0,
+                                        letterSpacing: 0.0,
                                         fontWeight: FontWeight.w500,
                                       ),
                                   enabledBorder: UnderlineInputBorder(
@@ -282,7 +301,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                   fillColor: Colors.white,
                                   contentPadding:
                                       EdgeInsetsDirectional.fromSTEB(
-                                          0.0, 16.0, 16.0, 8.0),
+                                          0.0, 0.0, 16.0, 8.0),
                                   suffixIcon: InkWell(
                                     onTap: () => setState(
                                       () => _model.passwordVisibility =
@@ -303,11 +322,13 @@ class _LoginWidgetState extends State<LoginWidget> {
                                     .override(
                                       fontFamily: 'Plus Jakarta Sans',
                                       color: Color(0xFF101213),
-                                      fontSize: 16.0,
+                                      fontSize: 14.0,
+                                      letterSpacing: 0.0,
                                       fontWeight: FontWeight.w500,
-                                      lineHeight: 3.0,
+                                      lineHeight: 1.0,
                                     ),
-                                validator: _model.textController2Validator
+                                validator: _model
+                                    .passwordTextControllerValidator
                                     .asValidator(context),
                               ),
                             ),
@@ -318,8 +339,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                                 padding: EdgeInsetsDirectional.fromSTEB(
                                     16.0, 12.0, 16.0, 0.0),
                                 child: FFButtonWidget(
-                                  onPressed: () {
-                                    print('Button pressed ...');
+                                  onPressed: () async {
+                                    context.pushNamed('RequestPasswordReset');
                                   },
                                   text: 'Forgot Password?',
                                   options: FFButtonOptions(
@@ -336,6 +357,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                           fontFamily: 'Urbanist',
                                           color: Color(0xFF101213),
                                           fontSize: 18.0,
+                                          letterSpacing: 0.0,
                                           fontWeight: FontWeight.w500,
                                         ),
                                     elevation: 0.0,
@@ -351,31 +373,48 @@ class _LoginWidgetState extends State<LoginWidget> {
                             Padding(
                               padding: EdgeInsetsDirectional.fromSTEB(
                                   0.0, 60.0, 0.0, 0.0),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Align(
-                                    alignment: AlignmentDirectional(0.00, 1.00),
-                                    child: Text(
-                                      'Don\'t have an account yet? ',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium,
+                              child: InkWell(
+                                splashColor: Colors.transparent,
+                                focusColor: Colors.transparent,
+                                hoverColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
+                                onTap: () async {
+                                  context.pushNamed('SignUp');
+                                },
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Align(
+                                      alignment: AlignmentDirectional(0.0, 1.0),
+                                      child: Text(
+                                        'Don\'t have an account yet? ',
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .override(
+                                              fontFamily: 'Readex Pro',
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primary,
+                                              letterSpacing: 0.0,
+                                            ),
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    'Sign up',
-                                    style: FlutterFlowTheme.of(context)
-                                        .bodyMedium
-                                        .override(
-                                          fontFamily: 'Readex Pro',
-                                          color: FlutterFlowTheme.of(context)
-                                              .primary,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                  ),
-                                ],
+                                    Text(
+                                      'Sign up',
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .override(
+                                            fontFamily: 'Readex Pro',
+                                            color: FlutterFlowTheme.of(context)
+                                                .primary,
+                                            letterSpacing: 0.0,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],
@@ -390,32 +429,124 @@ class _LoginWidgetState extends State<LoginWidget> {
                       padding: EdgeInsetsDirectional.fromSTEB(
                           16.0, 12.0, 16.0, 24.0),
                       child: FFButtonWidget(
-                        onPressed: () async {
-                          _model.loginAPI =
-                              await APSAuthenticationProcessingServiceGroup
-                                  .signInCall
-                                  .call(
-                            email: _model.textController1.text,
-                            password: _model.textController2.text,
-                          );
-                          if ((_model.loginAPI?.succeeded ?? true)) {
-                            FFAppState().update(() {
-                              FFAppState().token =
-                                  APSAuthenticationProcessingServiceGroup
-                                      .signInCall
-                                      .logintoken(
+                        onPressed: ((_model.emailTextController.text == null ||
+                                    _model.emailTextController.text == '') ||
+                                (_model.passwordTextController.text == null ||
+                                    _model.passwordTextController.text == ''))
+                            ? null
+                            : () async {
+                                _model.loginAPI =
+                                    await APSAuthenticationProcessingServiceGroup
+                                        .signInCall
+                                        .call(
+                                  email: _model.emailTextController.text,
+                                  password: _model.passwordTextController.text,
+                                );
+
+                                if ((_model.loginAPI?.succeeded ?? true)) {
+                                  if (APSAuthenticationProcessingServiceGroup
+                                          .signInCall
+                                          .next(
                                         (_model.loginAPI?.jsonBody ?? ''),
-                                      )
-                                      .toString();
-                            });
+                                      ) ==
+                                      'verify') {
+                                    await APSAuthenticationProcessingServiceGroup
+                                        .resendVerificationEmailCall
+                                        .call(
+                                      email: _model.emailTextController.text,
+                                    );
 
-                            context.pushNamed('HomePage');
-                          } else {
-                            context.pushNamed('Login');
-                          }
+                                    context.pushNamedAuth(
+                                      'PinCode',
+                                      context.mounted,
+                                      queryParameters: {
+                                        'email': serializeParam(
+                                          _model.emailTextController.text,
+                                          ParamType.String,
+                                        ),
+                                      }.withoutNulls,
+                                    );
+                                  } else {
+                                    _model.getUserRes =
+                                        await LXPLearningExperiencePortalGroup
+                                            .getUserAccountCall
+                                            .call(
+                                      lXPAuthToken: getJsonField(
+                                        (_model.loginAPI?.jsonBody ?? ''),
+                                        r'''$.credentials.ctoken''',
+                                      ).toString(),
+                                      lXPAuthDevice:
+                                          APSAuthenticationProcessingServiceGroup
+                                              .signInCall
+                                              .deviceId(
+                                        (_model.loginAPI?.jsonBody ?? ''),
+                                      ),
+                                    );
 
-                          setState(() {});
-                        },
+                                    GoRouter.of(context).prepareAuthEvent();
+                                    await authManager.signIn(
+                                      authenticationToken: getJsonField(
+                                        (_model.loginAPI?.jsonBody ?? ''),
+                                        r'''$.credentials.ctoken''',
+                                      ).toString(),
+                                    );
+                                    FFAppState().deviceId =
+                                        APSAuthenticationProcessingServiceGroup
+                                            .signInCall
+                                            .deviceId(
+                                      (_model.loginAPI?.jsonBody ?? ''),
+                                    )!;
+                                    FFAppState().user =
+                                        LXPLearningExperiencePortalGroup
+                                            .getUserAccountCall
+                                            .user(
+                                      (_model.getUserRes?.jsonBody ?? ''),
+                                    );
+                                    setState(() {});
+                                    _model.learnerEnrollments =
+                                        await LXPLearningExperiencePortalGroup
+                                            .getAListOfCoursesByLearnerCall
+                                            .call(
+                                      scope: 'enrolled',
+                                      lXPAuthToken: currentAuthenticationToken,
+                                      lXPAuthDevice: FFAppState().deviceId,
+                                    );
+
+                                    FFAppState().enrolments = getJsonField(
+                                      (_model.learnerEnrollments?.jsonBody ??
+                                          ''),
+                                      r'''$.results''',
+                                      true,
+                                    )!
+                                        .toList()
+                                        .cast<dynamic>();
+                                    setState(() {});
+
+                                    context.pushNamedAuth(
+                                        'HomePage', context.mounted);
+                                  }
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        getJsonField(
+                                          (_model.loginAPI?.jsonBody ?? ''),
+                                          r'''$.message''',
+                                        ).toString(),
+                                        style: TextStyle(
+                                          color:
+                                              FlutterFlowTheme.of(context).info,
+                                        ),
+                                      ),
+                                      duration: Duration(milliseconds: 4000),
+                                      backgroundColor:
+                                          FlutterFlowTheme.of(context).error,
+                                    ),
+                                  );
+                                }
+
+                                setState(() {});
+                              },
                         text: 'Login',
                         options: FFButtonOptions(
                           width: double.infinity,
@@ -430,14 +561,18 @@ class _LoginWidgetState extends State<LoginWidget> {
                                     fontFamily: 'Plus Jakarta Sans',
                                     color: Colors.white,
                                     fontSize: 18.0,
+                                    letterSpacing: 0.0,
                                     fontWeight: FontWeight.w500,
                                   ),
-                          elevation: 4.0,
+                          elevation: 0.0,
                           borderSide: BorderSide(
                             color: Colors.transparent,
                             width: 1.0,
                           ),
                           borderRadius: BorderRadius.circular(50.0),
+                          disabledColor: Color(0xFFE0E3E7),
+                          disabledTextColor:
+                              FlutterFlowTheme.of(context).primary,
                           hoverColor: Color(0xFF101213),
                         ),
                       ),

@@ -11,10 +11,10 @@ import 'account_change_password_model.dart';
 export 'account_change_password_model.dart';
 
 class AccountChangePasswordWidget extends StatefulWidget {
-  const AccountChangePasswordWidget({Key? key}) : super(key: key);
+  const AccountChangePasswordWidget({super.key});
 
   @override
-  _AccountChangePasswordWidgetState createState() =>
+  State<AccountChangePasswordWidget> createState() =>
       _AccountChangePasswordWidgetState();
 }
 
@@ -41,8 +41,13 @@ class _AccountChangePasswordWidgetState
     }
 
     _model.textController1 ??= TextEditingController();
+    _model.textFieldFocusNode1 ??= FocusNode();
+
     _model.textController2 ??= TextEditingController();
+    _model.textFieldFocusNode2 ??= FocusNode();
+
     _model.textController3 ??= TextEditingController();
+    _model.textFieldFocusNode3 ??= FocusNode();
   }
 
   @override
@@ -57,10 +62,10 @@ class _AccountChangePasswordWidgetState
 
   @override
   Widget build(BuildContext context) {
-    context.watch<FFAppState>();
-
     return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
+      onTap: () => _model.unfocusNode.canRequestFocus
+          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+          : FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: Colors.white,
@@ -88,7 +93,7 @@ class _AccountChangePasswordWidgetState
         body: SafeArea(
           top: true,
           child: Align(
-            alignment: AlignmentDirectional(0.00, 0.00),
+            alignment: AlignmentDirectional(0.0, 0.0),
             child: Container(
               width: double.infinity,
               constraints: BoxConstraints(
@@ -122,6 +127,7 @@ class _AccountChangePasswordWidgetState
                                       fontFamily: 'Urbanist',
                                       color: Color(0xFF101213),
                                       fontSize: 38.0,
+                                      letterSpacing: 0.0,
                                       fontWeight: FontWeight.bold,
                                     ),
                               ),
@@ -138,6 +144,7 @@ class _AccountChangePasswordWidgetState
                                       fontFamily: 'Plus Jakarta Sans',
                                       color: Color(0xFF57636C),
                                       fontSize: 16.0,
+                                      letterSpacing: 0.0,
                                       fontWeight: FontWeight.w500,
                                     ),
                               ),
@@ -147,6 +154,8 @@ class _AccountChangePasswordWidgetState
                                   16.0, 12.0, 16.0, 0.0),
                               child: TextFormField(
                                 controller: _model.textController1,
+                                focusNode: _model.textFieldFocusNode1,
+                                autofocus: false,
                                 textCapitalization: TextCapitalization.none,
                                 obscureText: !_model.passwordVisibility1,
                                 decoration: InputDecoration(
@@ -157,6 +166,7 @@ class _AccountChangePasswordWidgetState
                                         fontFamily: 'Plus Jakarta Sans',
                                         color: Color(0xFF57636C),
                                         fontSize: 16.0,
+                                        letterSpacing: 0.0,
                                         fontWeight: FontWeight.w500,
                                       ),
                                   enabledBorder: UnderlineInputBorder(
@@ -225,6 +235,7 @@ class _AccountChangePasswordWidgetState
                                       fontFamily: 'Plus Jakarta Sans',
                                       color: Color(0xFF101213),
                                       fontSize: 16.0,
+                                      letterSpacing: 0.0,
                                       fontWeight: FontWeight.w500,
                                       lineHeight: 3.0,
                                     ),
@@ -237,6 +248,8 @@ class _AccountChangePasswordWidgetState
                                   16.0, 12.0, 16.0, 0.0),
                               child: TextFormField(
                                 controller: _model.textController2,
+                                focusNode: _model.textFieldFocusNode2,
+                                autofocus: false,
                                 textCapitalization: TextCapitalization.none,
                                 obscureText: !_model.passwordVisibility2,
                                 decoration: InputDecoration(
@@ -247,6 +260,7 @@ class _AccountChangePasswordWidgetState
                                         fontFamily: 'Plus Jakarta Sans',
                                         color: Color(0xFF57636C),
                                         fontSize: 16.0,
+                                        letterSpacing: 0.0,
                                         fontWeight: FontWeight.w500,
                                       ),
                                   enabledBorder: UnderlineInputBorder(
@@ -315,6 +329,7 @@ class _AccountChangePasswordWidgetState
                                       fontFamily: 'Plus Jakarta Sans',
                                       color: Color(0xFF101213),
                                       fontSize: 16.0,
+                                      letterSpacing: 0.0,
                                       fontWeight: FontWeight.w500,
                                       lineHeight: 3.0,
                                     ),
@@ -327,6 +342,8 @@ class _AccountChangePasswordWidgetState
                                   16.0, 12.0, 16.0, 0.0),
                               child: TextFormField(
                                 controller: _model.textController3,
+                                focusNode: _model.textFieldFocusNode3,
+                                autofocus: false,
                                 textCapitalization: TextCapitalization.none,
                                 obscureText: !_model.passwordVisibility3,
                                 decoration: InputDecoration(
@@ -337,6 +354,7 @@ class _AccountChangePasswordWidgetState
                                         fontFamily: 'Plus Jakarta Sans',
                                         color: Color(0xFF57636C),
                                         fontSize: 16.0,
+                                        letterSpacing: 0.0,
                                         fontWeight: FontWeight.w500,
                                       ),
                                   enabledBorder: UnderlineInputBorder(
@@ -405,6 +423,7 @@ class _AccountChangePasswordWidgetState
                                       fontFamily: 'Plus Jakarta Sans',
                                       color: Color(0xFF101213),
                                       fontSize: 16.0,
+                                      letterSpacing: 0.0,
                                       fontWeight: FontWeight.w500,
                                       lineHeight: 3.0,
                                     ),
@@ -441,6 +460,7 @@ class _AccountChangePasswordWidgetState
                                     fontFamily: 'Plus Jakarta Sans',
                                     color: Colors.white,
                                     fontSize: 18.0,
+                                    letterSpacing: 0.0,
                                     fontWeight: FontWeight.w500,
                                   ),
                           elevation: 4.0,
